@@ -231,16 +231,17 @@ fixtures = [
     {"dt": "Custom Field", "filters": {"module": "cn-indian-payroll"}},
     {"dt": "Print Format", "filters": {"module": "cn-indian-payroll"}},
     {"dt": "Property Setter", "filters": {"module": "cn-indian-payroll"}},
+    {"dt":"Income Tax Regime"},
 
-    {"dt": "Report", "filters": {"name": "Salary Slip Registers"}},
+    # {"dt": "Report", "filters": {"name": "Salary Slip Registers"}},
 
     # {"dt": "Role", "filters": {"name": ["in", ["HR Head", "Finance Head","Payroll manager"]]}},
-    {"dt":"Translation","filters":{"name":"Reimbursement Claim"}},
+    # {"dt":"Translation","filters":{"name":"Reimbursement Claim"}},
     # {"dt":"Employee Tax Exemption Sub Category"},
     # {"dt":"Employee Tax Exemption Category"},
-    # {"dt":"Salary Component"},
+    {"dt":"Salary Component"},
     # {"dt":"Income Tax Slab","filters": {"name": ["in", ["Old Regime", "New Regime"]]}},
-    # {"dt":"Salary Structure"},
+    
 
 ]
 
