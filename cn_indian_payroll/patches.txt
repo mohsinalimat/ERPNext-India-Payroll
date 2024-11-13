@@ -7,3 +7,4 @@
 
 cn_indian_payroll.cn_indian_payroll.patches.income_tax_slab #21-18-2025
 cn_indian_payroll.cn_indian_payroll.patches.salary_component #21-16-20144
+cn_indian_payroll.cn_indian_payroll.patches.sub_category #21-16-201

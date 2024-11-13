@@ -29,8 +29,8 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
     #     super().validate()
 
 
-    def on_submit(self):
-        self.insert_declaration_history()
+    # def on_submit(self):
+    #     self.insert_declaration_history()
 
 
 
@@ -39,23 +39,24 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         if self.custom_check==0:
             self.calculate_hra_exemption()
         
-        self.calculate_hra_breakup()
-        self.update_hra_breakup()
+        # self.calculate_hra_breakup()
+        # self.update_hra_breakup()
         self.update_tax_declaration()
         
         self.set_total_declared_amount()
-        self.set_total_exemption_amount()
+        # self.set_total_exemption_amount()
 
 
 
 
         
 
-    def set_total_exemption_amount(self):
-        self.total_exemption_amount = flt(get_total_exemption_amount(self.declarations), self.precision("total_exemption_amount"))
+    # def set_total_exemption_amount(self):
+    #     self.total_exemption_amount = flt(get_total_exemption_amount(self.declarations), self.precision("total_exemption_amount"))
         
-        # if self.custom_check == 1:
-        self.total_exemption_amount = self.total_exemption_amount + self.annual_hra_exemption
+    #     # if self.custom_check == 1:
+    #     # if self.annual_hra_exemption:
+    #     self.total_exemption_amount = self.total_exemption_amount + self.annual_hra_exemption
 
         
 
@@ -273,16 +274,16 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
                 'company': self.company,
                 'posting_date': frappe.utils.nowdate(),
                 'payroll_period': self.payroll_period,
-                'monthly_house_rent': self.monthly_house_rent,
-                'rented_in_metro_city': self.rented_in_metro_city,
-                'hra_as_per_salary_structure': self.salary_structure_hra,  
+                # 'monthly_house_rent': self.monthly_house_rent,
+                # 'rented_in_metro_city': self.rented_in_metro_city,
+                # 'hra_as_per_salary_structure': self.salary_structure_hra,  
                 'total_declared_amount': self.total_declared_amount,
-                'annual_hra_exemption': self.annual_hra_exemption,
-                'monthly_hra_exemption': self.monthly_hra_exemption,
+                # 'annual_hra_exemption': self.annual_hra_exemption,
+                # 'monthly_hra_exemption': self.monthly_hra_exemption,
                 'total_exemption_amount': self.total_exemption_amount,
                 'tax_exemption':self.name,
                 'declaration_details': declaration_details,
-                'hra_breakup': hra_breakup
+                # 'hra_breakup': hra_breakup
             })
 
             insert_doc.insert()

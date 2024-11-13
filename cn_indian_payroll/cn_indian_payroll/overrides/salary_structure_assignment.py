@@ -5,10 +5,10 @@ from hrms.payroll.doctype.salary_structure.salary_structure import make_salary_s
 
 
 class CustomSalaryStructureAssignment(SalaryStructureAssignment):
-    def before_save(self):
+    # def before_save(self):
 
-        self.set_cpl()
-        self.reimbursement_amount()
+        # self.set_cpl()
+        # self.reimbursement_amount()
  
 
 
@@ -264,7 +264,7 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
         components = ["Vehicle Maintenance Reimbursement", "Petrol Reimbursement", "Leave Travel Allowance"]
         array=[]
         
-        if self.custom_employee_reimbursements:
+        if len(self.custom_employee_reimbursements)>0:
             for i in self.custom_employee_reimbursements:
                 if i.reimbursements in components:
                     
