@@ -8,14 +8,14 @@ frappe.ui.form.on('Payroll Entry', {
 
         
 
-        if(frm.doc.docstatus==1)
-            {
-                frm.add_custom_button(__("View Salary Register"),function(frm)
-                {
+        // if(frm.doc.docstatus==1)
+        //     {
+        //         frm.add_custom_button(__("View Salary Register"),function(frm)
+        //         {
 
-                    frappe.set_route("query-report", "Salary Slip Registers",);
-                })
-            }
+        //             frappe.set_route("query-report", "Salary Slip Registers",);
+        //         })
+        //     }
 
 
             
