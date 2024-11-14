@@ -25,6 +25,7 @@ from datetime import datetime
 
 
 class CustomSalarySlip(SalarySlip):
+    pass
 
 
 
@@ -32,78 +33,76 @@ class CustomSalarySlip(SalarySlip):
         
 
     
-    def before_update_after_submit(self):
-        self.tax_calculation()
+    # def before_update_after_submit(self):
+    #     self.tax_calculation()
 
-    def after_insert(self):
-        self.employee_accrual_insert()
+    # def after_insert(self):
+    #     self.employee_accrual_insert()
 
-    def on_submit(self):
-        super().on_submit()
-        self.employee_accrual_submit()
+    # def on_submit(self):
+    #     super().on_submit()
+    #     self.employee_accrual_submit()
         
 
 
 
-    def before_save(self): 
+    # def before_save(self): 
         
-        self.update_bonus_accrual()
-        self.new_joinee()
-        self.insert_lop_days()
+    #     self.update_bonus_accrual()
+    #     self.new_joinee()
+    #     self.insert_lop_days()
 
-        # self.set_taxale()
+       
 
-        # self.loan_perquisite()
+    #     self.actual_amount_ctc()
+    #     self.set_month()
+    #     self.remaining_day()
 
-        self.actual_amount_ctc()
-        self.set_month()
-        self.remaining_day()
-
-        if self.leave_without_pay>0:
-            # self.insert_lta_reimbursement_lop()
-            self.accrual_update()
-            self.driver_reimbursement_lop()
-        if self.leave_without_pay==0:
-            self.insert_lta_reimbursement()
-            self.insert_reimbursement()
-            self.driver_reimbursement()
+    #     if self.leave_without_pay>0:
+    #         # self.insert_lta_reimbursement_lop()
+    #         self.accrual_update()
+    #         self.driver_reimbursement_lop()
+    #     if self.leave_without_pay==0:
+    #         self.insert_lta_reimbursement()
+    #         self.insert_reimbursement()
+    #         self.driver_reimbursement()
 
                    
-        self.set_payroll_period()
-        self.insert_loan_perquisite()
-        self.update_declaration_component()
+    #     self.set_payroll_period()
+    #     self.insert_loan_perquisite()
+    #     self.update_declaration_component()
         
 
        
 
-        if self.annual_taxable_amount and self.custom_perquisite_amount:
-            self.annual_taxable_amount=self.total_earnings - (
-                self.non_taxable_earnings
-                + self.deductions_before_tax_calculation
-                + self.tax_exemption_declaration
-                + self.standard_tax_exemption_amount
+    #     if self.annual_taxable_amount and self.custom_perquisite_amount:
+    #         self.annual_taxable_amount=self.total_earnings - (
+    #             self.non_taxable_earnings
+    #             + self.deductions_before_tax_calculation
+    #             + self.tax_exemption_declaration
+    #             + self.standard_tax_exemption_amount
             
-                ) + self.custom_perquisite_amount
-        else:
-            self.annual_taxable_amount=self.total_earnings - (
-                self.non_taxable_earnings
-                + self.deductions_before_tax_calculation
-                + self.tax_exemption_declaration
-                + self.standard_tax_exemption_amount
+    #             ) + self.custom_perquisite_amount
+    #     else:
+    #         self.annual_taxable_amount=self.total_earnings - (
+    #             self.non_taxable_earnings
+    #             + self.deductions_before_tax_calculation
+    #             + self.tax_exemption_declaration
+    #             + self.standard_tax_exemption_amount
             
-                )
+    #             )
 
-        if self.is_new():
-            self.add_reimbursement_taxable_new_doc()
-
-
+    #     if self.is_new():
+    #         self.add_reimbursement_taxable_new_doc()
 
 
 
-        self.arrear_ytd()
-        self.food_coupon()
-        self.tax_calculation()
-        self.calculate_grosspay()
+
+
+    #     self.arrear_ytd()
+    #     self.food_coupon()
+    #     self.tax_calculation()
+    #     self.calculate_grosspay()
 
 
 
