@@ -1050,12 +1050,14 @@ def insert_record(i):
     
     if frappe.db.exists("Salary Component", i["name"]):
         get_doc=frappe.get_doc("Salary Component",i["name"])
-        if get_doc.custom_is_part_of_gross_pay==0:
-            get_doc.custom_is_part_of_gross_pay=1
-        if get_doc.custom_is_part_of_ctc==0:
-            get_doc.custom_is_part_of_ctc=1
-        if get_doc.custom_is_part_of_appraisal==0:
-            get_doc.custom_is_part_of_appraisal=1
+
+        if get_doc.type=="Earning":
+            if get_doc.custom_is_part_of_gross_pay==0:
+                get_doc.custom_is_part_of_gross_pay=1
+            if get_doc.custom_is_part_of_ctc==0:
+                get_doc.custom_is_part_of_ctc=1
+            if get_doc.custom_is_part_of_appraisal==0:
+                get_doc.custom_is_part_of_appraisal=1
 
         get_doc.save()
 
