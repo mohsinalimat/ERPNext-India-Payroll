@@ -51,7 +51,7 @@ frappe.ui.form.on('Salary Structure Assignment', {
                 setTimeout(() => {
                     
                     frm.remove_custom_button('Payroll Entry', 'Create');
-                    // frm.remove_custom_button('Preview Salary Slip', 'Actions');
+                    frm.remove_custom_button('Preview Salary Slip', 'Actions');
                     // frm.remove_custom_button('Chose Regime');
                     
                 }, 10);
@@ -98,7 +98,6 @@ frappe.ui.form.on('Salary Structure Assignment', {
                         
                         
                         var nps_value=(amount*frm.doc.custom_nps_percentage)/100
-                        //  console.log(nps_value,"ppp")
                         frm.set_value("custom_nps_amount",nps_value)
                     
                 }
@@ -187,7 +186,6 @@ custom_nps_amount(frm) {
             frm.set_value("custom_nps_amount", 0);
             frm.set_value("custom_nps_percentage", 0);
         } else {
-            // Calculate custom NPS percentage
             var custom_percentage = (frm.doc.custom_nps_amount / amount) * 100;
             frm.set_value("custom_nps_percentage", custom_percentage);
         }
@@ -345,42 +343,42 @@ async function processSalaryComponents(frm) {
         }
 
         // Handle reimbursements if applicable
-        if (frm.doc.custom_statistical_amount > 0) {
-            let reimbursementBreakup = `
-                <table class="table table-bordered small"> 
-                    <thead> 
-                        <tr> 
-                            <th style="width: 16%">Reimbursements</th> 
-                            <th style="width: 16%" class="text-right">Monthly Amount</th> 
-                            <th style="width: 16%" class="text-right">Annual Amount</th> 
-                        </tr> 
-                    </thead> 
-                    <tbody id="reimbursement_breakup_body"></tbody>
-                </table>`;
+        // if (frm.doc.custom_statistical_amount > 0) {
+        //     let reimbursementBreakup = `
+        //         <table class="table table-bordered small"> 
+        //             <thead> 
+        //                 <tr> 
+        //                     <th style="width: 16%">Reimbursements</th> 
+        //                     <th style="width: 16%" class="text-right">Monthly Amount</th> 
+        //                     <th style="width: 16%" class="text-right">Annual Amount</th> 
+        //                 </tr> 
+        //             </thead> 
+        //             <tbody id="reimbursement_breakup_body"></tbody>
+        //         </table>`;
             
-            document.getElementById("reimbursement_preview").innerHTML = reimbursementBreakup;
-            let reimbursementTableBody = document.getElementById("reimbursement_breakup_body");
+        //     document.getElementById("reimbursement_preview").innerHTML = reimbursementBreakup;
+        //     let reimbursementTableBody = document.getElementById("reimbursement_breakup_body");
 
-            $.each(frm.doc.custom_employee_reimbursements, function(i, component) {
-                let newRow = reimbursementTableBody.insertRow();
+        //     $.each(frm.doc.custom_employee_reimbursements, function(i, component) {
+        //         let newRow = reimbursementTableBody.insertRow();
                 
-                let componentCell = newRow.insertCell();
-                componentCell.textContent = component.reimbursements;
+        //         let componentCell = newRow.insertCell();
+        //         componentCell.textContent = component.reimbursements;
 
-                let amountCell = newRow.insertCell();
-                amountCell.className = "text-right";
-                amountCell.textContent = component.monthly_total_amount.toLocaleString();
+        //         let amountCell = newRow.insertCell();
+        //         amountCell.className = "text-right";
+        //         amountCell.textContent = component.monthly_total_amount.toLocaleString();
 
-                total_ctc.push(component.monthly_total_amount)
+        //         total_ctc.push(component.monthly_total_amount)
 
-                let annualAmountCell = newRow.insertCell();
-                annualAmountCell.className = "text-right";
-                annualAmountCell.textContent = (component.monthly_total_amount * 12).toLocaleString();
+        //         let annualAmountCell = newRow.insertCell();
+        //         annualAmountCell.className = "text-right";
+        //         annualAmountCell.textContent = (component.monthly_total_amount * 12).toLocaleString();
 
-                totalMonthlyEarnings += component.monthly_total_amount;
-                totalAnnualEarnings += component.monthly_total_amount * 12;
-            });
-        }
+        //         totalMonthlyEarnings += component.monthly_total_amount;
+        //         totalAnnualEarnings += component.monthly_total_amount * 12;
+        //     });
+        // }
 
         // Define and handle deductions
         let deductionBreakup = `
@@ -492,75 +490,75 @@ async function processSalaryComponents(frm) {
         
 
         // Handle additional components if applicable
-        if (frm.doc.custom_is_special_hra || frm.doc.custom_is_special_conveyance || frm.doc.custom_is_car_allowance || frm.doc.custom_is_incentive || frm.doc.custom_is_extra_driver_salary) {
-            let additionalComponentTable = `
-                <table class="table table-bordered small"> 
-                    <thead> 
-                        <tr> 
-                            <th style="width: 16%">Additional Component</th> 
-                            <th style="width: 16%" class="text-right">Monthly Amount</th> 
-                            <th style="width: 16%" class="text-right">Annual Amount</th> 
-                        </tr> 
-                    </thead> 
-                    <tbody id="additional_breakup_body"></tbody>
-                </table>`;
+        // if (frm.doc.custom_is_special_hra || frm.doc.custom_is_special_conveyance || frm.doc.custom_is_car_allowance || frm.doc.custom_is_incentive || frm.doc.custom_is_extra_driver_salary) {
+        //     let additionalComponentTable = `
+        //         <table class="table table-bordered small"> 
+        //             <thead> 
+        //                 <tr> 
+        //                     <th style="width: 16%">Additional Component</th> 
+        //                     <th style="width: 16%" class="text-right">Monthly Amount</th> 
+        //                     <th style="width: 16%" class="text-right">Annual Amount</th> 
+        //                 </tr> 
+        //             </thead> 
+        //             <tbody id="additional_breakup_body"></tbody>
+        //         </table>`;
             
-            document.getElementById("additional_component").innerHTML = additionalComponentTable;
-            let additionalTableBody = document.getElementById("additional_breakup_body");
+        //     document.getElementById("additional_component").innerHTML = additionalComponentTable;
+        //     let additionalTableBody = document.getElementById("additional_breakup_body");
 
-            let components = [];
-            let componentAmounts = [];
+        //     let components = [];
+        //     let componentAmounts = [];
 
-            if (frm.doc.custom_is_special_hra) {
-                components.push("Special HRA");
-                componentAmounts.push(frm.doc.custom_special_hra_amount_annual);
-            }
+        //     if (frm.doc.custom_is_special_hra) {
+        //         components.push("Special HRA");
+        //         componentAmounts.push(frm.doc.custom_special_hra_amount_annual);
+        //     }
 
-            if (frm.doc.custom_is_special_conveyance) {
-                components.push("Special Conveyance");
-                componentAmounts.push(frm.doc.custom_special_conveyance_amount_annual);
-            }
+        //     if (frm.doc.custom_is_special_conveyance) {
+        //         components.push("Special Conveyance");
+        //         componentAmounts.push(frm.doc.custom_special_conveyance_amount_annual);
+        //     }
 
-            if (frm.doc.custom_is_car_allowance) {
-                components.push("Car Allowance");
-                componentAmounts.push(frm.doc.custom_car_allowance_amount_annual);
-            }
+        //     if (frm.doc.custom_is_car_allowance) {
+        //         components.push("Car Allowance");
+        //         componentAmounts.push(frm.doc.custom_car_allowance_amount_annual);
+        //     }
 
-            if (frm.doc.custom_is_incentive) {
-                components.push("Incentive");
-                componentAmounts.push(frm.doc.custom_incentive_amount_annual);
-            }
+        //     if (frm.doc.custom_is_incentive) {
+        //         components.push("Incentive");
+        //         componentAmounts.push(frm.doc.custom_incentive_amount_annual);
+        //     }
 
-            if (frm.doc.custom_is_extra_driver_salary) {
-                components.push("Extra Driver Salary");
-                componentAmounts.push(frm.doc.custom_extra_driver_salary_value);
-            }
+        //     if (frm.doc.custom_is_extra_driver_salary) {
+        //         components.push("Extra Driver Salary");
+        //         componentAmounts.push(frm.doc.custom_extra_driver_salary_value);
+        //     }
 
             
 
-            $.each(components, function (i, componentName) {
-                let newRow = additionalTableBody.insertRow();
+        //     $.each(components, function (i, componentName) {
+        //         let newRow = additionalTableBody.insertRow();
                 
-                let componentCell = newRow.insertCell();
-                componentCell.textContent = componentName;
+        //         let componentCell = newRow.insertCell();
+        //         componentCell.textContent = componentName;
 
 
                 
 
-                let monthlyAmount = Math.round(componentAmounts[i] / 12)
+        //         let monthlyAmount = Math.round(componentAmounts[i] / 12)
                 
-                let formattedMonthlyAmount = monthlyAmount.toLocaleString();
-                // console.log(formattedMonthlyAmount)
-                let amountCell = newRow.insertCell();
-                amountCell.className = "text-right";
-                amountCell.textContent = formattedMonthlyAmount;
+        //         let formattedMonthlyAmount = monthlyAmount.toLocaleString();
+        //         // console.log(formattedMonthlyAmount)
+        //         let amountCell = newRow.insertCell();
+        //         amountCell.className = "text-right";
+        //         amountCell.textContent = formattedMonthlyAmount;
 
-                let formattedAnnualAmount = componentAmounts[i].toLocaleString();
-                let annualAmountCell = newRow.insertCell();
-                annualAmountCell.className = "text-right";
-                annualAmountCell.textContent = formattedAnnualAmount;
-            });
-        }
+        //         let formattedAnnualAmount = componentAmounts[i].toLocaleString();
+        //         let annualAmountCell = newRow.insertCell();
+        //         annualAmountCell.className = "text-right";
+        //         annualAmountCell.textContent = formattedAnnualAmount;
+        //     });
+        // }
 
 
        

@@ -298,6 +298,7 @@ def execute():
   "salary_component_abbr": "NPS",
   "statistical_component": 0,
   "type": "Earning",
+  "component_type":"NPS",
   "variable_based_on_taxable_salary": 0
  },
  {
@@ -396,6 +397,7 @@ def execute():
   "salary_component_abbr": "PF",
   "statistical_component": 0,
   "type": "Deduction",
+  "component_type":"EPF",
   "variable_based_on_taxable_salary": 0
  },
  {
@@ -592,6 +594,7 @@ def execute():
   "salary_component_abbr": "PT_GU",
   "statistical_component": 0,
   "type": "Deduction",
+  "component_type":"Professional Tax",
   "variable_based_on_taxable_salary": 0
  },
  {
@@ -633,6 +636,7 @@ def execute():
   "max_benefit_amount": 0.0,
   "modified": "2024-11-13 16:10:27.243490",
   "name": "Professional Tax (Maharashtra)",
+  
   "only_tax_impact": 0,
   "pay_against_benefit_claim": 0,
   "remove_if_zero_valued": 1,
@@ -985,6 +989,54 @@ def execute():
   "statistical_component": 0,
   "type": "Deduction",
   "variable_based_on_taxable_salary": 0
+ },
+ {
+  "accounts": [],
+  "amount": 0.0,
+  "amount_based_on_formula": 0,
+  "component_type": "",
+
+  "create_separate_payment_entry_against_benefit_claim": 0,
+  "custom_accrual_paid_on": "Payroll",
+
+  "custom_is_accrual": 0,
+  "custom_is_allowance": 0,
+  "custom_is_arrear": 0,
+  "custom_is_food_coupon": 0,
+  "custom_is_nps": 0,
+  "custom_is_part_of_appraisal": 0,
+  "custom_is_part_of_ctc": 0,
+  "custom_is_part_of_gross_pay": 0,
+  "custom_is_reimbursement": 0,
+
+  "custom_perquisite": 0,
+  "custom_regime": "",
+  "custom_sequence": "1",
+  "custom_tax_exemption_applicable_based_on_regime": 0,
+  "deduct_full_tax_on_selected_payroll_date": 0,
+  "depends_on_payment_days": 0,
+  "description": "Income Tax",
+  "disabled": 0,
+  "do_not_include_in_total": 0,
+  "docstatus": 0,
+  "doctype": "Salary Component",
+  "exempted_from_income_tax": 0,
+
+  "is_flexible_benefit": 0,
+  "is_income_tax_component": 1,
+  "is_tax_applicable": 0,
+  "max_benefit_amount": 0.0,
+  "modified": "2024-11-14 10:25:36.899877",
+  "name": "Income Tax",
+  "only_tax_impact": 0,
+  "pay_against_benefit_claim": 0,
+  "remove_if_zero_valued": 1,
+  "round_to_the_nearest_integer": 1,
+  "salary_component": "Income Tax",
+  "salary_component_abbr": "IT",
+  "statistical_component": 0,
+  "type": "Deduction",
+  "variable_based_on_taxable_salary": 1
  }
 
     

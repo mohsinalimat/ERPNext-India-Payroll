@@ -41,7 +41,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         
         # self.calculate_hra_breakup()
         # self.update_hra_breakup()
-        self.update_tax_declaration()
+        # self.update_tax_declaration()
         
         self.set_total_declared_amount()
         # self.set_total_exemption_amount()
