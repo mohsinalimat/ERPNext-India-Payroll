@@ -228,9 +228,9 @@ app_license = "mit"
 # }
 
 fixtures = [
-    {"dt": "Custom Field", "filters": {"module": "cn-indian-payroll"}},
+    # {"dt": "Custom Field", "filters": {"module": "cn-indian-payroll"}},
     {"dt": "Print Format", "filters": {"module": "cn-indian-payroll"}},
-    {"dt": "Property Setter", "filters": {"module": "cn-indian-payroll"}},
+    # {"dt": "Property Setter", "filters": {"module": "cn-indian-payroll"}},
     {"dt":"Income Tax Regime"},
 
     {"dt": "Report", "filters": {"name": "Salary Slip Registers"}},
