@@ -66,7 +66,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
             
             self.custom_declaration_form_data = json.dumps(form_data)
 
-        self.set_tax_projection()
+
 
     
             
@@ -75,8 +75,8 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
 
 
-    # def on_submit(self):
-    #     self.insert_declaration_history()
+    def on_submit(self):
+        self.insert_declaration_history()
 
 
 
