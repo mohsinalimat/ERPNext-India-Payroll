@@ -19,8 +19,6 @@ frappe.ui.form.on('Salary Structure Assignment', {
                 callback: function(r) {
                     if (r.message) {
 
-                        
-
                         frm.set_value("from_date",r.message.promotion_date)
                         
                     }
@@ -39,22 +37,7 @@ frappe.ui.form.on('Salary Structure Assignment', {
 
     refresh(frm)
     {
-
-        // $('[data-fieldname="custom_preview_tax_projection"]').css('color', 'black');
-
-        // $('input[data-fieldname="custom_preview_tax_projection"]').css("background-color","#FFE4C4")
-
-
-        if(frm.doc.docstatus==1)
-            {
-
-           
-                    change_regime(frm)
-                    
-            }
-
-
-           
+          
                 setTimeout(() => {
                     
                     frm.remove_custom_button('Payroll Entry', 'Create');
@@ -70,11 +53,7 @@ frappe.ui.form.on('Salary Structure Assignment', {
                     processSalaryComponents(frm)
                 }
 
-
-        
-    
-
-
+//FILTER IN REIMBURSEMENT CHILD TABLE
     frm.fields_dict['custom_employee_reimbursements'].grid.get_field('reimbursements').get_query = function(doc, cdt, cdn) {
         var child = locals[cdt][cdn];
         
@@ -85,6 +64,7 @@ frappe.ui.form.on('Salary Structure Assignment', {
         }
     }
 
+//FILTER IN OTHER PERQUISITE CHILD TABLE
 
     frm.fields_dict['custom_other_perquisites'].grid.get_field('title').get_query = function(doc, cdt, cdn) {
         var child = locals[cdt][cdn];
@@ -99,37 +79,37 @@ frappe.ui.form.on('Salary Structure Assignment', {
     },
 
     
-    custom_nps_percentage(frm) {
+    // custom_nps_percentage(frm) {
 
 
         
-        if (frm.doc.custom_is_nps==1)
+    //     if (frm.doc.custom_is_nps==1)
         
-        {
+    //     {
         
-                if(frm.doc.custom_nps_percentage <= 10) 
-                {
+    //             if(frm.doc.custom_nps_percentage <= 10) 
+    //             {
     
     
-                        var amount = (frm.doc.base / 12 * 35) / 100;
+    //                     var amount = (frm.doc.base / 12 * 35) / 100;
                         
                         
                         
-                        var nps_value=(amount*frm.doc.custom_nps_percentage)/100
-                        //  console.log(nps_value,"ppp")
-                        frm.set_value("custom_nps_amount",nps_value)
+    //                     var nps_value=(amount*frm.doc.custom_nps_percentage)/100
+    //                     //  console.log(nps_value,"ppp")
+    //                     frm.set_value("custom_nps_amount",nps_value)
                     
-                }
+    //             }
         
-                else
-                {
-                    msgprint("you cant put percentage greater than 10")
+    //             else
+    //             {
+    //                 msgprint("you cant put percentage greater than 10")
                    
-                    frm.set_value("custom_nps_amount",undefined)
-                }
+    //                 frm.set_value("custom_nps_amount",undefined)
+    //             }
         
-        }
-    },  
+    //     }
+    // },  
 
     
 
@@ -137,23 +117,17 @@ frappe.ui.form.on('Salary Structure Assignment', {
 
 custom_cubic_capacity_of_company(frm)
 {
-    
-   
-    
         if(frm.doc.custom_cubic_capacity_of_company=="Car < 1600 CC" )
         {
             frm.set_value("custom_car_perquisite_as_per_rules",1800)
            
-            
         }
         
         else if (frm.doc.custom_cubic_capacity_of_company=="Car > 1600 CC")
         {
             
-             frm.set_value("custom_car_perquisite_as_per_rules",2400)
-
-            
-            
+            frm.set_value("custom_car_perquisite_as_per_rules",2400)
+    
         }
     
 
@@ -195,22 +169,22 @@ custom__car_perquisite(frm)
 
 
 
-custom_nps_amount(frm) {
-    if (frm.doc.custom_is_nps == 1 && frm.doc.custom_nps_amount) {
-        var amount = (frm.doc.base / 12 * 35) / 100;
-        var nps_value = (amount * 10) / 100;
+// custom_nps_amount(frm) {
+//     if (frm.doc.custom_is_nps == 1 && frm.doc.custom_nps_amount) {
+//         var amount = (frm.doc.base / 12 * 35) / 100;
+//         var nps_value = (amount * 10) / 100;
 
-        if (frm.doc.custom_nps_amount > nps_value) {
-            msgprint("Please enter an amount less than or equal to " + nps_value);
-            frm.set_value("custom_nps_amount", 0);
-            frm.set_value("custom_nps_percentage", 0);
-        } else {
-            // Calculate custom NPS percentage
-            var custom_percentage = (frm.doc.custom_nps_amount / amount) * 100;
-            frm.set_value("custom_nps_percentage", custom_percentage);
-        }
-    }
-},
+//         if (frm.doc.custom_nps_amount > nps_value) {
+//             msgprint("Please enter an amount less than or equal to " + nps_value);
+//             frm.set_value("custom_nps_amount", 0);
+//             frm.set_value("custom_nps_percentage", 0);
+//         } else {
+//             // Calculate custom NPS percentage
+//             var custom_percentage = (frm.doc.custom_nps_amount / amount) * 100;
+//             frm.set_value("custom_nps_percentage", custom_percentage);
+//         }
+//     }
+// },
 
 })
 
@@ -300,7 +274,7 @@ async function processSalaryComponents(frm) {
             employee: frm.doc.employee,
             print_format: 'Salary Slip Standard for CTC',
             docstatus: frm.doc.docstatus,
-            // posting_date: frm.doc.from_date
+            posting_date: frm.doc.from_date,
             for_preview: 1,
         }
     });
@@ -579,11 +553,6 @@ async function processSalaryComponents(frm) {
                 annualAmountCell.textContent = formattedAnnualAmount;
             });
         }
-
-
-       
-        
-
-        
+    
     }
 }
