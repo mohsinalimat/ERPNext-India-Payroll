@@ -5,10 +5,7 @@ from erpnext.setup.doctype.employee.employee import Employee
 class CustomEmployee(Employee):
     def before_save(self):
 
-    
-
         self.set_cpl()
-
         self.reimbursement_amount()
         
 

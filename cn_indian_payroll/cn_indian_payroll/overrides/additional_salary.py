@@ -1,8 +1,6 @@
 
 import frappe
 
-
-
 @frappe.whitelist()
 def get_additional_salary(payroll_id, company):
     if payroll_id:
@@ -68,9 +66,6 @@ def get_additional_salary(payroll_id, company):
                 else:
                     frappe.msgprint(f"Please set up Accrual Paid out component for {component}")
 
-        # doc1.custom_additional_salary_created=1
-        # doc1.save()
-        # doc1.reload()
 
 
                 

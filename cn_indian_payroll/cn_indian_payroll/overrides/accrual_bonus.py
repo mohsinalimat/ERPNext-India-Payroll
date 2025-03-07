@@ -37,24 +37,17 @@ def accrual_created(payroll_entry_doc_id, company_name):
                             if ss_assignment:
                                 for ssa_id in ss_assignment:   
                                     insert_bonus_accrual= frappe.get_doc({
-                                        
                                         "doctype": "Employee Bonus Accrual",
-
                                         "employee": salary_slip.employee,
                                         "company":  company_name,
                                         "salary_slip":salary_slip.name,
                                         "accrual_date": salary_slip.posting_date,
                                         "salary_component": bonus_component,
                                         "salary_structure":salary_slip.salary_structure,
-                                        "salary_structure_assignment": ssa_id.name,
-                                    
+                                        "salary_structure_assignment": ssa_id.name,                                    
                                         "payroll_entry":salary_slip.payroll_entry,
-                                                                                                    
                                         "amount": bonus_component_amount,
                                         "accrual_paid_on":bonus_paid_on
-
-
-
                                     })
                                     insert_bonus_accrual.insert()
 
@@ -66,25 +59,18 @@ def accrual_created(payroll_entry_doc_id, company_name):
                     
 @frappe.whitelist()
 def get_submit(payroll_entry):
- 
-    if payroll_entry:
+     if payroll_entry:
         bonus_list=frappe.db.get_list('Employee Bonus Accrual',
         filters={
             'payroll_entry': payroll_entry,
             'docstatus':0
         },
         fields=['name'],
-        
         )
         
         if len(bonus_list)>0:
-
             for i in bonus_list:
-               
-
                 bonus_doc = frappe.get_doc('Employee Bonus Accrual',i.name)
-                
-
                 bonus_doc.docstatus = 1
                 bonus_doc.save()
             
@@ -94,31 +80,19 @@ def get_submit(payroll_entry):
  
 @frappe.whitelist()
 def get_doc_data(doc_name,employee,company,payroll_period):
-
-
-   
     old_taxable_component = 0
     new_taxable_component = 0
-
     old_future_amount=0
     new_future_amount=0
-
     perquisite_component=[]
     perquisite_amount=[]
-
-    
-
     epf_amount=0
     pt_amount=0
     nps_amount=0
-
-
     old_annual_taxable_income=[]
     new_annual_taxable_income=[]
 
     if employee:
-
-
         latest_salary_structure = frappe.get_list('Salary Structure Assignment',
                         filters={'employee':employee,'docstatus':1,'custom_payroll_period':payroll_period},
                         fields=["*"],
@@ -127,17 +101,11 @@ def get_doc_data(doc_name,employee,company,payroll_period):
                     )
 
         if len(latest_salary_structure)>0:
-
-
             get_payroll=frappe.get_doc("Payroll Period",latest_salary_structure[0].custom_payroll_period)
             effective_start_date = latest_salary_structure[-1].from_date
             payroll_end_date=get_payroll.end_date
             payroll_start_date=get_payroll.start_date
             doj=latest_salary_structure[0].custom_date_of_joining
-
-
-            # frappe.msgprint(str(effective_start_date))
-
             start_date = max(effective_start_date, payroll_start_date,doj)
 
             if isinstance(start_date, str):
@@ -178,9 +146,6 @@ def get_doc_data(doc_name,employee,company,payroll_period):
             else:
                 perquisite_component.append("Driver Perquisite")
                 perquisite_amount.append(0)
-
-            
-
             # LOAN PERQUISITE
             annual_perquisite = 0
 
@@ -378,10 +343,6 @@ def get_doc_data(doc_name,employee,company,payroll_period):
             for slab in latest_tax_slab:
                 new_standard_value = slab.standard_tax_exemption_amount
 
-
-
-
-
     return {
         "from_month":first_custom_month,
         "to_month":last_custom_month,
@@ -398,9 +359,7 @@ def get_doc_data(doc_name,employee,company,payroll_period):
         "num_months":num_months,
         "salary_slip_count":salary_slip_count
         
-        
-
-           
+      
         
     }
 
@@ -457,13 +416,6 @@ def slab_calculation(employee, company, payroll_period, old_annual_slab, new_ann
                         taxable_amount = round(old_annual_slab) - slab['from']
                         tax_percent = slab['percent']
                         tax_amount = round((taxable_amount * tax_percent) / 100)
-
-                        # Store the slab details
-                        
-                        
-
-
-                        # Process lower slabs
                         remaining_slabs = [s for s in total_array if s['from'] < slab['from']]
                         for rem_slab in remaining_slabs:
                             from_amount.append(rem_slab['from'])
@@ -500,31 +452,19 @@ def slab_calculation(employee, company, payroll_period, old_annual_slab, new_ann
                         difference.append(taxable_amount)
                         total_value.append(tax_amount)
                             
-
-            # Compute the total tax
             total_sum = sum(total_value)
 
     if old_annual_slab<old_rebate:                                        
         old_rebate_value=total_sum
-                
-
     else:
-
         old_rebate_value=0 
 
     if old_annual_slab>5000000:
-
         old_surcharge_m=round((total_sum*10)/100)                                 
         old_education_cess=round((surcharge_m+total_sum)*4/100)
-
-
     else:
         old_surcharge_m=0
         old_education_cess=round((0+total_sum)*4/100)
-        
-
-
-            
 
     latest_tax_slab_new = frappe.get_list(
     'Income Tax Slab',
@@ -539,16 +479,9 @@ def slab_calculation(employee, company, payroll_period, old_annual_slab, new_ann
     limit=1
     )
 
-
-    # frappe.msgprint(str(latest_tax_slab_new))
-
     if latest_tax_slab_new:
         for slab_new in latest_tax_slab_new:
             income_doc_new = frappe.get_doc('Income Tax Slab', slab_new.name)
-
-            # frappe.msgprint(str(income_doc_new.))
-
-            # Initialize Lists
             total_value_new = []
             from_amount_new = []
             to_amount_new = []
@@ -556,21 +489,15 @@ def slab_calculation(employee, company, payroll_period, old_annual_slab, new_ann
             difference_new = []
             total_array_new = []
 
-            # Retrieve Exemption & Maximum Values
             new_rebate = income_doc_new.custom_taxable_income_is_less_than
             new_max_amount = income_doc_new.custom_maximum_amount
 
-            # Store all slab details in a structured list
             for i in income_doc_new.slabs:
                 total_array_new.append({
                     'from': i.from_amount,
                     'to': i.to_amount,
                     'percent': i.percent_deduction
                 })
-
-            # frappe.msgprint(str(total_array_new))
-
-            # Iterate through the slabs to calculate tax
             for slab_new in total_array_new:
                 if slab_new['to'] == 0.0:  # Upper limit not defined
                     if round(new_annual_slab) >= slab_new['from']:
@@ -603,9 +530,6 @@ def slab_calculation(employee, company, payroll_period, old_annual_slab, new_ann
                         tax_percent_new = slab_new['percent']
                         tax_amount_new = (taxable_amount_new * tax_percent_new) / 100
 
-                        
-
-                        # Process lower slabs
                         remaining_slabs = [s for s in total_array_new if s['from'] < slab_new['from']]
                         for rem_slab in remaining_slabs:
                             from_amount_new.append(rem_slab['from'])
@@ -625,10 +549,7 @@ def slab_calculation(employee, company, payroll_period, old_annual_slab, new_ann
             total_sum_new = sum(total_value_new)
     if new_annual_slab<new_rebate:                                        
         new_rebate_value=total_sum_new
-                
-
     else:
-
         new_rebate_value=0
     
     if new_annual_slab>5000000:
@@ -640,12 +561,7 @@ def slab_calculation(employee, company, payroll_period, old_annual_slab, new_ann
     else:
         new_surcharge_m=0
         new_education_cess=round((0+total_sum_new)*4/100)
-
-
-    
-
     salary_slip_sum = 0
-
     get_all_salary_slip = frappe.get_list(
         'Salary Slip',
         filters={
@@ -655,13 +571,7 @@ def slab_calculation(employee, company, payroll_period, old_annual_slab, new_ann
         },
         fields=["current_month_income_tax"]  # Fetch only the required field
     )
-
-    # Sum up current_month_income_tax values
-    salary_slip_sum = sum(slip.current_month_income_tax for slip in get_all_salary_slip)
-
-
-
-            
+    salary_slip_sum = sum(slip.current_month_income_tax for slip in get_all_salary_slip)         
 
     return{
         "from_amount":from_amount,
@@ -674,22 +584,16 @@ def slab_calculation(employee, company, payroll_period, old_annual_slab, new_ann
         "old_rebate_value":old_rebate_value,
         "old_surcharge_m":old_surcharge_m  ,                               
         "old_education_cess":old_education_cess,
-
-        
-
         "from_amount_new":from_amount_new,
         "to_amount_new":to_amount_new,
         "percentage_new":percentage_new,
         "total_value_new":total_value_new,
         "total_sum_new":total_sum_new,
-
         "rebate_new":new_rebate,
         "max_amount_new":new_max_amount,
         "new_rebate_value":new_rebate_value,
         "new_surcharge_m":new_surcharge_m  ,                               
         "new_education_cess":new_education_cess,
-
-
         "salary_slip_sum":salary_slip_sum
 
     }
