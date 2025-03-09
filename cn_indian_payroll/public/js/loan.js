@@ -24,11 +24,7 @@ frappe.ui.form.on('Loan', {
                 
                                             
 
-                                    }
-        
-                                
-                                    
-        
+                                    }        
         
                             }
                         }

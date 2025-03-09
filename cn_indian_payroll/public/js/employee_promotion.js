@@ -1,9 +1,5 @@
 frappe.ui.form.on('Employee Promotion', {
 	refresh(frm) {
-
-
-
-
         if(!frm.is_new() && frm.doc.custom_status=="In Planning")
             {
     

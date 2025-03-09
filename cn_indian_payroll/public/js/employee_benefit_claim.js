@@ -346,11 +346,7 @@ frappe.ui.form.on('Employee Benefit Claim', {
 
                     }
                 }
-            })
-
-
-
-            
+            })            
         }
 
         

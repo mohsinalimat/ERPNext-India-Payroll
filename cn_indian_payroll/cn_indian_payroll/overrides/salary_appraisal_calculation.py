@@ -45,7 +45,6 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                 component = new_earning.salary_component
                 new_bonus[component] = new_earning.amount
 
-                # frappe.msgprint(str(new_bonus[component]))
 
 
 
@@ -76,7 +75,6 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                 component = old_earning.salary_component
                 old_bonus[component] = old_earning.amount
 
-                # frappe.msgprint(str(old_bonus[component]))
 
         for old_deduction in old_salary_slip.deductions:
             part_of_ctc = frappe.get_doc("Salary Component", old_deduction.salary_component)
@@ -90,7 +88,6 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
         all_bonus_components=set(old_bonus.keys()).union(set(new_bonus.keys()))
 
 
-        # frappe.msgprint(str(all_bonus_components))
 
         result = []
         for component in all_components:
@@ -103,7 +100,6 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                 "new_amount": new_amount
             })
 
-        # frappe.msgprint(str(result))
 
         
 
@@ -120,16 +116,8 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                 "new_amount": new_amount
             })
 
-        
-
-
-        # frappe.msgprint(str(bonus_result))
-
         final_array = []
 
-        # Get salary slips after effective_from date
-
-        
         if effective_from:
             get_all_salary_slip = frappe.get_list('Salary Slip',
                 filters={
@@ -180,7 +168,6 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                             "difference": prorated_new_amount - prorated_old_amount
                         })
 
-                    # frappe.msgprint(str(final_array))
 
 
         final_bonus_array = []
@@ -293,9 +280,6 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                         "old_amount": reimbursemenold.monthly_total_amount
                     })
 
-            # Display the final reimbursement array
-            # frappe.msgprint(str(reimbursement_array))
-
 
             if effective_from:
                 get_all_salary_slip = frappe.get_list('Salary Slip',
@@ -346,7 +330,6 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                                 "new_amount": prorated_new_amount,
                                 "difference": prorated_new_amount - prorated_old_amount
                             })
-            # frappe.msgprint(str(reimbursement_final_array))
 
             
         insert_appraisal = frappe.get_doc({

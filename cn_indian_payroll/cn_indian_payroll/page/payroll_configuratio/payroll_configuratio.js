@@ -122,13 +122,9 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
                                 
                             };
 
-							
-
-							
 
 							const Child_custom_field = [];
 							let custom_field = [];
-
 							const salary_component_array = []; 
 
 							salary_component_array.push({
@@ -218,7 +214,6 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
 							
 							
 							else 
-							
 							{
 								createAndShowDialog();
 							}
@@ -385,12 +380,6 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
                     });
 
 
-
-					
-
-
-					
-
                     // Disable the button initially if the component is already added
                     if (item.component_added == 1) {
                         addButton.prop('disabled', true).text('Added');
@@ -398,9 +387,6 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
 
                     // Append the button to the row
                     $('<td>').append(addButton).appendTo(row);
-
-
-
 				
                 });
 
