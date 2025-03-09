@@ -3,24 +3,15 @@ from hrms.payroll.doctype.employee_benefit_claim.employee_benefit_claim import E
 
 
 class CustomEmployeeBenefitClaim(EmployeeBenefitClaim):
-    
-    # def validate(self):
 
-    #     super().validate()
 
     def on_submit(self):
-
         self.insert_future_benefit()
-
-
 
     def insert_future_benefit(self):
 
         if self.custom_max_amount:
-        
-        
             if self.claimed_amount>self.custom_max_amount:
-
                 doc1 = frappe.get_doc('Salary Component', self.earning_component)
                 if doc1.component_type=="Vehicle Maintenance Reimbursement":
                 
@@ -33,8 +24,6 @@ class CustomEmployeeBenefitClaim(EmployeeBenefitClaim):
                         new_year += 1
                         
                     next_month_date = f"{new_year}-{new_month:02d}-{day:02d}"
-
-
                     future_amount=self.claimed_amount-self.custom_max_amount
                     insert_doc = frappe.get_doc({
                         'doctype':'Employee Benefit Claim',

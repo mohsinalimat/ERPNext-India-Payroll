@@ -1,9 +1,5 @@
 frappe.ui.form.on('Employee Promotion', {
 	refresh(frm) {
-
-
-
-
         if(!frm.is_new() && frm.doc.custom_status=="In Planning")
             {
     
@@ -29,35 +25,6 @@ frappe.ui.form.on('Employee Promotion', {
             }
 
 
-        // if (!frm.is_new() && frm.doc.custom_status === "Payroll Configured") {
-            // frm.add_custom_button("Calculate Arrears", function() {
-            //     if (frm.doc.custom_additional_salary_date) {
-
-            //         // Show initial progress
-            //         frappe.show_progress('Loading...', 0, 100, 'Please wait');
-
-            //         // Simulate progress over time
-            //         let progress = 0;
-            //         let interval = setInterval(function() {
-            //             progress += 10; // Increment progress
-
-            //             if (progress < 100) {
-            //                 frappe.show_progress('Loading...', progress, 100, 'Please wait');
-            //             } else {
-                            
-            //                 setTimeout(function() {
-            //                     frappe.hide_progress();
-            //                 }, 500); // Adjust delay as necessary
-            //             }
-            //         }, 500); // 500ms interval, adjust as needed
-
-            //         get_old_new_structure(frm);
-
-            //     } 
-            //     else {
-            //         frappe.msgprint("Please Select Additional Salary Date");
-            //     }
-            // });
 
 
 
@@ -68,9 +35,6 @@ frappe.ui.form.on('Employee Promotion', {
                     if (frm.doc.custom_additional_salary_date) {
 
                     frappe.call({
-
-
-
                         "method":"cn_indian_payroll.cn_indian_payroll.overrides.salary_appraisal_calculation.appraisal_calculation",
                         args:{
                             promotion_id :frm.doc.name,
@@ -101,11 +65,7 @@ frappe.ui.form.on('Employee Promotion', {
                 })
 
             }
-        // }
-        
-        
-        
-        
+
 
         frm.change_custom_button_type('Calculate Appraisal Arrears', null, 'primary');
 		
@@ -128,9 +88,6 @@ frappe.ui.form.on('Employee Promotion', {
                 },
                 callback: function(res) {
                     if (res.message && res.message.length > 0) {
-
-                        console.log(res.message)
-
                         frm.set_value("custom_current_salary_structure_assignment_id",res.message[0].name)
                         frm.set_value("custom_old_effective_from",res.message[0].from_date)
                         frm.set_value("current_ctc",res.message[0].base)
@@ -198,12 +155,6 @@ async function get_old_new_structure(frm) {
             });
 
             let final_array = Object.values(combinedDict);
-
-
-            console.log(final_array,"9999")
-
-
-
 
             if (final_array.length > 0) {
                 await fetchSalarySlipsAndInsertAppraisal(frm, final_array, old_salary_structure, old_from_date, old_ssa_id, new_salary_structure, new_from_date, new_ssa_id);
@@ -566,8 +517,6 @@ async function fetchSalarySlipsAndInsertAppraisal(frm, final_array, old_salary_s
         console.error(error);
         frappe.show_alert({ message: __("An error occurred."), indicator: 'red' });
     }
-
-    // console.log(final_mapped_array,"1111111111")
 
    
 }

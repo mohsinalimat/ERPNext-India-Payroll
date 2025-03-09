@@ -90,6 +90,7 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
                         text: 'Add',
                         class: 'btn btn-success',
                         click: function() {
+							
                             const rowData = {
                                 salary_component: componentInput.val(),
                                 abbr: abbrInput.val(),
@@ -121,11 +122,9 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
                                 
                             };
 
-							
 
 							const Child_custom_field = [];
 							let custom_field = [];
-
 							const salary_component_array = []; 
 
 							salary_component_array.push({
@@ -215,9 +214,7 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
 							
 							
 							else 
-							
 							{
-								// If multi_insert is 1, no need to fetch, create the dialog immediately
 								createAndShowDialog();
 							}
 
@@ -238,7 +235,9 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
 										fieldname: 'salary_components_table',
 										fieldtype: 'Table',
 										cannot_add_rows: 1,
+										cannot_delete_rows: 1,
 										in_place_edit: 0,
+										
 										fields: [
 											{ label: 'Salary Component', fieldname: 'salary_component', fieldtype: 'Data', in_list_view: 1, read_only: 1 },
 											{ label: 'Abbreviation', fieldname: 'abbr', fieldtype: 'Data', in_list_view: 1, read_only: 1 },
@@ -262,7 +261,9 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
 											fieldname: 'custom_field_table',
 											fieldtype: 'Table',
 											cannot_add_rows: 1,
+											cannot_delete_rows: 1,
 											in_place_edit: 0,
+											
 											fields: [
 												{ label: 'Doctype', fieldname: 'doctype', fieldtype: 'Data', in_list_view: 1, read_only: 1 },
 												{ label: 'Label', fieldname: 'label', fieldtype: 'Data', in_list_view: 1, read_only: 1 },
@@ -281,10 +282,8 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
 									size: 'large',
 									primary_action_label: 'Submit',
 									primary_action(values) {
+
 										
-
-
-
 										frappe.call({
                                         method: "cn_indian_payroll.cn_indian_payroll.overrides.payroll_configuration.get_salary_component",
                                         args: {
@@ -296,8 +295,11 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
 										{
 
 											 if(response && response.exc) {
+												
 												     frappe.msgprint(__('Server returned an error: ') + response.exc);
-												   } else {
+												   } 
+												   else 
+												   {
 												     frappe.msgprint(__('Operation completed successfully.'));
 												   }
 
@@ -305,15 +307,8 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
                                     });
 
 
-
-
-
-
-
-
-
-
 										d.hide();
+										frm.reload_doc();
 									}
 								});
 							
@@ -376,18 +371,14 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
 								}
 							}
 							
+							$(this).prop('disabled', true).text('Added');
+
 							
-							
-							
-							
-
-
-
-
-
-   
                         }
+
+						
                     });
+
 
                     // Disable the button initially if the component is already added
                     if (item.component_added == 1) {
@@ -396,9 +387,6 @@ frappe.pages['payroll-configuratio'].on_page_load = function(wrapper) {
 
                     // Append the button to the row
                     $('<td>').append(addButton).appendTo(row);
-
-
-
 				
                 });
 

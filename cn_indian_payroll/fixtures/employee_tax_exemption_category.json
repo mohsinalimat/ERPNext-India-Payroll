@@ -1,0 +1,114 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:34.928289",
+  "name": "Section 10"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:34.957808",
+  "name": "Section 80EE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:34.973015",
+  "name": "Section 80CCD(1B)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:35.010514",
+  "name": "Section 80U"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:35.017209",
+  "name": "Section 80DD"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:35.023806",
+  "name": "Section 80E"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:35.039401",
+  "name": "Section 16(iA)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:35.047176",
+  "name": "Section 16(iii)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:35.001844",
+  "name": "Section 10(14)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:34.992694",
+  "name": "Section 10(13A)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:34.979678",
+  "name": "Section 80D"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:34.986017",
+  "name": "Section 16"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 150000.0,
+  "modified": "2025-03-07 14:43:45.957279",
+  "name": "Section 80C"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 0.0,
+  "modified": "2025-02-14 15:47:35.031423",
+  "name": "Section 80CCD(2)"
+ }
+]

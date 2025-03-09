@@ -11,12 +11,9 @@ class CustomPayrollEntry(PayrollEntry):
     def delete_benefit_accrual(self):
         data=frappe.db.get_list('Employee Benefit Accrual',
             filters={
-                
                 'docstatus': ['in', [0, 1]],
                 'payroll_entry':self.name,
-                
-
-            },
+                },
             fields=['*'],
             
         )

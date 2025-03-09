@@ -39,11 +39,6 @@ frappe.ui.form.on('Employee Benefit Claim', {
                             var company=kes.message[0].name
                         }
 
-
-
-
-
-
                 frappe.call({
                     "method": "frappe.client.get_list",
                     args: {
@@ -77,12 +72,7 @@ frappe.ui.form.on('Employee Benefit Claim', {
 
                                                 }
                                                 
-                                               
-
                                             })
-
-                                            // console.log(reimbursements_component)
-
                                             frm.set_query("earning_component", function() {
                                                 return {
                                                     filters: { name: ["in", reimbursements_component] }
@@ -121,8 +111,6 @@ frappe.ui.form.on('Employee Benefit Claim', {
     earning_component: function(frm) 
     
     {
-
-
 
         if (frm.doc.earning_component && frm.doc.employee) {
 
@@ -170,8 +158,6 @@ frappe.ui.form.on('Employee Benefit Claim', {
 
                                                             {
 
-                                                                // console.log(earning_component.message.name)
-
 
                                                     frappe.call({
                                                         method: "frappe.client.get_list",
@@ -189,7 +175,6 @@ frappe.ui.form.on('Employee Benefit Claim', {
                                                                 $.each(res.message, function(i, v) {
                                                                     
                                                                     sum += v.amount; 
-                                                                    // console.log(v.amount)
                                                                 });
 
                                                                 console.log(sum,"77777")
@@ -215,9 +200,7 @@ frappe.ui.form.on('Employee Benefit Claim', {
                                                                                            
                                                                                             total_sum += k.claimed_amount; // Corrected sum calculation
                                                                                         });
-                                        
-                                        
-                                        
+                                                                                        
                                                                                         frm.set_value("custom_max_amount",sum-total_sum+(eligible_amount))
                                         
                                                                                 }
@@ -286,15 +269,10 @@ frappe.ui.form.on('Employee Benefit Claim', {
                                                                 let startDate = new Date(res.message[0].from_date);
                                                                 let endDate = new Date(payroll_data.message.end_date);
 
-                                                               
                                                                 let yearDifference = endDate.getFullYear() - startDate.getFullYear();
                                                                 let monthDifference = endDate.getMonth() - startDate.getMonth();
 
-                                                                // Total months difference
                                                                 let totalMonths = yearDifference * 12 + monthDifference;
-
-                                                                // console.log("Difference in months:", totalMonths-1);
-
                                                                 var future_value = (totalMonths)
 
                                                                 future_month_count=future_value
@@ -368,22 +346,18 @@ frappe.ui.form.on('Employee Benefit Claim', {
 
                     }
                 }
-            })
-
-
-
-            
+            })            
         }
 
         
     },
 
-    // claim_date: function(frm) {
-    //     if (frm.doc.claim_date < frappe.datetime.now_date()) {
-    //         frm.set_value("claim_date", undefined);
-    //         frappe.msgprint(__('Claim date cannot be in the past.'));
-    //     }
-    // }
+    claim_date: function(frm) {
+        if (frm.doc.claim_date < frappe.datetime.now_date()) {
+            frm.set_value("claim_date", undefined);
+            frappe.msgprint(__('Claim date cannot be in the past.'));
+        }
+    }
     
     
     
