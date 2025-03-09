@@ -1,10 +1,6 @@
 frappe.ui.form.on('Employee', {
     refresh(frm) {
 
-        
-
-       
-
         if(!frm.is_new())
             {
         
@@ -38,9 +34,6 @@ frappe.ui.form.on('Employee', {
                 })
 
 
-
-                
-                //  frappe.set_route("Form", "Employee Tax Exemption Declaration", 'new-employee-tax-exemption-declaration');
                 
             })
 
@@ -71,11 +64,7 @@ frappe.ui.form.on('Employee', {
                                     }
                                     else
                                     {
-
-                                    
-
-                                        frappe.route_options = {"employee": frm.doc.name};
-
+                                       frappe.route_options = {"employee": frm.doc.name};
                                         frappe.set_route("Form", "Salary Structure Assignment", 'new-salary-structure-assignment');
                                     }
                                 
