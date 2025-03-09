@@ -228,17 +228,13 @@ app_license = "mit"
 # }
 
 fixtures = [
-    {"dt": "Custom Field", "filters": {"module": "cn-indian-payroll"}},
+    # {"dt": "Custom Field", "filters": {"module": "cn-indian-payroll"}},
     {"dt": "Print Format", "filters": {"module": "cn-indian-payroll"}},
-    {"dt": "Property Setter", "filters": {"module": "cn-indian-payroll"}},
+    # {"dt": "Property Setter", "filters": {"module": "cn-indian-payroll"}},
     {"dt":"Income Tax Regime"},
-
-    {"dt": "Report", "filters": {"name": "Salary Slip Registers"}},
-
-    # {"dt": "Role", "filters": {"name": ["in", ["HR Head", "Finance Head","Payroll manager"]]}},
-    {"dt":"Payroll Configuration","filters":{"name":"Payroll Configuration"}},
     {"dt":"Workflow","filters":{"name":"declaration Approve"}},
     {"dt":"Workflow State","filters":{"name":"Cancelled"}},
+    {"dt":"Salary Component Library Item","filters": {"disabled": 0}},
 
     
 
@@ -271,7 +267,8 @@ override_doctype_class = {
     "Salary Slip": "cn_indian_payroll.cn_indian_payroll.overrides.salary_slip.CustomSalarySlip",
     "Salary Structure Assignment": "cn_indian_payroll.cn_indian_payroll.overrides.salary_structure_assignment.CustomSalaryStructureAssignment",
     "Employee Tax Exemption Declaration": "cn_indian_payroll.cn_indian_payroll.overrides.tax_declaration.CustomEmployeeTaxExemptionDeclaration",
-    "Additional Salary": "cn_indian_payroll.cn_indian_payroll.overrides.employee_additional_salary.CustomAdditionalSalary"
+    "Additional Salary": "cn_indian_payroll.cn_indian_payroll.overrides.employee_additional_salary.CustomAdditionalSalary",
+    "Payroll Entry": "cn_indian_payroll.cn_indian_payroll.overrides.payroll.CustomPayrollEntry",
 
 }
 
