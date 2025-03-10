@@ -230,7 +230,7 @@ app_license = "mit"
 fixtures = [
     {"dt": "Print Format", "filters": {"module": "cn-indian-payroll"}},
     {"dt":"Income Tax Regime"},
-    {"dt":"Income Tax Slab"},
+
     {"dt":"Workflow","filters":{"name":"declaration Approve"}},
     {"dt":"Workflow State","filters":{"name":"Cancelled"}},
     {"dt":"Salary Component Library Item","filters": {"disabled": 0}},
