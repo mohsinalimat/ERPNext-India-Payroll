@@ -1969,10 +1969,10 @@ class CustomSalarySlip(SalarySlip):
                             "amount":difference[i]     
                         })
                         
-            
-
             total_sum = sum(total_value)
-            if self.custom_taxable_amount<rebate:
+            if self.annual_taxable_amount is None or self.annual_taxable_amount <= 0:
+                self.annual_taxable_amount = 0                
+            if self.annual_taxable_amount<rebate:
                 self.custom_tax_on_total_income=total_sum
                 self.custom_rebate_under_section_87a=total_sum
                 self.custom_total_tax_on_income=0
@@ -1981,7 +1981,7 @@ class CustomSalarySlip(SalarySlip):
                 self.custom_rebate_under_section_87a=0
                 self.custom_tax_on_total_income=total_sum-0
                     
-            if self.custom_taxable_amount>5000000:
+            if self.annual_taxable_amount>5000000:
                 surcharge_m=(self.custom_total_tax_on_income*10)/100
                 self.custom_surcharge=round(surcharge_m)
                 self.custom_education_cess=round((surcharge_m+self.custom_total_tax_on_income)*4/100)
