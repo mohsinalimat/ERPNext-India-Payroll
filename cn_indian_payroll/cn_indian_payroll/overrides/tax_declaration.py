@@ -93,14 +93,14 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
             "twentysix": "Hostel Allowance",
             "twentyseven": "Gratuity",
             "twentyFour": "Uniform Allowance",
-            "thirteen": "Education Allowance"
+            "thirteen": "Education Allowance",
         }
 
         selected_allowances = {key: value for key, value in allowances.items() if form_data.get(key, 0)}
         valid_components = frappe.get_all(
             "Salary Component",
             filters={"component_type": "Tax Exemption", "disabled": 0},
-            fields=["name", "custom_sub_category"]
+            fields=["name", "custom_sub_category"],
         )
         component_map = {comp["custom_sub_category"]: comp["name"] for comp in valid_components}
 
@@ -130,7 +130,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
             filters={'employee': self.employee, 'docstatus': 1, 'company': self.company, "custom_payroll_period": self.payroll_period},
             fields=['name', 'from_date', 'salary_structure'],
             order_by='from_date desc',
-            limit=1
+            limit=1,
         )
 
         if not ss_assignment:
@@ -169,14 +169,10 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
             preventive_health_check_up_for_parents = form_data.get("mp5", 0)
             preventive_health = form_data.get("mpAmount6", 0)
 
-
-            
-
             self_below = mediclaim_self_spouse_children_below_60_years + preventive_health
             self_above = mediclaim_self_senior_citizen_60_years_above + preventive_health
             parents_below = parents_below_60_years + preventive_health_check_up_for_parents
             parents_above = parents_above_60_years + preventive_health_check_up_for_parents
-
 
             if self_below > 25000:
                 frappe.throw("Mediclaim Self, Spouse & Children (Below 60 years) and Preventive Health Check-up should not exceed ₹25,000")
@@ -213,10 +209,6 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
             if self.monthly_house_rent and missing_fields:
                 frappe.throw(f"Please update the following fields: {', '.join(missing_fields)}")
-    
-
-
-        
 
 
     #---------------cancel declaration histry---------------------
@@ -232,10 +224,6 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         if len(history_data)>0:
             data_doc=frappe.get_doc('Tax Declaration History',history_data[0].name)
             frappe.delete_doc('Tax Declaration History', data_doc.name)
-
-
-
-
 
 
     #------------Update HRA in declaration history--------------
