@@ -245,6 +245,10 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
                     each_doc.total_declared_amount = self.total_declared_amount
                     each_doc.total_exemption_amount = self.total_exemption_amount
                     each_doc.income_tax= self.custom_income_tax
+                    each_doc.tds_from_previous_employer_amount= self.custom_tds_from_previous_employer_amount
+                    each_doc.employee_request_additional_tds= self.custom_employee_request_additional_tds
+
+
                     each_doc.declaration_details = []
                     for entry in tax_component:
                         each_doc.append("declaration_details", {

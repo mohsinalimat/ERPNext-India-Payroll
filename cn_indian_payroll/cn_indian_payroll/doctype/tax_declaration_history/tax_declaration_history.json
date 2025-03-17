@@ -31,7 +31,9 @@
   "section_break_hfwe",
   "hra_breakup",
   "tds_from_previous_employer_section_section",
-  "tds_from_previous_employer_amount"
+  "tds_from_previous_employer_amount",
+  "additional_tds_section",
+  "employee_request_additional_tds"
  ],
  "fields": [
   {
@@ -157,7 +159,6 @@
   {
    "fieldname": "tds_from_previous_employer_section_section",
    "fieldtype": "Section Break",
-   "hidden": 1,
    "label": "TDS From Previous Employer Section"
   },
   {
@@ -170,11 +171,21 @@
    "fieldname": "tax_regime",
    "fieldtype": "Data",
    "label": "Tax Regime"
+  },
+  {
+   "fieldname": "additional_tds_section",
+   "fieldtype": "Section Break",
+   "label": "Additional TDS"
+  },
+  {
+   "fieldname": "employee_request_additional_tds",
+   "fieldtype": "Float",
+   "label": "Employee Request Additional TDS"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-01 22:46:24.711380",
+ "modified": "2025-03-17 11:24:46.772678",
  "modified_by": "Administrator",
  "module": "cn-indian-payroll",
  "name": "Tax Declaration History",

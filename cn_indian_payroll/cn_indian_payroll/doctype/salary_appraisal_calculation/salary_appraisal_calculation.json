@@ -44,7 +44,7 @@
   {
    "fieldname": "old_structure_child",
    "fieldtype": "Table",
-   "label": "Old Structure Child",
+   "label": "Comparison of Old/New",
    "options": "Salary Revision Child"
   },
   {
@@ -106,19 +106,22 @@
   {
    "fieldname": "employee_promotion_id",
    "fieldtype": "Data",
-   "label": "Employee Promotion ID"
+   "label": "Employee Promotion ID",
+   "read_only": 1
   },
   {
    "fieldname": "old_salary_structure_assignment_id",
    "fieldtype": "Link",
    "label": "Old Salary Structure Assignment ID",
-   "options": "Salary Structure Assignment"
+   "options": "Salary Structure Assignment",
+   "read_only": 1
   },
   {
    "fieldname": "new_salary_structure_assignment_id",
    "fieldtype": "Link",
    "label": "New Salary Structure Assignment ID",
-   "options": "Salary Structure Assignment"
+   "options": "Salary Structure Assignment",
+   "read_only": 1
   },
   {
    "fieldname": "old_from_date",
@@ -128,13 +131,14 @@
   {
    "fieldname": "new_from_date",
    "fieldtype": "Date",
-   "label": "New From date"
+   "label": "New From date",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-31 13:23:17.929016",
+ "modified": "2025-03-17 11:05:43.949638",
  "modified_by": "Administrator",
  "module": "cn-indian-payroll",
  "name": "Salary Appraisal Calculation",
