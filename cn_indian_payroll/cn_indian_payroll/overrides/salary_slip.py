@@ -1608,7 +1608,6 @@ class CustomSalarySlip(SalarySlip):
             benefit_component = []
             component_amount_dict = {}
             benefit_component_array=[]
-            benefit_component_vehicle=[]
 
             benefit_application = frappe.get_list(
                 'Employee Benefit Claim',

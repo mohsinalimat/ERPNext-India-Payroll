@@ -30,12 +30,12 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         self.insert_declaration_history()
 
     def before_update_after_submit(self):
+        self.validation_on_section10()
         self.process_form_data()
         self.calculate_hra_breakup()
         self.update_tax_declaration()
         self.set_total_exemption_amount()
         self.mediclaim_condition()
-        self.validation_on_section10()
         self.set_total_declared_amount()
 
     def on_cancel(self):
@@ -110,19 +110,19 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         }
 
         if "Hostel Allowance" in selected_allowances.values() and required_components.get("twentysix") is None:
-            frappe.throw("You are not allow to define the Hostel Allowance")
+            frappe.throw("You are not allowed to define the Hostel Allowance")
         
         if "LTA Allowance" in selected_allowances.values() and required_components.get("twentyeight") is None:
-            frappe.throw("You are not allow to define the LTA Allowance")
+            frappe.throw("You are not allowed to define the LTA Allowance")
 
         if "Uniform Allowance" in selected_allowances.values() and required_components.get("twentyFour") is None:
-            frappe.throw("You are not allow to define the Uniform Allowance")
+            frappe.throw("You are not allowed to define the Uniform Allowance")
 
         if "Education Allowance" in selected_allowances.values() and required_components.get("thirteen") is None:
-            frappe.throw("You are not allow to define the Education Allowance")
+            frappe.throw("You are not allowed to define the Education Allowance")
 
         if "Gratuity" in selected_allowances.values() and required_components.get("twentyseven") is None:
-            frappe.throw("You are not allow to define the Gratuity")
+            frappe.throw("You are not allowed to define the Gratuity")
 
         # Fetch latest Salary Structure Assignment
         ss_assignment = frappe.get_list(
@@ -149,7 +149,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
         for key, component in required_components.items():
             if component and component not in available_components:
-                frappe.throw(f"You are not eligible to declare {allowances[key]}")
+                frappe.throw(f"You are not allowed to define {allowances[key]}")
                         
 
 
