@@ -54,10 +54,10 @@ def get_salary_slips(filters=None):
                 da = earning.amount
 
         # Calculate EPF values
-        epf_value = sum(
-            d.amount for d in each_salary_slip.get("deductions", [])
-            if frappe.get_value("Salary Component", d.salary_component, "component_type") == "EPF"
-        )
+        # epf_value = sum(
+        #     d.amount for d in each_salary_slip.get("deductions", [])
+        #     if frappe.get_value("Salary Component", d.salary_component, "component_type") == "EPF"
+        # )
         
         # epf_value_employer = sum(
         #     d.amount for d in each_salary_slip.get("deductions", [])
@@ -72,7 +72,7 @@ def get_salary_slips(filters=None):
             "company": each_salary_slip.company,
             "uan": getattr(each_employee, "custom_uan", None),
             "gross_pay": each_salary_slip.custom_statutory_grosspay,
-            "epf_value_employee": epf_value,
+            "epf_value_employee": (min(round(float(basic or 0) + float(da or 0)), 15000) * 0.12) / 100,
             "epf_value_employer": (min(round(float(basic or 0) + float(da or 0)), 15000) * 8.33) / 100,
             "epf_eps_diff": (min(round(float(basic or 0) + float(da or 0)), 15000) * 0.5) / 100,
             "epf_wages": min(round(basic + da), 15000),
