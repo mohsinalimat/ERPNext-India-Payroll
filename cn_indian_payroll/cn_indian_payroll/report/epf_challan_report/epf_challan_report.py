@@ -1,5 +1,4 @@
 import frappe
-from hrms.payroll.doctype.salary_structure.salary_structure import make_salary_slip
 
 def get_salary_slips(filters=None):
     if filters is None:
@@ -34,7 +33,7 @@ def get_salary_slips(filters=None):
         'Salary Slip',
         fields=["name", "employee", "custom_month", "custom_payroll_period", "company", "custom_statutory_grosspay"],
         filters=conditions,
-        order_by="name DESC"
+        order_by="name DESC",
     )
 
     # Prepare list of salary slips with additional details
@@ -60,10 +59,10 @@ def get_salary_slips(filters=None):
             if frappe.get_value("Salary Component", d.salary_component, "component_type") == "EPF"
         )
         
-        epf_value_employer = sum(
-            d.amount for d in each_salary_slip.get("deductions", [])
-            if frappe.get_value("Salary Component", d.salary_component, "component_type") == "EPF Employer"
-        )
+        # epf_value_employer = sum(
+        #     d.amount for d in each_salary_slip.get("deductions", [])
+        #     if frappe.get_value("Salary Component", d.salary_component, "component_type") == "EPF Employer"
+        # )
 
         detailed_salary_slips.append({
             "employee": each_salary_slip.employee,
@@ -80,7 +79,7 @@ def get_salary_slips(filters=None):
             "eps_wages": min(round(basic + da), 15000),
             "edli_wages": min(round(basic + da), 15000),
             "ncp_days": each_salary_slip.custom_total_leave_without_pay,
-            "refund": 0
+            "refund": 0,
         })
 
     return detailed_salary_slips
