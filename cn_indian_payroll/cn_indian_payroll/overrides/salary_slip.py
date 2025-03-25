@@ -147,8 +147,7 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-
-    
+#-----------------------Insert total lop (absent+lop)----------------------------------------    
     def update_total_lop(self):
         self.custom_total_leave_without_pay = (self.absent_days or 0) + self.leave_without_pay
 
@@ -175,10 +174,7 @@ class CustomSalarySlip(SalarySlip):
                 tax_component=latest_salary_structure[0].custom_tax_regime
         
             for earning in self.earnings:
-
                 get_tax=frappe.get_doc("Salary Component",earning.salary_component)
-                
-
                 if get_tax.is_tax_applicable==1 and get_tax.custom_tax_exemption_applicable_based_on_regime==1:
                     if get_tax.custom_regime=="All":
                         earning.is_tax_applicable=get_tax.is_tax_applicable
@@ -261,8 +257,7 @@ class CustomSalarySlip(SalarySlip):
     def get_taxable_earnings_for_prev_period(self, start_date, end_date, allow_tax_exemption=False):
         exempted_amount = 0
         taxable_earnings = 0
-
-
+ 
         latest_salary_structure = frappe.get_list('Salary Structure Assignment',
                         filters={'employee': self.employee,'docstatus':1},
                         fields=["*"],
@@ -270,10 +265,7 @@ class CustomSalarySlip(SalarySlip):
                         limit=1
                     )
         
-        
-        
         custom_tax_regime=latest_salary_structure[0].custom_tax_regime
-
         for earning in self.earnings:
             if custom_tax_regime==earning.custom_regime:
 
@@ -285,7 +277,6 @@ class CustomSalarySlip(SalarySlip):
                     )
 
             else:
-
                 taxable_earnings = self.get_salary_slip_details( 
                         start_date, end_date, parentfield="earnings", 
                         is_tax_applicable=1,
@@ -375,19 +366,8 @@ class CustomSalarySlip(SalarySlip):
         return flt(result[0][0]) if result else 0.0
 
 
-    
-
-
-
-
-
-
-                   
-
- 
 
     def on_cancel(self):
-
         get_benefit_accrual=frappe.db.get_list('Employee Benefit Accrual',
                     filters={
                         'salary_slip': self.name,
@@ -427,8 +407,8 @@ class CustomSalarySlip(SalarySlip):
                         for m in get_slip.earnings:
                             if m.is_tax_applicable==0 and m.custom_regime == "New Regime":
                                 food_coupon_array.append(m.amount)
-            g1=sum(food_coupon_array)
-            food_coupon_component.custom_total_ytd=g1
+            fd_sum=sum(food_coupon_array)
+            food_coupon_component.custom_total_ytd=fd_sum
 
 
 
@@ -461,6 +441,7 @@ class CustomSalarySlip(SalarySlip):
                 if current_earning.salary_component in arrear_ytd_sum:
                     current_earning.custom_arrear_ytd = arrear_ytd_sum[current_earning.salary_component]
 
+#--------Add New Joinee in salary slip for report indication--------------
 
     def new_joinee(self):
         if self.employee:
@@ -483,6 +464,7 @@ class CustomSalarySlip(SalarySlip):
                         self.annual_taxable_amount=self.annual_taxable_amount+lta_component.amount
 
 
+#-------------------Update auto calculated value in declaration-------------------
 
     def update_declaration_with_auto_calculation(self):
         if self.employee:
@@ -1113,7 +1095,7 @@ class CustomSalarySlip(SalarySlip):
             if bonus_component.custom_is_accrual==1:
                 bonus_accrual= frappe.get_list(
                         'Employee Bonus Accrual',
-                        filters={'salary_slip': self.name},
+                        filters={'salary_slip': self.name, "docstatus": ["in", [0, 1]]},
                         fields=['*'],
                         )
 
@@ -1128,7 +1110,7 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-
+#-------------------insert remaing month count for tds worksheet-------------------
    
     def remaining_day(self):
         fiscal_year = frappe.get_list(
@@ -1159,7 +1141,7 @@ class CustomSalarySlip(SalarySlip):
 
             self.custom_month_count=months_t2_to_t1
 
-  
+#--------------------Inserting Month based on start date-------------------- 
         
     def set_month(self):             
         date_str = str(self.start_date)
@@ -1178,6 +1160,7 @@ class CustomSalarySlip(SalarySlip):
                 for k in self.earnings:
                     k.custom_actual_amount=k.amount
 
+#----------------Inserting Actual amount in child table --------------------
 
     def actual_amount_ctc(self):
         if self.earnings:
@@ -1200,7 +1183,7 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-
+#----------------------Update Accrual entry while updating lop days in salary slip---------------------
     
 
     def accrual_update(self):
@@ -1220,7 +1203,8 @@ class CustomSalarySlip(SalarySlip):
                         'Employee Benefit Accrual',
                         filters={
                             'salary_slip': self.name,
-                            'salary_component': i.reimbursements
+                            'salary_component': i.reimbursements,
+                            "docstatus": ["in", [0, 1]]
                         },
                         fields=['name']
                     )
@@ -1237,7 +1221,7 @@ class CustomSalarySlip(SalarySlip):
             if len(self.earnings) > 0:
                 benefit_component = []
                 component_amount_dict = {}
-                benefit_component_demo=[]
+                benefit_component_array=[]
                 benefit_application = frappe.get_list(
                     'Employee Benefit Claim',
                     filters={
@@ -1251,7 +1235,7 @@ class CustomSalarySlip(SalarySlip):
                 if benefit_application:
                     for k in benefit_application:
                         benefit_component.append(k.earning_component)
-                        benefit_component_demo.append({
+                        benefit_component_array.append({
                             "component":k.earning_component,
                             "amount":k.claimed_amount,
                             "settlement":0
@@ -1280,17 +1264,17 @@ class CustomSalarySlip(SalarySlip):
                                     'settlement': j.total_settlement
                                 }
 
-                            for demo in benefit_component_demo:
-                                if demo['component'] == j.salary_component:
-                                    demo['settlement'] += j.total_settlement
-                                    demo['amount']+=j.total_settlement
+                            for component_array in benefit_component_array:
+                                if component_array['component'] == j.salary_component:
+                                    component_array['settlement'] += j.total_settlement
+                                    component_array['amount']+=j.total_settlement
 
             benefit_component_amount1 = []
-            for data in benefit_component_demo:
+            for data in benefit_component_array:
                 total_amount = data['amount'] - data['settlement']
                 benefit_component_amount1.append({
                     'component': data['component'],
-                    'total_amount': total_amount
+                    'total_amount': total_amount,
                 })
 
             benefit_component_amount = []
@@ -1350,6 +1334,7 @@ class CustomSalarySlip(SalarySlip):
         return 0
 
 
+#--------------inserting lop reversal days---------------
 
     def insert_lop_days(self):
         benefit_application_days = frappe.get_list(
@@ -1370,7 +1355,7 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-
+#---------------update LOP amount in friver reimbursemnt component----------------
     def driver_reimbursement_lop(self):
         if self.leave_without_pay > 0:
             driver_reimbursement_component_lop=[]
@@ -1525,7 +1510,7 @@ class CustomSalarySlip(SalarySlip):
                 if earning.salary_component==lta_tax_component[1]:
                     earning.amount=lta_tax_amount[1]
 
-
+#----------------------Insert LTA Taxable and LTA Non taxable component-----------------
 
     def insert_lta_reimbursement(self):
         lta_tax_component = []
@@ -1579,7 +1564,7 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-
+#----------------------Loan perquisite-------------------
     def insert_loan_perquisite(self):
         if self.custom_payroll_period:
             get_payroll_period = frappe.get_list(
@@ -1619,18 +1604,17 @@ class CustomSalarySlip(SalarySlip):
 
 
     def insert_reimbursement(self):
+        benefit_component = []
+        component_amount_dict = {}
+        benefit_component_array=[]
         if self.employee and self.leave_without_pay==0:
-            benefit_component = []
-            component_amount_dict = {}
-            benefit_component_demo=[]
-            benefit_component_vehicle=[]
-
             benefit_application = frappe.get_list(
                 'Employee Benefit Claim',
                 filters={
                     'employee': self.employee,
                     'claim_date': ['between', [self.start_date, self.end_date]],
-                    'docstatus': 1
+                    'docstatus': 1,
+                    'custom_payroll_period':self.custom_payroll_period,
                 },
                 fields=['*']
             )
@@ -1640,7 +1624,7 @@ class CustomSalarySlip(SalarySlip):
                     if component_check.component_type!="Vehicle Maintenance Reimbursement":
                         
                         benefit_component.append(k.earning_component)
-                        benefit_component_demo.append({
+                        benefit_component_array.append({
                             "component":k.earning_component,
                             "amount":k.claimed_amount,
                             "settlement":0
@@ -1672,13 +1656,17 @@ class CustomSalarySlip(SalarySlip):
                                     'settlement': j.total_settlement
                                 }
 
-                            for demo in benefit_component_demo:
-                                if demo['component'] == j.salary_component:
-                                    demo['settlement'] += j.total_settlement
-                                    demo['amount']+=j.total_settlement
+                            for component_array in benefit_component_array:
+                                if component_array['component'] == j.salary_component:
+                                    component_array['settlement'] += j.total_settlement
+                                    component_array['amount']+=j.total_settlement
+            
 
         benefit_component_amount1 = []
-        for data in benefit_component_demo:
+
+
+        
+        for data in benefit_component_array:
             total_amount = max(0, data['amount'] - data['settlement'])
             benefit_component_amount1.append({
                 'component': data['component'],
@@ -1735,7 +1723,7 @@ class CustomSalarySlip(SalarySlip):
                     "amount": component_data['total_amount']
                 })
 
-
+#-----------------Insert Benefit Accrual from salary structure assignment----------------
 
     def employee_accrual_insert(self) :  
         if self.employee:
@@ -1764,6 +1752,8 @@ class CustomSalarySlip(SalarySlip):
 
 
 
+#-----------------Submit Benefit Accrual from Salary Slip----------------
+
     def employee_accrual_submit(self) :  
         if self.employee:
             for i in self.earnings:
@@ -1771,7 +1761,7 @@ class CustomSalarySlip(SalarySlip):
                 if component.custom_is_reimbursement == 1:
                     get_accrual_data=frappe.db.get_list('Employee Benefit Accrual',
                             filters={
-                                'salary_slip': self.name,'salary_component':i.salary_component,"employee":self.employee
+                                'salary_slip': self.name,'salary_component':i.salary_component,"employee":self.employee,
                             },
                             fields=['*'],
                             
@@ -1784,7 +1774,7 @@ class CustomSalarySlip(SalarySlip):
 
             get_accrual=frappe.db.get_list('Employee Benefit Accrual',
                 filters={
-                    'salary_slip': self.name
+                    'salary_slip': self.name,'docstatus':0,
                 },
                 fields=['name'],
                 
@@ -1795,14 +1785,12 @@ class CustomSalarySlip(SalarySlip):
                 accrual_doc.docstatus = 1
                 accrual_doc.save()
 
-    
-
+#----------------------Calculate the gross pay---------------------------------------------    
     def calculate_grosspay(self):
         gross_pay_sum = 0 
         gross_pay_year_sum=0 
         reimbursement_sum=0
         total_income=0
-        gross_earning=0
 
         if self.earnings:
             for i in self.earnings:
@@ -1829,7 +1817,7 @@ class CustomSalarySlip(SalarySlip):
         if self.total_loan_repayment:
             self.custom_loan_amount=self.total_loan_repayment
 
-
+#-----------Set tax applicable regime and check boxes from salary component--------------
     def set_taxale(self):
         for earning in self.earnings:
             get_tax=frappe.get_doc("Salary Component",earning.salary_component)
@@ -1837,6 +1825,7 @@ class CustomSalarySlip(SalarySlip):
             earning.custom_regime=get_tax.custom_regime
 
                 
+#-------------Inserting Payroll period,SSA,Income Tax slab etc--------------------
 
     def set_payroll_period(self):
         latest_salary_structure = frappe.get_list('Salary Structure Assignment',
@@ -1869,6 +1858,7 @@ class CustomSalarySlip(SalarySlip):
 
 
 
+#----------Calculation of Tax slab in salary slip for the tds work sheet--------------------
 
     def tax_calculation(self):
         latest_salary_structure = frappe.get_list('Salary Structure Assignment',
@@ -1891,7 +1881,6 @@ class CustomSalarySlip(SalarySlip):
             from_amount=[]
             to_amount=[]
             percentage=[]
-
             total_array=[]
             difference=[]
 
@@ -1909,13 +1898,12 @@ class CustomSalarySlip(SalarySlip):
             for slab in total_array:
                 if slab['to'] == 0.0:
                     if round(self.annual_taxable_amount) >= slab['from']:
-                        tt1=round(self.annual_taxable_amount)-slab['from']
-                        tt2=slab['percent']
-                        tt3=round((tt1*tt2)/100)
-                        
-                        tt4=slab['from']
-                        tt5=slab['to']
-                        
+                        first_slab_value=round(self.annual_taxable_amount)-slab['from']
+                        first_slab_percentage=slab['percent']
+                        first_slab_amount=round((first_slab_value*first_slab_percentage)/100)
+                        first_slab_from_value=slab['from']
+                        first_slab_to_value=slab['to']
+
                         remaining_slabs = [s for s in total_array if s['from'] != slab['from'] and s['from'] < slab['from']]
                         for slab in remaining_slabs:
                             from_amount.append(slab['from'])
@@ -1923,28 +1911,28 @@ class CustomSalarySlip(SalarySlip):
                             percentage.append(slab["percent"])
                             difference.append(slab['to']-slab['from'])
                             total_value.append((slab['to']-slab['from'])*slab["percent"]/100)
-                        from_amount.append(tt4)
-                        to_amount.append(tt5)
-                        percentage.append(tt2)
-                        difference.append(tt1)
-                        total_value.append(tt3)
+                        from_amount.append(first_slab_from_value)
+                        to_amount.append(first_slab_to_value)
+                        percentage.append(first_slab_percentage)
+                        difference.append(first_slab_value)
+                        total_value.append(first_slab_amount)
                     self.custom_tax_slab = []
                     for i in range(len(from_amount)):
                             self.append("custom_tax_slab", {
                             "from_amount": from_amount[i],
                             "to_amount": to_amount[i], 
-                            "percentage":  percentage[i]   ,
+                            "percentage":  percentage[i],
                             "tax_amount":total_value[i],
                             "amount":difference[i]     
                         })  
  
                 else:
                     if slab['from'] <= round(self.annual_taxable_amount) <= slab['to']:
-                        tt1=round(self.annual_taxable_amount)-slab['from']
-                        tt2=slab['percent']
-                        tt3=(tt1*tt2)/100
-                        tt4=slab['from']
-                        tt5=slab['to']
+                        first_slab_value=round(self.annual_taxable_amount)-slab['from']
+                        first_slab_percentage=slab['percent']
+                        first_slab_amount=(first_slab_value*first_slab_percentage)/100
+                        first_slab_from_value=slab['from']
+                        first_slab_to_value=slab['to']
                         remaining_slabs = [s for s in total_array if s['from'] != slab['from'] and s['from'] < slab['from']]
                         
                         for slab in remaining_slabs:
@@ -1953,26 +1941,26 @@ class CustomSalarySlip(SalarySlip):
                             percentage.append(slab["percent"])
                             difference.append(slab['to']-slab['from'])
                             total_value.append((slab['to']-slab['from'])*slab["percent"]/100)
-                        from_amount.append(tt4)
-                        to_amount.append(tt5)
-                        percentage.append(tt2)
-                        difference.append(tt1)
-                        total_value.append(tt3)
+                        from_amount.append(first_slab_from_value)
+                        to_amount.append(first_slab_to_value)
+                        percentage.append(first_slab_percentage)
+                        difference.append(first_slab_value)
+                        total_value.append(first_slab_amount)
 
                     self.custom_tax_slab = []
                     for i in range(len(from_amount)):
                             self.append("custom_tax_slab", {
                             "from_amount": from_amount[i],
                             "to_amount": to_amount[i], 
-                            "percentage":  percentage[i]   ,
+                            "percentage":  percentage[i],
                             "tax_amount":total_value[i],
                             "amount":difference[i]     
                         })
                         
-            
-
             total_sum = sum(total_value)
-            if self.custom_taxable_amount<rebate:
+            if self.annual_taxable_amount is None or self.annual_taxable_amount <= 0:
+                self.annual_taxable_amount = 0                
+            if self.annual_taxable_amount<rebate:
                 self.custom_tax_on_total_income=total_sum
                 self.custom_rebate_under_section_87a=total_sum
                 self.custom_total_tax_on_income=0
@@ -1981,7 +1969,7 @@ class CustomSalarySlip(SalarySlip):
                 self.custom_rebate_under_section_87a=0
                 self.custom_tax_on_total_income=total_sum-0
                     
-            if self.custom_taxable_amount>5000000:
+            if self.annual_taxable_amount>5000000:
                 surcharge_m=(self.custom_total_tax_on_income*10)/100
                 self.custom_surcharge=round(surcharge_m)
                 self.custom_education_cess=round((surcharge_m+self.custom_total_tax_on_income)*4/100)

@@ -30,6 +30,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         self.insert_declaration_history()
 
     def before_update_after_submit(self):
+        self.validation_on_section10()
         self.process_form_data()
         self.calculate_hra_breakup()
         self.update_tax_declaration()
@@ -78,6 +79,84 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
 
 
+#-----------validate section10 components on employee is eligible or not----------------
+
+    def validation_on_section10(self):
+        if self.custom_tax_regime != "Old Regime":
+            return
+
+        form_data = json.loads(self.custom_declaration_form_data or '{}')
+
+        # Mapping form keys to Salary Component sub-categories
+        allowances = {
+            "twentyeight": "LTA Allowance",
+            "twentysix": "Hostel Allowance",
+            "twentyseven": "Gratuity",
+            "twentyFour": "Uniform Allowance",
+            "thirteen": "Education Allowance",
+        }
+
+        selected_allowances = {key: value for key, value in allowances.items() if form_data.get(key, 0)}
+        valid_components = frappe.get_all(
+            "Salary Component",
+            filters={"component_type": "Tax Exemption", "disabled": 0},
+            fields=["name", "custom_sub_category"],
+        )
+        component_map = {comp["custom_sub_category"]: comp["name"] for comp in valid_components}
+
+        required_components = {
+            category: component_map.get(sub_category)
+            for category, sub_category in selected_allowances.items()
+        }
+
+        if "Hostel Allowance" in selected_allowances.values() and required_components.get("twentysix") is None:
+            frappe.throw("You are not allowed to define the Hostel Allowance")
+        
+        if "LTA Allowance" in selected_allowances.values() and required_components.get("twentyeight") is None:
+            frappe.throw("You are not allowed to define the LTA Allowance")
+
+        if "Uniform Allowance" in selected_allowances.values() and required_components.get("twentyFour") is None:
+            frappe.throw("You are not allowed to define the Uniform Allowance")
+
+        if "Education Allowance" in selected_allowances.values() and required_components.get("thirteen") is None:
+            frappe.throw("You are not allowed to define the Education Allowance")
+
+        if "Gratuity" in selected_allowances.values() and required_components.get("twentyseven") is None:
+            frappe.throw("You are not allowed to define the Gratuity")
+
+        # Fetch latest Salary Structure Assignment
+        ss_assignment = frappe.get_list(
+            'Salary Structure Assignment',
+            filters={'employee': self.employee, 'docstatus': 1, 'company': self.company, "custom_payroll_period": self.payroll_period},
+            fields=['name', 'from_date', 'salary_structure'],
+            order_by='from_date desc',
+            limit=1,
+        )
+
+        if not ss_assignment:
+            return
+
+        # Generate Salary Slip Preview
+        salary_slip_preview = make_salary_slip(
+            source_name=ss_assignment[0].salary_structure,
+            employee=self.employee,
+            print_format='Salary Slip Standard for CTC',
+            posting_date=ss_assignment[0].from_date,
+            for_preview=1,
+        )
+
+        available_components = {earning.salary_component for earning in salary_slip_preview.earnings}
+
+        for key, component in required_components.items():
+            if component and component not in available_components:
+                frappe.throw(f"You are not allowed to define {allowances[key]}")
+                        
+
+
+
+
+
+
 #----------------Mediclaim condition-------------------
     def mediclaim_condition(self):
         if self.custom_tax_regime == "Old Regime":
@@ -94,7 +173,6 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
             self_above = mediclaim_self_senior_citizen_60_years_above + preventive_health
             parents_below = parents_below_60_years + preventive_health_check_up_for_parents
             parents_above = parents_above_60_years + preventive_health_check_up_for_parents
-
 
             if self_below > 25000:
                 frappe.throw("Mediclaim Self, Spouse & Children (Below 60 years) and Preventive Health Check-up should not exceed ₹25,000")
@@ -131,10 +209,6 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
             if self.monthly_house_rent and missing_fields:
                 frappe.throw(f"Please update the following fields: {', '.join(missing_fields)}")
-    
-
-
-        
 
 
     #---------------cancel declaration histry---------------------
@@ -150,10 +224,6 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         if len(history_data)>0:
             data_doc=frappe.get_doc('Tax Declaration History',history_data[0].name)
             frappe.delete_doc('Tax Declaration History', data_doc.name)
-
-
-
-
 
 
     #------------Update HRA in declaration history--------------
@@ -245,6 +315,10 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
                     each_doc.total_declared_amount = self.total_declared_amount
                     each_doc.total_exemption_amount = self.total_exemption_amount
                     each_doc.income_tax= self.custom_income_tax
+                    each_doc.tds_from_previous_employer_amount= self.custom_tds_from_previous_employer_amount
+                    each_doc.employee_request_additional_tds= self.custom_employee_request_additional_tds
+
+
                     each_doc.declaration_details = []
                     for entry in tax_component:
                         each_doc.append("declaration_details", {

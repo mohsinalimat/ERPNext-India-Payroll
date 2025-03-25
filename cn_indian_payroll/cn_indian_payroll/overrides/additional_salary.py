@@ -94,15 +94,9 @@ def additional_salary_submit(additional):
         
         if len(additional_list)>0:
             for i in additional_list:
-               
                 additional_doc = frappe.get_doc('Additional Salary',i.name)
-
-                
                 additional_doc.docstatus = 1
                 additional_doc.save()
-
-
-                
                 employee_bonus = frappe.db.get_list('Employee Bonus Accrual',
                                                  filters={
                                                      'employee': i.employee,
@@ -116,28 +110,12 @@ def additional_salary_submit(additional):
                 for bonus in employee_bonus:
                     doc_id = bonus['name']
                     bonus_doc1 = frappe.get_doc('Employee Bonus Accrual',doc_id)
-                
-
                     bonus_doc1.is_paid = 1
                     bonus_doc1.bonus_paid_date=additional_doc.payroll_date
                     bonus_doc1.save()        
 
         
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

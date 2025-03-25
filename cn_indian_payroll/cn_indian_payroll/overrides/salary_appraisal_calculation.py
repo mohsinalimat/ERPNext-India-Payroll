@@ -7,12 +7,8 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
     if promotion_id:
         old_amounts = {}
         new_amounts = {}
-
-
         old_bonus={}
         new_bonus={}
-
-        
         # Fetch salary structure assignments (limit 2, most recent first)
         salary_structure_assignment = frappe.get_list('Salary Structure Assignment',
             filters={'employee': employee_id, 'company': company, 'docstatus': 1},
@@ -40,22 +36,15 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
             if part_of_ctc.custom_is_part_of_appraisal == 1:
                 component = new_earning.salary_component
                 new_amounts[component] = new_earning.amount
-
             if part_of_ctc.custom_is_accrual==1:
                 component = new_earning.salary_component
                 new_bonus[component] = new_earning.amount
-
-
-
-
 
         for new_deduction in new_salary_slip.deductions:
             part_of_ctc = frappe.get_doc("Salary Component", new_deduction.salary_component)
             if part_of_ctc.custom_is_part_of_appraisal == 1:
                 component = new_deduction.salary_component
                 new_amounts[component] = new_deduction.amount
-
-        # Get old salary slip
         old_salary_slip = make_salary_slip(
             source_name=salary_structure_assignment[1].salary_structure,
             employee=employee_id,
@@ -70,25 +59,16 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
             if part_of_ctc.custom_is_part_of_appraisal == 1:
                 component = old_earning.salary_component
                 old_amounts[component] = old_earning.amount
-
             if part_of_ctc.custom_is_accrual==1:
                 component = old_earning.salary_component
                 old_bonus[component] = old_earning.amount
-
-
         for old_deduction in old_salary_slip.deductions:
             part_of_ctc = frappe.get_doc("Salary Component", old_deduction.salary_component)
             if part_of_ctc.custom_is_part_of_appraisal == 1:
                 component = old_deduction.salary_component
                 old_amounts[component] = old_deduction.amount
-
-        # Collect all components (union of old and new components)
         all_components = set(old_amounts.keys()).union(set(new_amounts.keys()))
-
         all_bonus_components=set(old_bonus.keys()).union(set(new_bonus.keys()))
-
-
-
         result = []
         for component in all_components:
             old_amount = old_amounts.get(component, 0)  
@@ -99,10 +79,6 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                 "old_amount": old_amount,
                 "new_amount": new_amount
             })
-
-
-        
-
 
         bonus_result=[]
 
@@ -134,7 +110,6 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                 for slip in get_all_salary_slip:
                     get_each_doc = frappe.get_doc("Salary Slip", slip.name)
 
-                    # Fetch LOP Reversal for the specific salary slip
                     get_lop_reversal = frappe.get_list('LOP Reversal',
                         filters={
                             'employee': employee_id,
@@ -167,12 +142,7 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                             "new_amount": prorated_new_amount,
                             "difference": prorated_new_amount - prorated_old_amount
                         })
-
-
-
         final_bonus_array = []
-
-        # Get salary slips after effective_from date
         if effective_from:
             get_all_salary_slip = frappe.get_list('Salary Slip',
                 filters={
@@ -223,21 +193,7 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                             "difference": prorated_new_amount - prorated_old_amount
                         })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+ 
 
         # INSERT REIMBURSEMENT
         if len(salary_structure_assignment) == 2:
@@ -254,8 +210,6 @@ def appraisal_calculation(promotion_id, employee_id, company, date, effective_fr
                     "new_amount": reimbursement.monthly_total_amount,
                     "old_amount": 0
                 })
-
-            # frappe.msgprint(str(reimbursement_array))
             
             # Fetch the old Salary Structure Assignment
             get_ssa_old = frappe.get_doc("Salary Structure Assignment", salary_structure_assignment[1].name)

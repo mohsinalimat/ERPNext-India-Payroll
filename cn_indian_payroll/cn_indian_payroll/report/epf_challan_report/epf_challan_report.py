@@ -15,39 +15,55 @@ def get_salary_slips(filters=None):
 
     if filters.get("company"):
         conditions["company"] = filters["company"]
+        
+        try:
+            company_doc = frappe.get_doc("Company", filters["company"])
+        except frappe.DoesNotExistError:
+            frappe.throw("Invalid company specified.")
+        
+        if not company_doc.basic_component or not company_doc.custom_da_component:
+            frappe.throw("Please set Basic Component and DA Component in Company Master.")
+        
+        basic_component = company_doc.basic_component
+        da_component = company_doc.custom_da_component
+    else:
+        frappe.throw("Company is a mandatory filter.")
 
-    # Fetch all Salary Slips based on conditions
     salary_slips = frappe.get_list(
         'Salary Slip',
         fields=["name", "employee", "custom_month", "custom_payroll_period", "company", "custom_statutory_grosspay"],
         filters=conditions,
         order_by="name DESC",
-        limit_page_length=0  # Fetch all records
     )
 
     # Prepare list of salary slips with additional details
     detailed_salary_slips = []
+
     for slip in salary_slips:
         each_salary_slip = frappe.get_doc('Salary Slip', slip["name"])
         each_employee = frappe.get_doc("Employee", each_salary_slip.employee)
 
-        # Calculate EPF value from deductions
-        epf_value = 0
-        if hasattr(each_salary_slip, "deductions") and each_salary_slip.deductions:
-            for deduction in each_salary_slip.deductions:
-                salary_component = frappe.get_doc("Salary Component", deduction.salary_component)
-                if salary_component.component_type == "EPF":
-                    epf_value += deduction.amount
+        # Initialize basic and DA
+        basic = 0
+        da = 0
 
-        # Calculate EPF Employer value from earnings
-        epf_value_employer = 0
-        if hasattr(each_salary_slip, "earnings") and each_salary_slip.earnings:
-            for earning in each_salary_slip.earnings:
-                salary_component = frappe.get_doc("Salary Component", earning.salary_component)
-                if salary_component.component_type == "EPF Employer":
-                    epf_value_employer += earning.amount
+        for earning in each_salary_slip.earnings:
+            if earning.salary_component == basic_component:
+                basic = earning.amount
+            elif earning.salary_component == da_component:
+                da = earning.amount
 
-        # Append enriched data for the report
+        # Calculate EPF values
+        # epf_value = sum(
+        #     d.amount for d in each_salary_slip.get("deductions", [])
+        #     if frappe.get_value("Salary Component", d.salary_component, "component_type") == "EPF"
+        # )
+        
+        # epf_value_employer = sum(
+        #     d.amount for d in each_salary_slip.get("deductions", [])
+        #     if frappe.get_value("Salary Component", d.salary_component, "component_type") == "EPF Employer"
+        # )
+
         detailed_salary_slips.append({
             "employee": each_salary_slip.employee,
             "employee_name": each_salary_slip.employee_name,
@@ -56,15 +72,14 @@ def get_salary_slips(filters=None):
             "company": each_salary_slip.company,
             "uan": getattr(each_employee, "custom_uan", None),
             "gross_pay": each_salary_slip.custom_statutory_grosspay,
-            "epf_value_employee": epf_value,
-            "epf_value_employer": epf_value_employer,
-            "epf_wages":0,
-            "eps_wages":0,
-            "edli_wages":0,
-            "epf_eps_diff":epf_value-epf_value_employer,
-            "ncp_days":0,
-            "refund":0
-
+            "epf_value_employee": (min(round(float(basic or 0) + float(da or 0)), 15000) * 12) / 100,
+            "epf_value_employer": (min(round(float(basic or 0) + float(da or 0)), 15000) * 8.33) / 100,
+            "epf_eps_diff": (min(round(float(basic or 0) + float(da or 0)), 15000) * 0.5) / 100,
+            "epf_wages": min(round(basic + da), 15000),
+            "eps_wages": min(round(basic + da), 15000),
+            "edli_wages": min(round(basic + da), 15000),
+            "ncp_days": each_salary_slip.custom_total_leave_without_pay,
+            "refund": 0,
         })
 
     return detailed_salary_slips
@@ -82,9 +97,9 @@ def execute(filters=None):
         {"fieldname": "epf_wages", "label": "EPF Wages", "fieldtype": "Currency", "width": 150},
         {"fieldname": "eps_wages", "label": "EPS Wages", "fieldtype": "Currency", "width": 150},
         {"fieldname": "edli_wages", "label": "EDLI Wages", "fieldtype": "Currency", "width": 150},
-        {"fieldname": "epf_value_employee", "label": "EPF Contri Remitted", "fieldtype": "Currency", "width": 150},
-        {"fieldname": "epf_value_employer", "label": "EPS Contri Remitted", "fieldtype": "Currency", "width": 150},
-        {"fieldname": "epf_eps_diff", "label": "EPF EPS Diff Remitted", "fieldtype": "Currency", "width": 150},
+        {"fieldname": "epf_value_employee", "label": "EPF Contri Remitted(12%)", "fieldtype": "Currency", "width": 200},
+        {"fieldname": "epf_value_employer", "label": "EPS Contri Remitted(8.33%)", "fieldtype": "Currency", "width": 200},
+        {"fieldname": "epf_eps_diff", "label": "EDLI Contribution(0.5%)", "fieldtype": "Currency", "width": 200},
         {"fieldname": "ncp_days", "label": "NCP Days", "fieldtype": "Currency", "width": 150},
         {"fieldname": "refund", "label": "Refund Of Advances", "fieldtype": "Currency", "width": 150},
     ]

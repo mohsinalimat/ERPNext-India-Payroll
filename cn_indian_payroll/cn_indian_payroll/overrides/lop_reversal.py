@@ -52,10 +52,6 @@ def insert_additional_salary(self):
             additional_doc.insert()
 
 
-    
-
-
-
 def reimbursement_accrual_update(self):
         lop_reversal = frappe.get_list('Employee Benefit Accrual',
                         filters={'employee': self.employee,'docstatus':1,"salary_slip":self.salary_slip},
@@ -69,7 +65,6 @@ def reimbursement_accrual_update(self):
                 each_doc = frappe.get_doc('Employee Benefit Accrual', i.name)
                 lop_reversal_amount=(each_doc.amount/self.working_days)*self.number_of_days
                 eligible_amount=each_doc.amount+lop_reversal_amount
-
                 each_doc.amount = round(eligible_amount)
                 each_doc.save()
 
@@ -184,7 +179,6 @@ def on_cancel(self,method):
             total_days=self.working_days+self.number_of_days
             lop_reversal_amount=(each_doc.amount/total_days)
             eligible_amount=lop_reversal_amount*self.working_days
-
             each_doc.amount = round(eligible_amount)
             each_doc.save()
 

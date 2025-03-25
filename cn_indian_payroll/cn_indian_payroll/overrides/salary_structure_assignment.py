@@ -51,10 +51,6 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
             get_promotion_doc.custom_status="Payroll Configured"
             get_promotion_doc.save()
 
-            # get_promotion_doc.reload()
-
-            # frappe.db.commit()
-
 
 
     def insert_tax_declaration_list(self):
