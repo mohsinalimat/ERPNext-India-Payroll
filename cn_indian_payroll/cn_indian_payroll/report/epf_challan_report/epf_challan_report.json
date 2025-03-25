@@ -10,7 +10,7 @@
  "is_standard": "Yes",
  "letter_head": "",
  "letterhead": null,
- "modified": "2024-11-25 16:51:45.243797",
+ "modified": "2025-03-24 17:51:07.973627",
  "modified_by": "Administrator",
  "module": "cn-indian-payroll",
  "name": "EPF Challan Report",
@@ -21,9 +21,6 @@
  "report_type": "Script Report",
  "roles": [
   {
-   "role": "Employee Self Service"
-  },
-  {
    "role": "Employee"
   },
   {
@@ -42,9 +39,6 @@
    "role": "Employee"
   },
   {
-   "role": "Employee Self Service"
-  },
-  {
    "role": "HR User"
   },
   {
@@ -52,9 +46,7 @@
   },
   {
    "role": "HR Manager"
-  },
-  {
-   "role": "Employee Self Service"
   }
- ]
+ ],
+ "timeout": 0
 }

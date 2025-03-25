@@ -1604,11 +1604,10 @@ class CustomSalarySlip(SalarySlip):
 
 
     def insert_reimbursement(self):
+        benefit_component = []
+        component_amount_dict = {}
+        benefit_component_array=[]
         if self.employee and self.leave_without_pay==0:
-            benefit_component = []
-            component_amount_dict = {}
-            benefit_component_array=[]
-
             benefit_application = frappe.get_list(
                 'Employee Benefit Claim',
                 filters={
@@ -1661,8 +1660,12 @@ class CustomSalarySlip(SalarySlip):
                                 if component_array['component'] == j.salary_component:
                                     component_array['settlement'] += j.total_settlement
                                     component_array['amount']+=j.total_settlement
+            
 
         benefit_component_amount1 = []
+
+
+        
         for data in benefit_component_array:
             total_amount = max(0, data['amount'] - data['settlement'])
             benefit_component_amount1.append({
