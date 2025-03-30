@@ -9,6 +9,11 @@ def get_all_employee(filters=None):
 
     if filters.get("employee"):
         conditions1["employee"] = filters["employee"]
+    if filters.get("payroll_period"):
+        conditions1["custom_payroll_period"] = filters["payroll_period"]
+    if filters.get("from_date"):
+        conditions1["from_date"] = (">=", filters["from_date"])
+
 
     get_all_ssa = frappe.get_list('Salary Structure Assignment',
                 filters=conditions1,
@@ -28,45 +33,24 @@ def get_all_employee(filters=None):
             'employee': each_employee.get("employee"),
             'employee_name': each_employee.get("employee_name"),
             'from_date': each_employee.get("from_date"),
+            'doj': each_employee.get("custom_date_of_joining"),
+            'base': each_employee.get("base"),
+            
+            'regime': each_employee.get("income_tax_slab"),
         }
 
-        # Calculate allowances
-        hra_amount = special_amount = car_amount = incentive_amount = driver_amount = 0
-
-        if each_employee.get("custom_is_special_hra") == 1:
-            hra_amount = each_employee.get("custom_special_hra_amount_annual") / 12
-        if each_employee.get("custom_is_special_conveyance") == 1:
-            special_amount = each_employee.get("custom_special_conveyance_amount_annual") / 12
-        if each_employee.get("custom_is_car_allowance") == 1:
-            car_amount = each_employee.get("custom_car_allowance_amount_annual") / 12
-        if each_employee.get("custom_is_incentive") == 1:
-            incentive_amount = each_employee.get("custom_incentive_amount_annual") / 12
-        if each_employee.get("custom_is_extra_driver_salary") == 1:
-            driver_amount = each_employee.get("custom_extra_driver_salary_value") / 12
+        
 
         
-        reimbursements = frappe.get_all(
-            'Employee Reimbursements',
-            filters={"parent": each_employee.get("name")},
-            fields=["reimbursements", "monthly_total_amount"]
-        )
-
         
-        for reimbursement in reimbursements:
-            component_name = reimbursement.get("reimbursements")
-            amount = reimbursement.get("monthly_total_amount")
-
-            if component_name:
-                reimbursement_components.add(component_name)
-                row[component_name] = round(row.get(component_name, 0) + amount)
-
-        # Generate the salary slip for each employee
         salary_slip = make_salary_slip(
             source_name=each_employee.get("salary_structure"),
             employee=each_employee.get("employee"),
             print_format='Salary Slip Standard for CTC',
-            # docstatus= each_employee.get("docstatus"),
-            for_preview= 1,  
+            
+            posting_date=each_employee.get("from_date"),
+            for_preview= 1, 
+             
         )
 
         
@@ -85,12 +69,6 @@ def get_all_employee(filters=None):
                 salary_components.add(component_name)
                 row[component_name] = round(row.get(component_name, 0) + amount)
 
-        # Add allowances to row
-        row['special_hra'] = round(hra_amount)
-        row['special_conveyance'] = round(special_amount)
-        row['car_allowance'] = round(car_amount)
-        row['incentive'] = round(incentive_amount)
-        row['extra_driver_salary'] = round(driver_amount)
 
         data.append(row)
 
@@ -98,7 +76,14 @@ def get_all_employee(filters=None):
     columns = [
         {"label": "Employee", "fieldname": "employee", "fieldtype": "Data", "width": 150},
         {"label": "Employee Name", "fieldname": "employee_name", "fieldtype": "Data", "width": 200},
-        {"label": "Effective From", "fieldname": "from_date", "fieldtype": "Date", "width": 200}
+        {"label": "Effective From", "fieldname": "from_date", "fieldtype": "Date", "width": 200},
+        {"label": "Date of Joining", "fieldname": "doj", "fieldtype": "Date", "width": 200},
+        {"label": "Total Amount", "fieldname": "base", "fieldtype": "Data", "width": 200},
+        
+        {"label": "Income Tax Regime", "fieldname": "regime", "fieldtype": "Data", "width": 200}
+
+        
+        
     ]
     
     # Adding salary components to the columns
@@ -110,14 +95,7 @@ def get_all_employee(filters=None):
             "width": 150
         })
 
-    # Adding allowances and extra fields to the columns
-    columns.extend([
-        {"label": "Special HRA", "fieldname": "special_hra", "fieldtype": "Currency", "width": 200},
-        {"label": "Special Conveyance", "fieldname": "special_conveyance", "fieldtype": "Currency", "width": 200},
-        {"label": "Car Allowance", "fieldname": "car_allowance", "fieldtype": "Currency", "width": 200},
-        {"label": "Incentive", "fieldname": "incentive", "fieldtype": "Currency", "width": 200},
-        {"label": "Extra Driver Salary", "fieldname": "extra_driver_salary", "fieldtype": "Currency", "width": 200},
-    ])
+    
 
     # Adding reimbursement components to the columns
     for component in reimbursement_components:
