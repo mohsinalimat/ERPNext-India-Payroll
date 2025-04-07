@@ -31,7 +31,7 @@ def get_salary_slips(filters=None):
 
     salary_slips = frappe.get_list(
         'Salary Slip',
-        fields=["name", "employee", "custom_month", "custom_payroll_period", "company", "custom_statutory_grosspay"],
+        fields=["name", "employee", "custom_month", "custom_payroll_period", "company", "gross_pay"],
         filters=conditions,
         order_by="name DESC",
     )
@@ -50,22 +50,13 @@ def get_salary_slips(filters=None):
         for earning in each_salary_slip.earnings:
             if earning.salary_component == basic_component:
                 basic = earning.amount
-            elif earning.salary_component == da_component:
+            if earning.salary_component == da_component:
                 da = earning.amount
 
-        # Calculate EPF values
-        # epf_value = sum(
-        #     d.amount for d in each_salary_slip.get("deductions", [])
-        #     if frappe.get_value("Salary Component", d.salary_component, "component_type") == "EPF"
-        # )
         
-        # epf_value_employer = sum(
-        #     d.amount for d in each_salary_slip.get("deductions", [])
-        #     if frappe.get_value("Salary Component", d.salary_component, "component_type") == "EPF Employer"
-        # )
 
-        epf_employee=(min(round(float(basic or 0) + float(da or 0)), 15000) * 12) / 100,
-        epf_employer=(min(round(float(basic or 0) + float(da or 0)), 15000) * 8.33) / 100,
+        epf_employee=(min(round(float(basic or 0) + float(da or 0)), 15000) * 12) / 100
+        epf_employer=(min(round(float(basic or 0) + float(da or 0)), 15000) * 8.33) / 100
 
         detailed_salary_slips.append({
             "employee": each_salary_slip.employee,
@@ -74,7 +65,7 @@ def get_salary_slips(filters=None):
             "custom_payroll_period": each_salary_slip.custom_payroll_period,
             "company": each_salary_slip.company,
             "uan": getattr(each_employee, "custom_uan", None),
-            "gross_pay": each_salary_slip.custom_statutory_grosspay,
+            "gross_pay": each_salary_slip.gross_pay,
             "epf_value_employee": (min(round(float(basic or 0) + float(da or 0)), 15000) * 12) / 100,
             "epf_value_employer": (min(round(float(basic or 0) + float(da or 0)), 15000) * 8.33) / 100,
 
