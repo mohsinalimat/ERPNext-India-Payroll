@@ -27,6 +27,7 @@ from erpnext.accounts.utils import get_fiscal_year
 from hrms.payroll.doctype.salary_slip.salary_slip_loan_utils import if_lending_app_installed
 from hrms.payroll.doctype.salary_withholding.salary_withholding import link_bank_entry_in_salary_withholdings
 
+from hrms.payroll.doctype.payroll_entry.payroll_entry import submit_salary_slips_for_employees
 
 
 def custom_get_salary_component_account(self, salary_component):
@@ -230,3 +231,102 @@ def custom_make_bank_entry(self, for_withheld_salaries=False):
 
 
 PayrollEntry.make_bank_entry = custom_make_bank_entry
+
+@frappe.whitelist()
+def custom_submit_salary_slips(self):
+    self.check_permission("write")
+    salary_slips = self.get_sal_slip_list(ss_status=0)
+
+    if len(salary_slips) > 30 or frappe.flags.enqueue_payroll_entry:
+        self.db_set("status", "Queued")
+        frappe.enqueue(
+            submit_salary_slips_for_employees,
+            timeout=3000,
+            payroll_entry=self,
+            salary_slips=salary_slips,
+            publish_progress=False,
+        )
+        frappe.msgprint(
+            _("Salary Slip submission is queued. It may take a few minutes"),
+            alert=True,
+            indicator="blue",
+        )
+    else:
+        submit_salary_slips_for_employees(self, salary_slips, publish_progress=False)
+
+    account_array = []
+
+    get_reimbursement_component = frappe.get_list(
+        "Salary Component", 
+        filters={"disabled": 0, "custom_is_reimbursement": 1}
+    )
+
+    # Check if data exists
+    if get_reimbursement_component:
+        for i in get_reimbursement_component:
+            get_account = frappe.get_doc("Salary Component", i.name)
+
+            # Loop through related accounts
+            for j in get_account.accounts:
+                if j.company == self.company:
+                    # Fetch company's reimbursement account mapping
+                    get_company = frappe.get_doc("Company", self.company)
+                    for reimb in get_company.custom_reimbursement_accounts:
+                        if reimb.salary_component == i.name:
+                            # Fetch accrued data
+                            get_accrued_data = frappe.get_list(
+                                "Employee Benefit Accrual",
+                                filters={
+                                    "payroll_entry": self.name,
+                                    "docstatus": ["in", [0, 1]],
+                                    "salary_component": reimb.salary_component
+                                },
+                                fields=["amount"]
+                            )
+
+                            if get_accrued_data:
+                                accrued_sum = sum(k.amount for k in get_accrued_data)
+
+                                account_array.append({
+                                    "payable_account": j.account,
+                                    "payable_debit_amount": accrued_sum,
+                                    "payable_credit_amount": 0,
+                                    "expense_account": reimb.payable_account,
+                                    "expense_credit_amount": accrued_sum,
+                                    "expense_debit_amount": 0,
+                                })
+
+    # Create Journal Entry
+    if account_array:
+        je = frappe.new_doc("Journal Entry")
+        je.voucher_type = "Journal Entry"
+        je.company = self.company
+        je.posting_date = self.posting_date
+        je.user_remark = "Reimbursement posting via Payroll Entry: " + self.name
+
+        for entry in account_array:
+            # Debit entry (Payable account)
+            je.append("accounts", {
+                "account": entry["payable_account"],
+                "debit_in_account_currency": entry["payable_debit_amount"],
+                "credit_in_account_currency": 0
+            })
+
+            # Credit entry (Expense account)
+            je.append("accounts", {
+                "account": entry["expense_account"],
+                "debit_in_account_currency": 0,
+                "credit_in_account_currency": entry["expense_credit_amount"]
+            })
+
+        je.insert()
+        je.submit()
+        frappe.msgprint(f"Journal Entry {je.name} created.")
+
+
+
+
+            
+
+
+PayrollEntry.submit_salary_slips = custom_submit_salary_slips
