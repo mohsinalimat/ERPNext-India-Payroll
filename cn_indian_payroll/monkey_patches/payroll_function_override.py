@@ -256,47 +256,56 @@ def custom_submit_salary_slips(self):
 
     account_array = []
 
+    # Properly filter for both reimbursement and accrual components
     get_reimbursement_component = frappe.get_list(
-        "Salary Component", 
-        filters={"disabled": 0, "custom_is_reimbursement": 1}
+        "Salary Component",
+        filters={"disabled": 0},
+        fields=["name", "custom_is_reimbursement", "custom_is_accrual"]
     )
 
     # Check if data exists
     if get_reimbursement_component:
-        for i in get_reimbursement_component:
-            get_account = frappe.get_doc("Salary Component", i.name)
+        for comp in get_reimbursement_component:
+            if not (comp.custom_is_reimbursement or comp.custom_is_accrual):
+                continue  # Skip components that are neither reimbursement nor accrual
+
+            get_account = frappe.get_doc("Salary Component", comp.name)
 
             # Loop through related accounts
-            for j in get_account.accounts:
-                if j.company == self.company:
-                    # Fetch company's reimbursement account mapping
-                    get_company = frappe.get_doc("Company", self.company)
-                    for reimb in get_company.custom_reimbursement_accounts:
-                        if reimb.salary_component == i.name:
-                            # Fetch accrued data
-                            get_accrued_data = frappe.get_list(
-                                "Employee Benefit Accrual",
-                                filters={
-                                    "payroll_entry": self.name,
-                                    "docstatus": ["in", [0, 1]],
-                                    "salary_component": reimb.salary_component
-                                },
-                                fields=["amount"]
-                            )
+            for acc in get_account.accounts:
+                if acc.company != self.company:
+                    continue
 
-                            if get_accrued_data:
-                                accrued_sum = sum(k.amount for k in get_accrued_data)
+                # Get company's reimbursement account mappings
+                get_company = frappe.get_doc("Company", self.company)
+                for reimb in get_company.custom_reimbursement_accounts:
+                    if reimb.salary_component != comp.name:
+                        continue
 
-                                account_array.append({
-                                    "payable_account": j.account,
-                                    "payable_debit_amount": accrued_sum,
-                                    "payable_credit_amount": 0,
-                                    "expense_account": reimb.payable_account,
-                                    "expense_credit_amount": accrued_sum,
-                                    "expense_debit_amount": 0,
-                                })
+                    for accrual_doctype in ["Employee Benefit Accrual", "Employee Bonus Accrual"]:
+                        get_accrued_data = frappe.get_list(
+                            accrual_doctype,
+                            filters={
+                                "payroll_entry": self.name,
+                                "docstatus": ["in", [0, 1]],
+                                "salary_component": reimb.salary_component
+                            },
+                            fields=["amount"]
+                        )
 
-    # Create Journal Entry
+                        if get_accrued_data:
+                            accrued_sum = sum(item.amount for item in get_accrued_data)
+
+                            account_array.append({
+                                "payable_account": acc.account,
+                                "payable_debit_amount": accrued_sum,
+                                "payable_credit_amount": 0,
+                                "expense_account": reimb.payable_account,
+                                "expense_credit_amount": accrued_sum,
+                                "expense_debit_amount": 0,
+                            })
+
+    # Create Journal Entry if needed
     if account_array:
         je = frappe.new_doc("Journal Entry")
         je.voucher_type = "Journal Entry"
@@ -321,7 +330,8 @@ def custom_submit_salary_slips(self):
 
         je.insert()
         je.submit()
-        frappe.msgprint(f"Journal Entry {je.name} created.")
+        # frappe.msgprint(f"Journal Entry {je.name} created.")
+
 
 
 
