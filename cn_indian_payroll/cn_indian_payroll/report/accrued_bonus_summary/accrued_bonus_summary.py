@@ -59,6 +59,7 @@ def get_all_accrued_bonus(filters=None):
             "payment_day":row.payment_days,
             "total_lwp":row.total_lwp,
             "amount": row.amount,
+            
         })
 
     return data
