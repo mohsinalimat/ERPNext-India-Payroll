@@ -37,7 +37,7 @@ def get_all_accrued_bonus(filters=None):
             "amount",
             "name",
             "working_days",
-            "payment_days",
+            "payment_day",
             "total_lwp",
             
             
@@ -46,21 +46,23 @@ def get_all_accrued_bonus(filters=None):
 
     data = []
 
-    for row in records:
-        data.append({
-            "reference_id": row.name,
-            "employee": row.employee,
-            "employee_name": row.employee_name,
-            "company": row.company,
-            "payroll_period": row.payroll_period,
-            "accrued_date": row.accrual_date,
-            "salary_component": row.salary_component,
-            "working_days":row.working_days,
-            "payment_day":row.payment_days,
-            "total_lwp":row.total_lwp,
-            "amount": row.amount,
-            
-        })
+    if records:
+
+        for row in records:
+            data.append({
+                "reference_id": row.name,
+                "employee": row.employee,
+                "employee_name": row.employee_name,
+                "company": row.company,
+                "payroll_period": row.payroll_period,
+                "accrued_date": row.accrual_date,
+                "salary_component": row.salary_component,
+                "working_days":row.working_days,
+                "payment_day":row.payment_day,
+                "total_lwp":row.total_lwp,
+                "amount": row.amount,
+                
+            })
 
     return data
 
