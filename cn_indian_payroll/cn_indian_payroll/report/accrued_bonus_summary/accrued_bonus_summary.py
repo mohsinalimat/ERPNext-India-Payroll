@@ -39,8 +39,8 @@ def get_all_accrued_bonus(filters=None):
             "working_days",
             "payment_day",
             "total_lwp",
-            
-            
+
+
         ]
     )
 
@@ -61,7 +61,7 @@ def get_all_accrued_bonus(filters=None):
                 "payment_day":row.payment_day,
                 "total_lwp":row.total_lwp,
                 "amount": row.amount,
-                
+
             })
 
     return data
@@ -76,10 +76,10 @@ def get_columns():
         {"label": "Payroll Period", "fieldname": "payroll_period", "fieldtype": "Link", "options": "Payroll Period", "width": 150},
         {"label": "Accrued Date", "fieldname": "accrued_date", "fieldtype": "Date", "width": 120},
         {"label": "Salary Component", "fieldname": "salary_component", "fieldtype": "Link", "options": "Salary Component", "width": 180},
-        
+
         {"label": "Working days", "fieldname": "working_days", "fieldtype": "Float", "width": 180},
         {"label": "Payment Days", "fieldname": "payment_day", "fieldtype": "Float",  "width": 180},
         {"label": "LWP Days", "fieldname": "total_lwp", "fieldtype": "Float",  "width": 180},
-        
+
         {"label": "Accrued Amount", "fieldname": "amount", "fieldtype": "Currency", "width": 120},
     ]

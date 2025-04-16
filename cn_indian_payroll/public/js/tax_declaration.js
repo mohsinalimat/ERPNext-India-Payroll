@@ -179,7 +179,7 @@ const DECLARATION_FORM = {
                   "type": "number",
                   "input": true,
                   "defaultValue": 0,
-                  
+
                 }
               ]
             }
@@ -3524,12 +3524,12 @@ const DECLARATION_FORM = {
         ],
         "numCols": 1
       },
-      
+
     ]
   }
 
 
-  
+
 
 var array
 
@@ -3537,7 +3537,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
     refresh:function(frm)
     {
-       
+
 
 
 
@@ -3572,15 +3572,15 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
                 form.submission = { data: defaultData };
 
-                let isUpdating = false; 
+                let isUpdating = false;
 
                 form.on('change', ({ data }) => {
-                    if (isUpdating) return; 
+                    if (isUpdating) return;
                     isUpdating = true;
 
 
                     const a = parseFloat(data.pfValue || 0);
-                    
+
                     const b = parseFloat(data.aValue2 || 0);
                     const c = parseFloat(data.bValue1 || 0);
                     const d=parseFloat(data.amount4 || 0);
@@ -3628,7 +3628,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                   let d = new frappe.ui.Dialog({
                     title: 'Enter details',
                     fields: [
-                       
+
                         {
                             label: 'Select Regime',
                             fieldname: 'select_regime',
@@ -3640,43 +3640,43 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
 
                         },
-    
-                       
-    
-    
+
+
+
+
                     ],
-                    size: 'small', // small, large, extra-large 
+                    size: 'small', // small, large, extra-large
                     primary_action_label: 'Submit',
                     primary_action(values) {
                         console.log(values);
-    
+
                         frappe.call({
                           "method":"cn_indian_payroll.cn_indian_payroll.overrides.declaration.choose_regime",
                           args:{
-      
+
                               doc_id: frm.doc.name,
                               employee:frm.doc.employee,
                               company:frm.doc.company,
                               payroll_period:frm.doc.payroll_period,
                               regime:values.select_regime
-                              
-      
+
+
                           },
                           callback :function(res)
                           {
                               frm.reload_doc();
-                             
-      
+
+
                           }
-      
+
                       })
-    
-    
-    
+
+
+
                         d.hide();
                     }
                 });
-                
+
                 d.show();
 
 
@@ -3691,20 +3691,20 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
 
 
-                  
 
-                  
-                    
-                    
-                    
+
+
+
+
+
                 })
                 frm.change_custom_button_type('Choose Regime', null, 'primary');
 
 
-                
+
             }
 
-         
+
 
 
 
@@ -3713,7 +3713,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
 
 
-        
+
         // const wrapper = frm.fields_dict.custom_declaration_form.$wrapper;
         // const formContainer = document.createElement("div");
         // wrapper.html('');
@@ -3738,7 +3738,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
 
         //         form.on('change', ({ data }) => {
-                    
+
         //             frm.set_value("custom_declaration_form_data", JSON.stringify(data));
         //         });
         //     })
@@ -3749,7 +3749,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
             //GRAVISH CODE
 
-        
+
             // const wrapper=frm.fields_dict.custom_declaration_form.$wrapper;
             // const form=document.createElement("div")
             // wrapper.html('')
@@ -3767,14 +3767,14 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
             // console.log(frm.doc.custom_declaration_form_data,"11111")
 
 
-            
+
     },
 
 
 
     custom_declaration_form_data(frm)
     {
-      
+
       if(frm.doc.custom_declaration_form_data)
       {
         frm.set_value("custom_status","Pending")
@@ -3783,9 +3783,9 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
     },
 
 
-    
 
-   
+
+
 
     // before_save: function (frm) {
 
@@ -3796,8 +3796,8 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
     //     }
     // }
 
-    
-   
+
+
 });
 
 
@@ -3822,7 +3822,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
 //           }
 //       ],
-//       size: 'small', // small, large, extra-large 
+//       size: 'small', // small, large, extra-large
 //       primary_action_label: 'Submit',
 //       primary_action(values) {
 //           // console.log(values);
@@ -3874,7 +3874,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
 //                                                                 // console.log(res.message[0].from_date)
 
-                                                                
+
 
 
 //                                                                 frappe.call({
@@ -3902,9 +3902,9 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
 //                                                                         }
 
-                                                                         
 
-                                                                        
+
+
 
 
 
@@ -4011,7 +4011,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
 //                       //                                       console.log(res.message[0].from_date)
 
-                                                            
+
 
 
 //                       //                                       frappe.call({
@@ -4215,7 +4215,7 @@ function change_regime(frm) {
                                                                               }
 
 
-                                                                              
+
 
 
 
@@ -4257,14 +4257,14 @@ function change_regime(frm) {
                                   console.log(salary_response.message)
 
                                 }
-    
-    
+
+
                               }
                             })
 
                           })
 
-                        
+
 
 
 
@@ -4493,8 +4493,8 @@ function edit_declaration(frm) {
                     //                 }
                     //             }
                     //         });
-                    //     } 
-                    //     else 
+                    //     }
+                    //     else
                     //     {
 
                     //         console.log(selectedAmount,"selectedAmount")
@@ -4658,7 +4658,7 @@ function edit(frm) {
                                 fieldtype: 'Check',
                                 default:frm.doc.rented_in_metro_city
                             },
-                    
+
                         ],
                         size: 'large',
                         primary_action_label: 'Submit',
@@ -4695,7 +4695,7 @@ function edit(frm) {
                                     new_row.amount = row.amount;
                                 });
 
-                                
+
 
                                 frm.set_value("custom_check",0)
                                 frm.set_value("monthly_house_rent", values.hra_amount);
@@ -4740,7 +4740,7 @@ function edit(frm) {
                     });
                     custom_table_field.grid.refresh();
 
-                    d.show();  
+                    d.show();
 
 
 
@@ -4768,7 +4768,7 @@ function edit(frm) {
                                 }
                             });
 
-                            
+
 
 
                         }
@@ -4777,11 +4777,11 @@ function edit(frm) {
                     d.$wrapper.on('change', '[data-fieldname="custom_declared_amount"] input', function() {
                         let rowIndex = $(this).closest('.grid-row').index();
                         let selectedAmount = $(this).val();
-                        
+
                         let component = d.fields_dict.custom_details_table.grid.grid_rows[rowIndex].doc.custom_exemption_sub_category;
 
                         if(component=="Uniform Allowance") {
-                               
+
 
                                 frappe.call({
                                     method: "frappe.client.get_list",
@@ -4810,7 +4810,7 @@ function edit(frm) {
 
 
                             }
-                        
+
                     })
                 }
 
@@ -4858,13 +4858,13 @@ function edit(frm) {
 //     refresh(frm) {
 //         // your code here
 //     },
-    
+
 //     amount:function(frm,cdt,cdn)
 //     {
 //         var d=locals[cdt][cdn]
 //         // console.log(d,"000")
-        
-        
+
+
 //         if(d.amount>d.max_amount)
 //         {
 //             frappe.model.set_value(cdt, cdn, "amount", 0);
@@ -4872,7 +4872,7 @@ function edit(frm) {
 //         }
 //     },
 
-    
+
 
 //     exemption_sub_category: function(frm, cdt, cdn) {
 //         var d = locals[cdt][cdn];
@@ -4884,12 +4884,12 @@ function edit(frm) {
 //             args: {
 //                 doctype: "Employee Tax Exemption Sub Category",
 //                 filters: { name: d.exemption_sub_category },
-//                 fields: ["*"] 
+//                 fields: ["*"]
 //             },
 //             callback: function(res) {
 //                 if (res.message) {
 
-                    
+
 //                     if(res.message.custom_is_nps==1)
 //                     {
 
@@ -4908,7 +4908,7 @@ function edit(frm) {
 
 //                                     if(kes.message[0].custom_is_nps==1)
 //                                     {
-                                        
+
 //                                         let nps_amount = Math.round((kes.message[0].base/12 * 0.35));
 //                                         let nps_percentage=Math.round(nps_amount*kes.message[0].custom_nps_percentage/100);
 //                                         let nps_amount_year = Math.round(nps_percentage * 12);
@@ -4935,7 +4935,7 @@ function edit(frm) {
 
 //                     if(res.message.custom_is_epf==1)
 //                         {
-    
+
 //                             frappe.call({
 //                                 "method": "frappe.client.get_list",
 //                                 args: {
@@ -4947,17 +4947,17 @@ function edit(frm) {
 //                                 },
 //                                 callback: function(kes) {
 //                                     if (kes.message && kes.message.length > 0) {
-    
-                                        
-    
+
+
+
 //                                         if(kes.message[0].custom_is_epf==1)
 //                                         {
-                                            
+
 //                                             let epf_amount = Math.round((kes.message?.at(0).base/12)*0.35);
-                                            
+
 //                                             let epf_percentage=Math.round(epf_amount*12/100);
-                                            
-                                           
+
+
 //                                             let epf_amount_year = Math.round(epf_percentage * 12);
 
 //                                             if(epf_amount_year>res.message.max_amount)
@@ -4965,7 +4965,7 @@ function edit(frm) {
 //                                                 frappe.model.set_value(cdt, cdn, "max_amount", res.message.max_amount);
 //                                                 frappe.model.set_value(cdt, cdn, "amount", res.message.max_amount);
 
-                                                
+
 //                                             }
 
 //                                             else
@@ -4975,23 +4975,23 @@ function edit(frm) {
 //                                             }
 
 
-                                            
-    
-    
-    
+
+
+
+
 //                                         }
 //                                         else{
 //                                             frappe.model.set_value(cdt, cdn, "max_amount", 0);
 //                                         }
-    
-    
-    
+
+
+
 //                                     }
 //                                 }
 //                             })
-    
-    
-    
+
+
+
 //                         }
 
 
@@ -4999,11 +4999,11 @@ function edit(frm) {
 
 
 
-                    
-//                 } 
-                
+
+//                 }
+
 //             },
-           
+
 //         });
 //     }
 // })
@@ -5013,7 +5013,7 @@ function edit(frm) {
 
 
 
-// function edit(frm) 
+// function edit(frm)
 // {
 //     let d = new frappe.ui.Dialog({
 //         title: 'Enter details',
@@ -5080,7 +5080,7 @@ function edit(frm) {
 
 //             frm.save('Update');
 
-           
+
 
 //             frappe.db.insert({
 //                 "doctype": "Tax Declaration History",
@@ -5105,10 +5105,10 @@ function edit(frm) {
 //                     "declared_amount": row.declared_amount
 //                 }))
 //             })
-            
-            
-            
-            
+
+
+
+
 
 //             d.hide();
 //         }
@@ -5228,7 +5228,7 @@ function edit(frm) {
 //                         }
 
 //                         setTimeout(function() {
-                            
+
 
 //                             let d = new frappe.ui.Dialog({
 //                                 title: 'Enter details',
@@ -5248,7 +5248,7 @@ function edit(frm) {
 //                                                 // onchange: function() {
 //                                                 //     let table_field = d.fields_dict.details_table;
 //                                                 //     let data = table_field.df.data;
-                            
+
 //                                                 //     // Access the table data directly
 //                                                 //     if (data.length > 0) {
 //                                                 //         data.forEach(row => {
@@ -5259,7 +5259,7 @@ function edit(frm) {
 //                                                 //     }
 //                                                 // }
 
-                                               
+
 //                                             },
 //                                             {
 //                                                 label: 'Employee Tax Exemption Category',
@@ -5290,7 +5290,7 @@ function edit(frm) {
 //                                 primary_action_label: 'Submit',
 //                                 primary_action(values) {
 //                                     frm.clear_table('declarations');
-                        
+
 //                                     var total_amount = 0;
 //                                     values.details_table.forEach(row => {
 //                                         total_amount += row.declared_amount;
@@ -5300,16 +5300,16 @@ function edit(frm) {
 //                                         new_row.max_amount = row.maximum_amount;
 //                                         new_row.amount = row.declared_amount;
 //                                     });
-                        
+
 //                                     frm.refresh_field('declarations');
-                        
+
 //                                     frm.set_value("total_declared_amount", total_amount);
 //                                     frm.set_value("total_exemption_amount", total_amount);
-                        
+
 //                                     frm.save('Update');
-                        
-                                   
-                        
+
+
+
 //                                     frappe.db.insert({
 //                                         doctype: "Tax Declaration History",
 //                                         employee: frm.doc.employee,
@@ -5341,15 +5341,15 @@ function edit(frm) {
 //                                             exemption_amount: row.exemption_amount
 //                                         }))
 //                                     });
-                                    
-                                    
-                                    
-                        
+
+
+
+
 //                                     d.hide();
 //                                 }
 //                             });
 
-                            
+
 //                             d.fields_dict.details_table.df.data = [];
 //                             component_array.forEach(item => {
 //                                 d.fields_dict.details_table.df.data.push({
@@ -5362,12 +5362,12 @@ function edit(frm) {
 //                             d.fields_dict.details_table.grid.refresh();
 
 //                             d.show();
-//                         }, 1000);  
+//                         }, 1000);
 //                     }
 
 
 //                     if (res.message[0].income_tax_slab === "New Regime") {
-                       
+
 
 //                         if (res.message[0].custom_is_nps == 1) {
 //                             let nps_amount = Math.round(((res.message[0].base * 0.35) / 12 * res.message[0].custom_nps_percentage) / 100);
@@ -5393,9 +5393,9 @@ function edit(frm) {
 //                             }
 //                         }
 
-                       
+
 //                         setTimeout(function() {
-                            
+
 
 //                             let d = new frappe.ui.Dialog({
 //                                 title: 'Enter details',
@@ -5442,7 +5442,7 @@ function edit(frm) {
 //                                 primary_action_label: 'Submit',
 //                                 primary_action(values) {
 //                                     frm.clear_table('declarations');
-                        
+
 //                                     var total_amount = 0;
 //                                     values.details_table.forEach(row => {
 //                                         total_amount += row.declared_amount;
@@ -5452,16 +5452,16 @@ function edit(frm) {
 //                                         new_row.max_amount = row.maximum_amount;
 //                                         new_row.amount = row.declared_amount;
 //                                     });
-                        
+
 //                                     frm.refresh_field('declarations');
-                        
+
 //                                     frm.set_value("total_declared_amount", total_amount);
 //                                     frm.set_value("total_exemption_amount", total_amount);
-                        
+
 //                                     frm.save('Update');
-                        
-                                   
-                        
+
+
+
 //                                     frappe.db.insert({
 //                                         doctype: "Tax Declaration History",
 //                                         employee: frm.doc.employee,
@@ -5484,17 +5484,17 @@ function edit(frm) {
 //                                             maximum_exempted_amount: row.maximum_amount,
 //                                             declared_amount: row.declared_amount
 //                                         })),
-                                        
+
 //                                     });
-                                    
-                                    
-                                    
-                        
+
+
+
+
 //                                     d.hide();
 //                                 }
 //                             });
 
-                            
+
 //                             d.fields_dict.details_table.df.data = [];
 //                             component_array.forEach(item => {
 //                                 d.fields_dict.details_table.df.data.push({
@@ -5507,7 +5507,7 @@ function edit(frm) {
 //                             d.fields_dict.details_table.grid.refresh();
 
 //                             d.show();
-//                         }, 1000);  
+//                         }, 1000);
 //                     }
 
 
@@ -5749,8 +5749,8 @@ function edit(frm) {
 //                                             exemption_amount: row.exemption_amount
 //                                         }))
 //                                     });
-                                    
-                                    
+
+
 
 
 //                                     d.hide();
@@ -5798,7 +5798,7 @@ function edit(frm) {
 //                             d.$wrapper.on('change', '[data-fieldname="declared_amount"] input', function () {
 //                                 let selectedAmount = $(this).val();
 //                                 console.log('Selected value in Amount:', selectedAmount);
-                                
+
 //                             });
 
 //                         }, 1000);
@@ -6040,8 +6040,8 @@ function edit(frm) {
 //                                             exemption_amount: row.exemption_amount
 //                                         }))
 //                                     });
-                                    
-                                    
+
+
 
 
 //                                     d.hide();
@@ -6089,7 +6089,7 @@ function edit(frm) {
 //                             d.$wrapper.on('change', '[data-fieldname="declared_amount"] input', function () {
 //                                 let selectedAmount = $(this).val();
 //                                 console.log('Selected value in Amount:', selectedAmount);
-                                
+
 //                             });
 
 //                         }, 1000);
@@ -6163,7 +6163,7 @@ function edit(frm) {
 //                                         in_list_view: 1,
 //                                         editable: true,
 //                                     },
-                                    
+
 
 //                                 ]
 //                             },
@@ -6175,7 +6175,7 @@ function edit(frm) {
 //                                 label: 'Monthly HRA Amount',
 //                                 fieldname: 'hra_amount',
 //                                 fieldtype: 'Currency',
-                                
+
 //                             },
 //                             {
 //                                 fieldtype: 'Column Break'
@@ -6184,7 +6184,7 @@ function edit(frm) {
 //                                 label: 'Rented in Metro City',
 //                                 fieldname: 'rented_in_metro_city',
 //                                 fieldtype: 'Check',
-                                
+
 //                             }
 //                         ],
 //                         size: 'large',

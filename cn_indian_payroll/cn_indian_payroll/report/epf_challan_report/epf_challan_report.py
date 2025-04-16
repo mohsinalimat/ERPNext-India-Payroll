@@ -15,15 +15,15 @@ def get_salary_slips(filters=None):
 
     if filters.get("company"):
         conditions["company"] = filters["company"]
-        
+
         try:
             company_doc = frappe.get_doc("Company", filters["company"])
         except frappe.DoesNotExistError:
             frappe.throw("Invalid company specified.")
-        
+
         if not company_doc.basic_component or not company_doc.custom_da_component:
             frappe.throw("Please set Basic Component and DA Component in Company Master.")
-        
+
         basic_component = company_doc.basic_component
         da_component = company_doc.custom_da_component
     else:
@@ -53,7 +53,7 @@ def get_salary_slips(filters=None):
             if earning.salary_component == da_component:
                 da = earning.amount
 
-        
+
 
         epf_employee=(min(round(float(basic or 0) + float(da or 0)), 15000) * 12) / 100
         epf_employer=(min(round(float(basic or 0) + float(da or 0)), 15000) * 8.33) / 100

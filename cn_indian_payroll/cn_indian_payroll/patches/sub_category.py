@@ -4,8 +4,8 @@ def execute():
 
     data=[
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 10(14)",
@@ -15,8 +15,8 @@ def execute():
             "name": "Uniform Allowance"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 10",
@@ -26,8 +26,8 @@ def execute():
             "name": "Driver Salary Allowance"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 10",
@@ -37,8 +37,8 @@ def execute():
             "name": "Petrol Allowance"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80EE",
@@ -48,8 +48,8 @@ def execute():
             "name": "Interest Paid On Home Loan"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80CCD(1B)",
@@ -59,8 +59,8 @@ def execute():
             "name": "Section 80CCD(1B) NPS-Additional Exemption"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80CCD(1B)",
@@ -70,8 +70,8 @@ def execute():
             "name": "Section 80CCD(2)-Employer Contribution"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80D",
@@ -81,8 +81,8 @@ def execute():
             "name": "Section 80D (Medi-claim for Self Spouse, Children)"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 10",
@@ -92,8 +92,8 @@ def execute():
             "name": "Section 80D (Medi Claim for Parents for Senior Citizen)"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 16",
@@ -103,8 +103,8 @@ def execute():
             "name": "Profession Tax"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80C",
@@ -114,8 +114,8 @@ def execute():
             "name": "Life Insurance Premium"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80C",
@@ -125,8 +125,8 @@ def execute():
             "name": "Public Provident Fund"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80C",
@@ -136,8 +136,8 @@ def execute():
             "name": "Unit-linked Insurance Plan"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80C",
@@ -147,8 +147,8 @@ def execute():
             "name": "National Savings Certificates"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80C",
@@ -158,8 +158,8 @@ def execute():
             "name": "Principal paid on Home Loan"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80C",
@@ -169,8 +169,8 @@ def execute():
             "name": "ELSS Tax Saving Mutual Fund"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80C",
@@ -180,8 +180,8 @@ def execute():
             "name": "Children Tuition Fees"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80C",
@@ -191,8 +191,8 @@ def execute():
             "name": "Sukanya Samriddhi Deposit Scheme"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80C",
@@ -202,8 +202,8 @@ def execute():
             "name": "5 Year Fixed Deposit in Scheduled Banks"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80C",
@@ -213,8 +213,8 @@ def execute():
             "name": "Stamp duty & Registration fee on buying house property"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80D",
@@ -224,8 +224,8 @@ def execute():
             "name": "Mediclaim Policy for Self, Spouse, Children"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80D",
@@ -235,8 +235,8 @@ def execute():
             "name": "Mediclaim Policy for Self, Spouse, Children for Senior Citizen"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80D",
@@ -246,8 +246,8 @@ def execute():
             "name": "Mediclaim Policy for Parents"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80D",
@@ -257,8 +257,8 @@ def execute():
             "name": "Mediclaim Policy for Parents for Senior Citizen"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80D",
@@ -268,8 +268,8 @@ def execute():
             "name": "Preventive Health Check-up"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80D",
@@ -279,8 +279,8 @@ def execute():
             "name": "Preventive Health Check-up for Parents"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80CCD(1B)",
@@ -290,8 +290,8 @@ def execute():
             "name": "Additional Exemption on Voluntary NPS"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80U",
@@ -301,8 +301,8 @@ def execute():
             "name": "Permanent Physical Disability (Self)"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80U",
@@ -312,8 +312,8 @@ def execute():
             "name": "Permanent Severe Physical Disability (Self)"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80DD",
@@ -323,8 +323,8 @@ def execute():
             "name": "Treatment of Dependent with Disability"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80DD",
@@ -334,8 +334,8 @@ def execute():
             "name": "Treatment of Dependent with Severe Disability"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 80E",
@@ -345,8 +345,8 @@ def execute():
             "name": "Interest paid on Education Loan"
             },
             {
-            
-            
+
+
             "docstatus": 0,
             "doctype": "Employee Tax Exemption Sub Category",
             "exemption_category": "Section 10(13A)",
@@ -390,7 +390,7 @@ def execute():
             }
         ]
 
-   
+
     for i in data:
         insert_record(i)
 
@@ -400,10 +400,3 @@ def insert_record(i):
         doc=frappe.new_doc("Employee Tax Exemption Sub Category")
         doc.update(i)
         doc.save()
-
-
-
-
-
-
-    

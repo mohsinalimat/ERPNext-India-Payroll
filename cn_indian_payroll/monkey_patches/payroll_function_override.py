@@ -35,14 +35,14 @@ def custom_get_salary_component_account(self, salary_component):
     Custom function to override `get_salary_component_account` in PayrollEntry.
     """
     if not salary_component:
-        return 
+        return
 
     get_doc = frappe.get_doc("Salary Component", salary_component)
 
     if get_doc.get("do_not_include_in_total") == 0:
-        for j in get_doc.get("accounts", []):  
+        for j in get_doc.get("accounts", []):
             if j.company == self.company:
-                return j.account  
+                return j.account
 
     return None
 
@@ -161,7 +161,7 @@ def custom_make_bank_entry(self, for_withheld_salaries=False):
         do_not_include_in_total = frappe.db.get_value(
             "Salary Component", salary_detail.salary_component, "do_not_include_in_total", cache=True
         )
-        
+
         if do_not_include_in_total == 0:
             if salary_detail.parentfield == "earnings":
                 (
@@ -336,7 +336,7 @@ def custom_submit_salary_slips(self):
 
 
 
-            
+
 
 
 PayrollEntry.submit_salary_slips = custom_submit_salary_slips

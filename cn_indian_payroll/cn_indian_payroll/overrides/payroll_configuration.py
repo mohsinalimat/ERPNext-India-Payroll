@@ -22,11 +22,11 @@ def insert_custom_fields(self):
             if not custom_field:  # If no custom field exists, create a new one
                 doc = frappe.get_doc({
                     'doctype': 'Custom Field',
-                    'insert_after': assignment.label,  
+                    'insert_after': assignment.label,
                     'dt': 'Salary Structure Assignment',
-                    'label': assignment.label,  
-                    'fieldname': assignment.field_name,  
-                    'fieldtype': assignment.field_type,  
+                    'label': assignment.label,
+                    'fieldname': assignment.field_name,
+                    'fieldtype': assignment.field_type,
                     'insert_after': "custom_tab_3",
                     'hidden ':assignment.hidden,
                     'allow_on_submit':assignment.allow_on_submit,
@@ -34,9 +34,9 @@ def insert_custom_fields(self):
                     'options':assignment.options
                 })
                 doc.insert()
-                frappe.db.commit()  
+                frappe.db.commit()
 
-            else:  
+            else:
                 custom_field_doc = frappe.get_doc("Custom Field", custom_field[0].name)
                 if custom_field_doc.label != assignment.label:
                     custom_field_doc.label = assignment.label
@@ -47,13 +47,13 @@ def insert_custom_fields(self):
                 # if custom_field.allow_on_submit!=assignment.allow_on_submit:
                 #     custom_field.allow_on_submit=assignment.allow_on_submit
 
-                    
+
 
 
 
 
                 custom_field_doc.save()
-                frappe.db.commit()  
+                frappe.db.commit()
 
 
 
@@ -66,19 +66,19 @@ def salary_component(self):
                 filters={
 
                     'name':component.salary_component,
-                    
+
                 },
                 fields=['*']
             )
 
-            if len(get_component)==0:  
-                
+            if len(get_component)==0:
+
                 doc1 = frappe.get_doc({
                     'doctype': 'Salary Component',
-                    'salary_component': component.salary_component,  
+                    'salary_component': component.salary_component,
                     'salary_component_abbr': component.abbr,
-                    'type': component.component_type, 
-                    'name':component.salary_component, 
+                    'type': component.component_type,
+                    'name':component.salary_component,
                     'condition':component.condition,
                     'formula':component.formula ,
                     'depends_on_payment_days':component.depends_on_payment_days,
@@ -88,7 +88,7 @@ def salary_component(self):
                     'custom_is_part_of_gross_pay':component.is_part_of_gross_pay,
                     'custom_is_accrual':component.is_accrual,
                     'round_to_the_nearest_integer':component.round_to_the_nearest_integer,
-                    
+
                     'custom_is_reimbursement':component.is_reimbursement,
                     'custom_tax_exemption_applicable_based_on_regime':component.tax_applicable_based_on_regime,
                     'regime':component.regime,
@@ -96,21 +96,21 @@ def salary_component(self):
                     'custom_is_part_of_ctc':component.is_part_of_ctc,
                     'custom_is_arrear':component.is_arrear,
                     'custom_component':component.component,
-                    
 
-                    
+
+
                 })
                 doc1.insert()
-                frappe.db.commit()  
+                frappe.db.commit()
 
-            else:  
+            else:
                 custom_component = frappe.get_doc("salary Component", get_component[0].name)
-                
+
                 # custom_component.type = component.component_type,
 
-                
 
-                    
+
+
 
 
 

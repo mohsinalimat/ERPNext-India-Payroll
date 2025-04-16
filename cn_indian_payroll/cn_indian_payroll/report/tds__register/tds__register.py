@@ -31,7 +31,7 @@ def get_all_income_tax(filters=None):
         fields=[
             "name", "employee", "employee_name", "company", "custom_payroll_period",
             "custom_month", "branch", "department", "designation",
-            "total_working_days", "custom_total_leave_without_pay", 
+            "total_working_days", "custom_total_leave_without_pay",
             "payment_days", "current_month_income_tax"
         ]
     )

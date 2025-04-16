@@ -5,7 +5,7 @@ def execute():
 
     data=[
 
-        
+
  {
   "accounts": [],
   "amount": 0.0,
@@ -13,7 +13,7 @@ def execute():
   "condition": "",
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -23,11 +23,11 @@ def execute():
   "custom_is_part_of_ctc": 1,
   "custom_is_part_of_gross_pay": 1,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
 
   "deduct_full_tax_on_selected_payroll_date": 0,
@@ -56,16 +56,16 @@ def execute():
   "variable_based_on_taxable_salary": 0,
   "custom_tax_exemption_applicable_based_on_regime":1,
   "custom_regime":"All",
-  
+
  },
  {
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -75,16 +75,16 @@ def execute():
   "custom_is_part_of_ctc": 1,
   "custom_is_part_of_gross_pay": 1,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "3",
   "custom_tax_exemption_applicable_based_on_regime":1,
   "custom_regime":"All",
 
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
   "description": "House Rent Allowance",
@@ -114,10 +114,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -127,19 +127,19 @@ def execute():
   "custom_is_part_of_ctc": 1,
   "custom_is_part_of_gross_pay": 1,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "7",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
   "custom_tax_exemption_applicable_based_on_regime":1,
   "custom_regime":"All",
 
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -166,10 +166,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -179,19 +179,19 @@ def execute():
   "custom_is_part_of_ctc": 1,
   "custom_is_part_of_gross_pay": 1,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "9",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
   "custom_tax_exemption_applicable_based_on_regime":1,
   "custom_regime":"All",
 
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -218,10 +218,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -231,16 +231,16 @@ def execute():
   "custom_is_part_of_ctc": 1,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "13",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 1,
   "docstatus": 0,
@@ -267,10 +267,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -280,17 +280,17 @@ def execute():
   "custom_is_part_of_ctc": 1,
   "custom_is_part_of_gross_pay": 1,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "20",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
 
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -318,10 +318,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -331,16 +331,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -367,10 +367,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -380,16 +380,16 @@ def execute():
   "custom_is_part_of_ctc": 1,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -417,10 +417,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -430,16 +430,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -466,10 +466,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -479,19 +479,19 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 1,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
   "custom_tax_exemption_applicable_based_on_regime":1,
   "custom_regime":"All",
 
-  
+
   "disabled": 0,
   "do_not_include_in_total": 1,
   "docstatus": 0,
@@ -518,10 +518,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -531,17 +531,17 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 1,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
 
-  
+
   "disabled": 0,
   "do_not_include_in_total": 1,
   "docstatus": 0,
@@ -568,10 +568,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -581,16 +581,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -618,10 +618,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -631,16 +631,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -653,7 +653,7 @@ def execute():
   "max_benefit_amount": 0.0,
   "modified": "2024-11-13 16:10:27.243490",
   "name": "Professional Tax (Maharashtra)",
-  
+
   "only_tax_impact": 0,
   "pay_against_benefit_claim": 0,
   "remove_if_zero_valued": 1,
@@ -668,10 +668,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -681,16 +681,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -717,10 +717,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -730,16 +730,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -766,10 +766,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -779,16 +779,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -815,10 +815,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -828,16 +828,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -864,10 +864,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -877,16 +877,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -913,10 +913,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -926,16 +926,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -962,10 +962,10 @@ def execute():
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 1,
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -975,16 +975,16 @@ def execute():
   "custom_is_part_of_ctc": 0,
   "custom_is_part_of_gross_pay": 0,
   "custom_is_reimbursement": 0,
-  
-  
-  
+
+
+
   "custom_perquisite": 0,
-  
+
   "custom_sequence": "1",
-  
+
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -1060,10 +1060,10 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 1,
   "component_type": "",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -1083,7 +1083,7 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime":1,
   "custom_regime":"All",
 
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -1113,10 +1113,10 @@ def execute():
   "component_type": "",
   "custom_tax_exemption_applicable_based_on_regime":1,
   "custom_regime":"All",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 1,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -1134,7 +1134,7 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 0,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 1,
   "docstatus": 0,
@@ -1162,10 +1162,10 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "LTA Taxable",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -1182,13 +1182,13 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 0,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 1,
   "docstatus": 0,
   "doctype": "Salary Component",
   "exempted_from_income_tax": 0,
-  
+
   "is_flexible_benefit": 0,
   "is_income_tax_component": 0,
   "is_tax_applicable": 1,
@@ -1210,10 +1210,10 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "LTA Non Taxable",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -1230,13 +1230,13 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 0,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 1,
   "docstatus": 0,
   "doctype": "Salary Component",
   "exempted_from_income_tax": 0,
-  
+
   "is_flexible_benefit": 0,
   "is_income_tax_component": 0,
   "is_tax_applicable": 0,
@@ -1258,10 +1258,10 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "LTA Reimbursement",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 1,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -1281,13 +1281,13 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 0,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 1,
   "docstatus": 0,
   "doctype": "Salary Component",
   "exempted_from_income_tax": 0,
-  
+
   "is_flexible_benefit": 1,
   "is_income_tax_component": 0,
   "is_tax_applicable": 0,
@@ -1309,10 +1309,10 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 1,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -1329,7 +1329,7 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 0,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -1337,7 +1337,7 @@ def execute():
   "exempted_from_income_tax": 0,
   "custom_tax_exemption_applicable_based_on_regime":1,
   "custom_regime":"All",
-  
+
   "is_flexible_benefit": 1,
   "is_income_tax_component": 0,
   "is_tax_applicable": 0,
@@ -1359,10 +1359,10 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 1,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -1379,13 +1379,13 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 0,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 1,
   "docstatus": 0,
   "doctype": "Salary Component",
   "exempted_from_income_tax": 0,
-  
+
   "is_flexible_benefit": 1,
   "is_income_tax_component": 0,
   "is_tax_applicable": 0,
@@ -1407,10 +1407,10 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "Vehicle Maintenance Reimbursement",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 1,
   "custom_accrual_paid_on": "Payroll",
-  
+
   "custom_is_accrual": 0,
   "custom_is_allowance": 0,
   "custom_is_arrear": 0,
@@ -1427,13 +1427,13 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 0,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
   "doctype": "Salary Component",
   "exempted_from_income_tax": 0,
-  
+
   "is_flexible_benefit": 1,
   "is_income_tax_component": 0,
   "is_tax_applicable": 0,
@@ -1452,13 +1452,13 @@ def execute():
  },
 
 
- 
+
  {
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
   "custom_component": "House Rent Allowance",
@@ -1478,13 +1478,13 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 1,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
   "doctype": "Salary Component",
   "exempted_from_income_tax": 0,
-  
+
   "is_flexible_benefit": 0,
   "is_income_tax_component": 0,
   "is_tax_applicable": 1,
@@ -1506,7 +1506,7 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
   "custom_component": "Uniform",
@@ -1526,13 +1526,13 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 1,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
   "doctype": "Salary Component",
   "exempted_from_income_tax": 0,
-  
+
   "is_flexible_benefit": 0,
   "is_income_tax_component": 0,
   "is_tax_applicable": 1,
@@ -1554,7 +1554,7 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
   "custom_component": "Medical",
@@ -1574,13 +1574,13 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 1,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
   "doctype": "Salary Component",
   "exempted_from_income_tax": 0,
-  
+
   "is_flexible_benefit": 0,
   "is_income_tax_component": 0,
   "is_tax_applicable": 1,
@@ -1602,7 +1602,7 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
   "custom_component": "Basic",
@@ -1622,13 +1622,13 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 1,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
   "doctype": "Salary Component",
   "exempted_from_income_tax": 0,
-  
+
   "is_flexible_benefit": 0,
   "is_income_tax_component": 0,
   "is_tax_applicable": 1,
@@ -1647,13 +1647,13 @@ def execute():
  },
 
 
- 
+
  {
   "accounts": [],
   "amount": 0.0,
   "amount_based_on_formula": 0,
   "component_type": "",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
   "custom_component": "Food Coupon",
@@ -1673,13 +1673,13 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 0,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 1,
   "docstatus": 0,
   "doctype": "Salary Component",
   "exempted_from_income_tax": 0,
-  
+
   "is_flexible_benefit": 0,
   "is_income_tax_component": 0,
   "is_tax_applicable": 0,
@@ -1701,7 +1701,7 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 1,
   "component_type": "NPS",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
   "custom_component": "NPS",
@@ -1721,7 +1721,7 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 1,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 1,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 1,
   "docstatus": 0,
@@ -1749,7 +1749,7 @@ def execute():
   "amount": 0.0,
   "amount_based_on_formula": 1,
   "component_type": "EPF",
-  
+
   "create_separate_payment_entry_against_benefit_claim": 0,
   "custom_accrual_paid_on": "Payroll",
   "custom_component": "Employee Provident Fund",
@@ -1769,7 +1769,7 @@ def execute():
   "custom_tax_exemption_applicable_based_on_regime": 0,
   "deduct_full_tax_on_selected_payroll_date": 0,
   "depends_on_payment_days": 0,
-  
+
   "disabled": 0,
   "do_not_include_in_total": 0,
   "docstatus": 0,
@@ -1794,7 +1794,7 @@ def execute():
  }
 
 
-    
+
     ]
 
     for i in data:
@@ -1802,7 +1802,7 @@ def execute():
 
 def insert_record(i):
 
-    
+
     if frappe.db.exists("Salary Component", i["name"]):
         get_doc=frappe.get_doc("Salary Component",i["name"])
 
@@ -1823,5 +1823,3 @@ def insert_record(i):
         doc=frappe.new_doc("Salary Component")
         doc.update(i)
         doc.save()
-
-       

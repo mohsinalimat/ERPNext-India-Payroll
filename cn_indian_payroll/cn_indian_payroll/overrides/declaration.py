@@ -22,17 +22,17 @@ def switch_regime(doc_id, employee, regime,company):
 
     if len(get_tax_regime)>0:
 
-        ss_assignment.income_tax_slab =get_tax_regime[0].name 
+        ss_assignment.income_tax_slab =get_tax_regime[0].name
 
-        
 
-    
-    
+
+
+
         if regime == "Old Regime":
             component_array = []
             amount = []
             max_amount = []
-            
+
             # Uniform Allowance
             if ss_assignment.custom_is_uniform_allowance and ss_assignment.custom_uniform_allowance_value:
                 uniform_component = frappe.get_list(
@@ -51,8 +51,8 @@ def switch_regime(doc_id, employee, regime,company):
                 new_salary_slip = make_salary_slip(
                         source_name=ss_assignment.salary_structure,
                         employee=ss_assignment.employee,
-                        print_format='Salary Slip Standard for CTC',  
-                        posting_date=ss_assignment.from_date  
+                        print_format='Salary Slip Standard for CTC',
+                        posting_date=ss_assignment.from_date
                     )
                 for new_earning in new_salary_slip.deductions:
                         epf_component = frappe.get_doc("Salary Component", new_earning.salary_component)
@@ -63,28 +63,28 @@ def switch_regime(doc_id, employee, regime,company):
                             epf_component_subcategory = frappe.get_list('Employee Tax Exemption Sub Category',
                                     filters={'custom_component_type':"EPF"},
                                     fields=['*'],
-                                
+
                                 )
                             if len(epf_component_subcategory)>0:
                                 for i in epf_component_subcategory:
-                                    
+
                                     component_array.append(i.name)
-                                    
+
                                     max_amount.append(i.max_amount)
 
                                     if epf_amount_year>i.max_amount:
                                         amount.append(i.max_amount)
                                     else:
                                         amount.append(epf_amount_year)
-                
+
 
             # NPS (National Pension System)
             if ss_assignment.custom_is_nps:
                 new_salary_slip = make_salary_slip(
                         source_name=ss_assignment.salary_structure,
                         employee=ss_assignment.employee,
-                        print_format='Salary Slip Standard for CTC',  
-                        posting_date=ss_assignment.from_date  
+                        print_format='Salary Slip Standard for CTC',
+                        posting_date=ss_assignment.from_date
                     )
                 for new_earning in new_salary_slip.earnings:
                         nps_component = frappe.get_doc("Salary Component", new_earning.salary_component)
@@ -131,18 +131,18 @@ def switch_regime(doc_id, employee, regime,company):
                     doc1.custom_income_tax=get_tax_regime[0].name
                     doc1.custom_posting_date = frappe.utils.nowdate()
                     doc1.declarations=[]
-                    
+
                     for x in range(len(component_array)):
                         # Add child records
                         doc2_child1 = doc1.append("declarations", {})
                         doc2_child1.exemption_sub_category = component_array[x]
                         doc2_child1.amount = amount[x]
                         doc2_child1.max_amount = max_amount[x]
-                    
+
                     # Save and submit the document
                     doc1.save()
                     doc1.submit()
-                    
+
                     # Commit the changes to the database
                     frappe.db.commit()
 
@@ -154,8 +154,8 @@ def switch_regime(doc_id, employee, regime,company):
                 new_salary_slip = make_salary_slip(
                         source_name=ss_assignment.salary_structure,
                         employee=ss_assignment.employee,
-                        print_format='Salary Slip Standard for CTC',  
-                        posting_date=ss_assignment.from_date  
+                        print_format='Salary Slip Standard for CTC',
+                        posting_date=ss_assignment.from_date
                     )
                 for new_earning in new_salary_slip.earnings:
                         nps_component = frappe.get_doc("Salary Component", new_earning.salary_component)
@@ -190,28 +190,28 @@ def switch_regime(doc_id, employee, regime,company):
                     doc1.annual_hra_exemption=0
                     doc1.monthly_hra_exemption=0
                     doc1.declarations=[]
-                    
+
                     for x in range(len(component_array)):
                         # Add child records
                         doc2_child1 = doc1.append("declarations", {})
                         doc2_child1.exemption_sub_category = component_array[x]
                         doc2_child1.amount = amount[x]
                         doc2_child1.max_amount = max_amount[x]
-                    
+
                     # Save and submit the document
                     doc1.save()
                     doc1.submit()
-                    
+
                     # Commit the changes to the database
                     frappe.db.commit()
-    
 
-            
 
-        
+
+
+
         ss_assignment.save()
 
-    
+
 
     else:
         frappe.msgprint("Create Income Tax Slab")
@@ -226,7 +226,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
         get_income_tax = frappe.get_list('Income Tax Slab',
                         filters={'company':company,'docstatus':1,"disabled":0,"custom_select_regime":regime},
                         fields=["*"],
-                        
+
                     )
         if len(get_income_tax)>0:
             selected_regime=get_income_tax[0].name
@@ -251,12 +251,12 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
             latest_structure=latest_salary_structure[0].name
             if latest_salary_structure[0].from_date<=payroll_period_start_date:
                 effective_from=payroll_period_start_date
-                
+
             else:
                 effective_from=latest_salary_structure[0].from_date
 
 
-        
+
 
 
 
@@ -274,7 +274,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                     )
 
             if len(get_all_salary_slip) == 0:
-                
+
                 new_salary_slip = make_salary_slip(
                     source_name=salary_structure,
                     employee=employee,
@@ -282,7 +282,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                     # posting_date=latest_salary_structure[0].from_date
                     )
 
-                   
+
 
                 for new_earning in new_salary_slip.earnings:
                         nps_component = frappe.get_doc("Salary Component", new_earning.salary_component)
@@ -295,16 +295,16 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                             if isinstance(start_date, str):
                                 start = datetime.strptime(start_date, "%Y-%m-%d").date()
                             else:
-                                start = start_date  
+                                start = start_date
 
                             if isinstance(end_date, str):
                                 end = datetime.strptime(end_date, "%Y-%m-%d").date()
                             else:
-                                end = end_date  
+                                end = end_date
 
                             num_months = (end.year - start.year) * 12 + (end.month - start.month)+1
 
-                            
+
                             total_nps=round(num_months*new_earning.amount)
 
 
@@ -320,7 +320,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                             get_assignment_doc=frappe.get_doc("Salary Structure Assignment",latest_structure)
                             get_assignment_doc.income_tax_slab=selected_regime
                             get_assignment_doc.save()
-                           
+
             else:
                 salary_slip_count=len(get_all_salary_slip)
                 nps_amount=[]
@@ -338,7 +338,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                     # posting_date=latest_salary_structure[0].from_date
                     )
 
-                   
+
 
                 for new_earning in new_salary_slip.earnings:
                     nps_component = frappe.get_doc("Salary Component", new_earning.salary_component)
@@ -361,7 +361,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                 get_assignment_doc=frappe.get_doc("Salary Structure Assignment",latest_structure)
                 get_assignment_doc.income_tax_slab=selected_regime
                 get_assignment_doc.save()
-                
+
 
 
 
@@ -378,7 +378,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                         order_by='posting_date desc'
                     )
             if len(get_all_salary_slip) == 0:
-                
+
                 new_salary_slip = make_salary_slip(
                     source_name=salary_structure,
                     employee=employee,
@@ -386,7 +386,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                     # posting_date=latest_salary_structure[0].from_date
                     )
 
-                   
+
                 nps_component = 0
                 epf_amount = 0
                 pt_amount = 2400
@@ -403,7 +403,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                     if component.component_type == "EPF":
                         epf_amount += deduction.amount  # Add the deduction amount
 
-                
+
                 start_date=effective_from
                 end_date=payroll_end_date
 
@@ -411,16 +411,16 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                 if isinstance(start_date, str):
                     start = datetime.strptime(start_date, "%Y-%m-%d").date()
                 else:
-                    start = start_date  
+                    start = start_date
 
                 if isinstance(end_date, str):
                     end = datetime.strptime(end_date, "%Y-%m-%d").date()
                 else:
-                    end = end_date  
+                    end = end_date
 
                 num_months = (end.year - start.year) * 12 + (end.month - start.month)+1
 
-                            
+
                 total_nps=round(num_months*nps_component)
                 total_epf = min(round(num_months * epf_amount), 150000)
                 # total_epf=round(num_months*epf_amount)
@@ -454,7 +454,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                 get_assignment_doc.income_tax_slab = selected_regime
                 get_assignment_doc.save()
 
-           
+
 
             else:
                 salary_slip_count = len(get_all_salary_slip)
@@ -544,4 +544,3 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
     # get_doc.custom_income_tax="New Regime"
 
     # get_doc.save()
-

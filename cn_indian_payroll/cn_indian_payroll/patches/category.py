@@ -124,20 +124,3 @@ def insert_record(i):
         doc=frappe.new_doc("Employee Tax Exemption Category")
         doc.update(i)
         doc.save()
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
