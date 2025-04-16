@@ -43,6 +43,70 @@
   "docstatus": 0,
   "doctype": "Employee Tax Exemption Category",
   "is_active": 1,
+  "max_amount": 999999.0,
+  "modified": "2025-04-16 13:21:29.467020",
+  "name": "Section 80EEA"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 999999.0,
+  "modified": "2025-04-16 13:21:46.483877",
+  "name": "Section 80EEB"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 999999.0,
+  "modified": "2025-04-16 13:22:55.146262",
+  "name": "Section GGC"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 999999.0,
+  "modified": "2025-04-16 13:23:45.084807",
+  "name": "Section TTA"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 999999.0,
+  "modified": "2025-04-16 13:24:13.237738",
+  "name": "Section TTB"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 9999999.0,
+  "modified": "2025-04-16 13:17:09.353849",
+  "name": "Section 80G"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 150000.0,
+  "modified": "2025-04-16 13:26:01.690480",
+  "name": "Section 80GG"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
+  "max_amount": 999999.0,
+  "modified": "2025-04-16 13:26:36.406396",
+  "name": "Section 80CCG"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Employee Tax Exemption Category",
+  "is_active": 1,
   "max_amount": 99999999.0,
   "modified": "2025-04-16 11:43:03.250233",
   "name": "Section 10(14)"
