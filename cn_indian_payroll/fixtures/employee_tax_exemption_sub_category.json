@@ -4,28 +4,6 @@
   "custom_salary_component": null,
   "docstatus": 0,
   "doctype": "Employee Tax Exemption Sub Category",
-  "exemption_category": "Section 10",
-  "is_active": 1,
-  "max_amount": 96000.0,
-  "modified": "2025-04-16 11:45:03.708968",
-  "name": "Driver Salary Allowance"
- },
- {
-  "custom_component_type": null,
-  "custom_salary_component": null,
-  "docstatus": 0,
-  "doctype": "Employee Tax Exemption Sub Category",
-  "exemption_category": "Section 10",
-  "is_active": 1,
-  "max_amount": 96000.0,
-  "modified": "2025-04-16 11:45:03.703854",
-  "name": "Petrol Allowance"
- },
- {
-  "custom_component_type": null,
-  "custom_salary_component": null,
-  "docstatus": 0,
-  "doctype": "Employee Tax Exemption Sub Category",
   "exemption_category": "Section 80CCD(1B)",
   "is_active": 1,
   "max_amount": 50000.0,
@@ -42,17 +20,6 @@
   "max_amount": 279996.0,
   "modified": "2025-04-16 11:45:03.684058",
   "name": "Section 80CCD(2)-Employer Contribution"
- },
- {
-  "custom_component_type": null,
-  "custom_salary_component": null,
-  "docstatus": 0,
-  "doctype": "Employee Tax Exemption Sub Category",
-  "exemption_category": "Section 10",
-  "is_active": 1,
-  "max_amount": 75000.0,
-  "modified": "2025-04-16 11:45:03.677641",
-  "name": "Section 80D (Medi Claim for Parents for Senior Citizen)"
  },
  {
   "custom_component_type": null,

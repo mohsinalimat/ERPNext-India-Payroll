@@ -3,14 +3,6 @@
   "docstatus": 0,
   "doctype": "Employee Tax Exemption Category",
   "is_active": 1,
-  "max_amount": 250000.0,
-  "modified": "2025-04-09 17:25:09.106945",
-  "name": "Section 10"
- },
- {
-  "docstatus": 0,
-  "doctype": "Employee Tax Exemption Category",
-  "is_active": 1,
   "max_amount": 200000.0,
   "modified": "2025-04-09 17:25:09.114018",
   "name": "Section 80EE"
