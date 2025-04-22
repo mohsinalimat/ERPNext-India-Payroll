@@ -6,10 +6,10 @@ from frappe.utils import getdate
 
 
 class CustomSalaryStructureAssignment(SalaryStructureAssignment):
-    def before_save(self):
+    # def before_save(self):
 
-        self.set_cpl()
-        self.reimbursement_amount()
+    #     self.set_cpl()
+    #     self.reimbursement_amount()
 
         # self.insert_tax_declaration()
 
@@ -20,8 +20,8 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
         self.update_employee_promotion()
 
 
-    def before_update_after_submit(self):
-        self.reimbursement_amount()
+    # def before_update_after_submit(self):
+    #     self.reimbursement_amount()
 
 
 
