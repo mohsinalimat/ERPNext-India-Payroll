@@ -157,7 +157,8 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
                         source_name=self.salary_structure,
                         employee=self.employee,
                         print_format='Salary Slip Standard for CTC',
-                        # posting_date=self.from_date
+                        posting_date=self.from_date,
+                        for_preview=1,
                     )
                     for new_earning in new_salary_slip.deductions:
                         epf_component = frappe.get_doc("Salary Component", new_earning.salary_component)
@@ -193,7 +194,8 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
                         source_name=self.salary_structure,
                         employee=self.employee,
                         print_format='Salary Slip Standard for CTC',
-                        # posting_date=self.from_date
+                        posting_date=self.from_date,
+                        for_preview=1,
                     )
                     for new_earning in new_salary_slip.earnings:
                         nps_component = frappe.get_doc("Salary Component", new_earning.salary_component)
@@ -201,7 +203,6 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
 
 
                             nps_amount_year=new_earning.amount*num_months
-                            # frappe.msgprint(str(nps_amount_year))
                             nps_component = frappe.get_list('Employee Tax Exemption Sub Category',
                                     filters={'custom_component_type':"NPS"},
                                     fields=['*'],
@@ -230,7 +231,6 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
 
                             amount.append(i.max_amount)
 
-                # frappe.msgprint(str(amount))
 
 
 
@@ -243,7 +243,8 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
                         source_name=self.salary_structure,
                         employee=self.employee,
                         print_format='Salary Slip Standard for CTC',
-                        # posting_date=self.from_date
+                        posting_date=self.from_date,
+                        for_preview=1,
                     )
                     for new_earning in new_salary_slip.earnings:
                         nps_component = frappe.get_doc("Salary Component", new_earning.salary_component)
@@ -316,29 +317,29 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
 
 
 
-    def set_cpl(self):
-        components = ["Vehicle Maintenance Reimbursement", "Petrol Reimbursement", "Leave Travel Allowance"]
-        array=[]
+    # def set_cpl(self):
+    #     components = ["Vehicle Maintenance Reimbursement", "Petrol Reimbursement", "Leave Travel Allowance"]
+    #     array=[]
 
-        if self.custom_employee_reimbursements:
-            for i in self.custom_employee_reimbursements:
-                if i.reimbursements in components:
+    #     if self.custom_employee_reimbursements:
+    #         for i in self.custom_employee_reimbursements:
+    #             if i.reimbursements in components:
 
-                    array.append(i.reimbursements)
-
-
-            if len(array)==3:
-                self.custom_is_car_petrol_lta=1
-
-            else:
-                self.custom_is_car_petrol_lta=0
+    #                 array.append(i.reimbursements)
 
 
+    #         if len(array)==3:
+    #             self.custom_is_car_petrol_lta=1
 
-    def reimbursement_amount(self):
-        total_amount = 0
-        if len(self.custom_employee_reimbursements)>0:
-            for reimbursement in self.custom_employee_reimbursements:
-                total_amount += reimbursement.monthly_total_amount
+    #         else:
+    #             self.custom_is_car_petrol_lta=0
 
-        self.custom_statistical_amount = total_amount
+
+
+    # def reimbursement_amount(self):
+    #     total_amount = 0
+    #     if len(self.custom_employee_reimbursements)>0:
+    #         for reimbursement in self.custom_employee_reimbursements:
+    #             total_amount += reimbursement.monthly_total_amount
+
+    #     self.custom_statistical_amount = total_amount
