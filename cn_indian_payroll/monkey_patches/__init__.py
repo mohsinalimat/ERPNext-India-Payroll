@@ -1,2 +1,1 @@
 import cn_indian_payroll.monkey_patches.payroll_function_override
-# import cn_indian_payroll.monkey_patches.salary_slip_function_override

@@ -39,11 +39,13 @@ def override_calculate_tax_by_tax_slab(annual_taxable_earning, tax_slab, eval_gl
                 base_tax += taxable_range * rate
 
         # Step 2: Marginal Relief (Rebate Logic)
-        if 1200000 < annual_taxable_earning < 1270000:
-            excess_income = annual_taxable_earning - 1200000
-            if base_tax > excess_income:
-                rebate = base_tax - excess_income
-                base_tax -= rebate
+
+        if tax_slab.custom_marginal_relief_applicable and tax_slab.custom_minmum_value and tax_slab.custom_maximun_value:
+            if tax_slab.custom_minmum_value < annual_taxable_earning < tax_slab.custom_maximun_value:
+                excess_income = annual_taxable_earning - tax_slab.custom_minmum_value
+                if base_tax > excess_income:
+                    rebate = base_tax - excess_income
+                    base_tax -= rebate
 
         # Step 3: Cess and Other Charges AFTER Rebate
         for d in tax_slab.other_taxes_and_charges:
