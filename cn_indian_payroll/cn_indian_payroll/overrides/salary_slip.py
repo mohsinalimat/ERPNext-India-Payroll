@@ -27,12 +27,6 @@ from datetime import datetime
 
 class CustomSalarySlip(SalarySlip):
 
-
-
-
-
-
-
     def before_update_after_submit(self):
         self.tax_calculation()
 
@@ -43,25 +37,12 @@ class CustomSalarySlip(SalarySlip):
         super().on_submit()
         self.employee_accrual_submit()
 
-    # def validate(self):
-    #     super().validate()
-    #
-
-
-
-
-
-
     def before_save(self):
 
         self.update_bonus_accrual()
         self.new_joinee()
         self.insert_lop_days()
-
         self.set_taxale()
-
-
-
         self.actual_amount_ctc()
         self.set_month()
         self.remaining_day()
@@ -112,11 +93,6 @@ class CustomSalarySlip(SalarySlip):
         self.food_coupon()
         self.tax_calculation()
         self.calculate_grosspay()
-
-
-
-
-
 
     def insert_other_perquisites(self):
         latest_salary_structure = frappe.get_list(
