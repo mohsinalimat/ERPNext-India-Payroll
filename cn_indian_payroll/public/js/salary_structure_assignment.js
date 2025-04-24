@@ -2,8 +2,6 @@
 
 frappe.ui.form.on('Salary Structure Assignment', {
 
-
-
     onload:function(frm)
     {
 
@@ -40,28 +38,6 @@ frappe.ui.form.on('Salary Structure Assignment', {
     refresh(frm)
     {
 
-        // $('[data-fieldname="custom_preview_tax_projection"]').css('color', 'black');
-
-        // $('input[data-fieldname="custom_preview_tax_projection"]').css("background-color","#FFE4C4")
-
-
-        if(frm.doc.docstatus==1)
-            {
-
-
-                    change_regime(frm)
-
-            }
-
-
-
-                setTimeout(() => {
-
-                    frm.remove_custom_button('Payroll Entry', 'Create');
-                    // frm.remove_custom_button('Preview Salary Slip', 'Actions');
-                    // frm.remove_custom_button('Chose Regime');
-
-                }, 10);
 
 
 
@@ -88,46 +64,8 @@ frappe.ui.form.on('Salary Structure Assignment', {
     },
 
 
-    custom_nps_percentage(frm) {
-
-
-
-        if (frm.doc.custom_is_nps==1)
-
-        {
-
-                if(frm.doc.custom_nps_percentage <= 10)
-                {
-
-
-                        var amount = (frm.doc.base / 12 * 35) / 100;
-
-
-
-                        var nps_value=(amount*frm.doc.custom_nps_percentage)/100
-                        //  console.log(nps_value,"ppp")
-                        frm.set_value("custom_nps_amount",nps_value)
-
-                }
-
-                else
-                {
-                    msgprint("you cant put percentage greater than 10")
-
-                    frm.set_value("custom_nps_amount",undefined)
-                }
-
-        }
-    },
-
-
-
-
-
 custom_cubic_capacity_of_company(frm)
 {
-
-
 
         if(frm.doc.custom_cubic_capacity_of_company=="Car < 1600 CC" )
         {
@@ -182,101 +120,7 @@ custom__car_perquisite(frm)
 },
 
 
-
-
-custom_nps_amount(frm) {
-    if (frm.doc.custom_is_nps == 1 && frm.doc.custom_nps_amount) {
-        var amount = (frm.doc.base / 12 * 35) / 100;
-        var nps_value = (amount * 10) / 100;
-
-        if (frm.doc.custom_nps_amount > nps_value) {
-            msgprint("Please enter an amount less than or equal to " + nps_value);
-            frm.set_value("custom_nps_amount", 0);
-            frm.set_value("custom_nps_percentage", 0);
-        } else {
-            // Calculate custom NPS percentage
-            var custom_percentage = (frm.doc.custom_nps_amount / amount) * 100;
-            frm.set_value("custom_nps_percentage", custom_percentage);
-        }
-    }
-},
-
 })
-
-
-
-
-function change_regime(frm)
-{
-    if(!frm.is_new() && frm.doc.income_tax_slab)
-    {
-        frm.add_custom_button("Switch Regime", function() {
-
-            let d = new frappe.ui.Dialog({
-                title: 'Enter details',
-                fields: [
-
-                    {
-                        label: 'Select Regime',
-                        fieldname: 'select_regime',
-                        fieldtype: 'Select',
-                        options:['Old Regime','New Regime'],
-                        reqd:1,
-                        default:frm.doc.custom_tax_regime
-                    },
-
-
-
-
-                ],
-                size: 'small', // small, large, extra-large
-                primary_action_label: 'Submit',
-                primary_action(values) {
-                    console.log(values);
-
-                    frappe.call({
-
-                        "method":"cn_indian_payroll.cn_indian_payroll.overrides.declaration.switch_regime",
-                        args:{
-
-                            doc_id: frm.doc.name,
-                            employee:frm.doc.employee,
-                            regime:values.select_regime,
-                            company:frm.doc.company
-
-                        },
-                        callback :function(res)
-                        {
-                            frm.reload_doc();
-
-
-                        }
-
-            })
-
-
-
-                    d.hide();
-                }
-            });
-
-            d.show();
-
-
-        });
-        frm.change_custom_button_type('Switch Regime', null, 'primary');
-    }
-}
-
-function send_to_employee(frm)
-{
-    frm.add_custom_button("Send To Employee", function() {
-
-
-    })
-    frm.change_custom_button_type('Send To Employee', null, 'primary');
-
-}
 
 
 async function processSalaryComponents(frm) {
@@ -289,13 +133,12 @@ async function processSalaryComponents(frm) {
             employee: frm.doc.employee,
             print_format: 'Salary Slip Standard for CTC',
             docstatus: frm.doc.docstatus,
-            // posting_date: frm.doc.from_date
+            posting_date: frm.doc.from_date,
             for_preview: 1,
         }
     });
 
     if (response.message) {
-        // Define the tables for earnings, reimbursements, deductions, and additional components
         let salaryBreakup = `
             <table class="table table-bordered small">
                 <thead>

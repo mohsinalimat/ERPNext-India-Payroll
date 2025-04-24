@@ -3787,16 +3787,6 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
 
 
-    // before_save: function (frm) {
-
-    //     if (window.cur_formioInstance) {
-    //         const data = window.cur_formioInstance.submission.data;
-    //         frm.set_value("custom_declaration_form_data", JSON.stringify(data));
-
-    //     }
-    // }
-
-
 
 });
 

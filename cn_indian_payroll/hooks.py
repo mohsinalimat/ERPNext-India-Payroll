@@ -228,19 +228,11 @@ app_license = "mit"
 # }
 
 fixtures = [
-    # {"dt": "Custom Field", "filters": {"module": "cn-indian-payroll"}},
     {"dt": "Print Format", "filters": {"module": "cn-indian-payroll"}},
-    # {"dt": "Property Setter", "filters": {"module": "cn-indian-payroll"}},
     {"dt":"Income Tax Regime"},
-    # {"dt": "Role", "filters": {"name": ["in", ["HR Head", "Finance Head","Payroll manager"]]}},
     {"dt":"Payroll Configuration","filters":{"name":"Payroll Configuration"}},
-    {"dt":"Workflow","filters":{"name":"declaration Approve"}},
-    {"dt":"Workflow State","filters":{"name":"Cancelled"}},
-
-
-
-    # {"dt":"Employee Tax Exemption Sub Category"},
-    # {"dt":"Employee Tax Exemption Category"},
+    {"dt":"Employee Tax Exemption Sub Category"},
+    {"dt":"Employee Tax Exemption Category"},
     # {"dt":"Salary Component","filter":{"custom_is_arrear":1}},
     # {"dt":"Income Tax Slab","filters": {"name": ["in", ["Old Regime 25-26", "New Regime 25-26"]]}},
 
