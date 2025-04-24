@@ -59,7 +59,7 @@ class CustomSalarySlip(SalarySlip):
 
         self.set_payroll_period()
         # self.insert_loan_perquisite()
-        # self.update_declaration_component()
+        self.update_declaration_component()
         self.update_total_lop()
 
 
@@ -560,7 +560,7 @@ class CustomSalarySlip(SalarySlip):
 
             get_salary_component_epf = frappe.get_list(
                 'Salary Component',
-                filters={"component_type": "EPF"},
+                filters={"component_type": "Provident Fund"},
                 fields=['name'],
             )
             if get_salary_component_epf:
@@ -643,7 +643,6 @@ class CustomSalarySlip(SalarySlip):
                 basic_sum=sum(basic_array)
                 hra_sum=sum(hra_array)
 
-                # frappe.msgprint(str(total_nps_sum))
 
                 for i in self.earnings:
                     components = frappe.get_list(
@@ -670,7 +669,7 @@ class CustomSalarySlip(SalarySlip):
 
 
                         for k in ded_components:
-                            if k.custom_component_type=="EPF":
+                            if k.custom_component_type=="Provident Fund":
                                 if total_epf_sum>k.max_amount:
 
                                         update_component_array.append({
@@ -688,7 +687,6 @@ class CustomSalarySlip(SalarySlip):
                                         })
 
 
-                # frappe.msgprint(str(update_component_array))
 
                 if update_component_array:
                     declaration = frappe.get_list(
@@ -698,25 +696,24 @@ class CustomSalarySlip(SalarySlip):
                     )
                     if declaration:
 
-                        # form_data = json.loads(declaration[0].custom_declaration_form_data or '{}')
+                        form_data = json.loads(declaration[0].custom_declaration_form_data or '{}')
 
 
-                        # get_each_doc = frappe.get_doc("Employee Tax Exemption Declaration", declaration[0].name)
+                        get_each_doc = frappe.get_doc("Employee Tax Exemption Declaration", declaration[0].name)
 
 
-                        # for ki in update_component_array:
-                        #     if ki['component']=="NPS Contribution by Employer":
-                        #         form_data['nineNumber'] = round(ki['amount'])
+                        for ki in update_component_array:
+                            if ki['component']=="NPS Contribution by Employer":
+                                form_data['nineNumber'] = round(ki['amount'])
 
 
-                        #     if ki['component']=="Employee Provident Fund (Auto)":
-                        #         form_data['pfValue'] = round(ki['amount'])
+                            if ki['component']=="Employee Provident Fund (Auto)":
+                                form_data['pfValue'] = round(ki['amount'])
 
 
                         get_each_doc.custom_posting_date=self.posting_date
                         get_each_doc.custom_declaration_form_data = json.dumps(form_data)
 
-                        #update hra exemption
 
                         if get_each_doc.monthly_house_rent>0:
 
@@ -733,8 +730,6 @@ class CustomSalarySlip(SalarySlip):
                             get_each_doc.annual_hra_exemption=round(annual_hra_exemption)
                             get_each_doc.monthly_hra_exemption=round(annual_hra_exemption/12)
 
-
-                        get_each_doc.workflow_state="Approved"
                         get_each_doc.save()
                         frappe.db.commit()
                         self.tax_exemption_declaration=get_each_doc.total_exemption_amount
@@ -767,7 +762,6 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-                # frappe.msgprint(str(total_nps))
                 total_nps_sum = sum(total_nps)
 
 
@@ -801,93 +795,9 @@ class CustomSalarySlip(SalarySlip):
                                     each_component.max_amount = ki['max_amount']
 
                         get_each_doc.custom_posting_date=self.posting_date
-                        get_each_doc.workflow_state="Approved"
                         get_each_doc.save()
                         frappe.db.commit()
                         self.tax_exemption_declaration=get_each_doc.total_exemption_amount
-
-
-
-
-    def update_nps(self):
-        if self.earnings:
-            update_component_array = []
-            if self.custom_tax_regime == "Old Regime":
-                # Process earnings
-                for earning in self.earnings:
-                    components = frappe.get_list(
-                        'Employee Tax Exemption Sub Category',
-                        filters={'custom_salary_component': earning.salary_component},
-                        fields=['*'],
-                    )
-                    if components:
-                        for component in components:
-                            update_component_array.append({
-                                "component": component.name,
-                                "amount": earning.amount * 12
-                            })
-
-                # Process deductions
-                for deduction in self.deductions:
-                    component_deductions = frappe.get_list(
-                        'Employee Tax Exemption Sub Category',
-                        filters={'custom_salary_component': deduction.salary_component},
-                        fields=['*'],
-                    )
-                    if component_deductions:
-                        for component_deduction in component_deductions:
-                            if deduction.amount*12>150000:
-                                update_component_array.append({
-                                    "component": component_deduction.name,
-                                    "amount": 150000
-                                })
-
-                            else:
-                                update_component_array.append({
-                                    "component": component_deduction.name,
-                                    "amount":deduction.amount*12
-                                })
-
-
-
-            if self.custom_tax_regime == "New Regime":
-                for earning in self.earnings:
-                    components = frappe.get_list(
-                        'Employee Tax Exemption Sub Category',
-                        filters={'custom_salary_component': earning.salary_component},
-                        fields=['*'],
-                    )
-                    if components:
-                        for component in components:
-                            update_component_array.append({
-                                "component": component.name,
-                                "amount": earning.amount * 12,
-                                "max_amount":earning.amount * 12
-                            })
-
-
-
-            # frappe.msgprint(str(update_component_array))
-
-            if update_component_array:
-                declaration = frappe.get_list(
-                    'Employee Tax Exemption Declaration',
-                    filters={'employee': self.employee, 'payroll_period': self.custom_payroll_period,"docstatus":1},
-                    fields=['name'],
-                )
-                if declaration:
-
-                    get_each_doc = frappe.get_doc("Employee Tax Exemption Declaration", declaration[0].name)
-                    for each_component in get_each_doc.declarations:
-                        for ki in update_component_array:
-                            if each_component.exemption_sub_category == ki['component']:
-                                each_component.amount = ki['amount']
-                                each_component.max_amount = ki['max_amount']
-
-
-                    get_each_doc.save()
-                    frappe.db.commit()
-
 
 
 
