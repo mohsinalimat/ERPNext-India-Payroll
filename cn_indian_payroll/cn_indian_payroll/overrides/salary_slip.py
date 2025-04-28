@@ -538,6 +538,8 @@ class CustomSalarySlip(SalarySlip):
         if not self.employee:
             return
 
+        current_basic=current_hra=None
+
         current_basic_value = current_hra_value = current_nps_value = current_epf_value = current_pt_value = 0
         previous_basic_value = previous_hra_value = previous_nps_value = previous_epf_value = previous_pt_value = 0
         future_basic_value = future_hra_value = future_nps_value = future_epf_value = future_pt_value = 0
