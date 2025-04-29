@@ -233,8 +233,7 @@ fixtures = [
     {"dt":"Payroll Configuration","filters":{"name":"Payroll Configuration"}},
     {"dt":"Employee Tax Exemption Sub Category"},
     {"dt":"Employee Tax Exemption Category"},
-    # {"dt":"Salary Component","filter":{"custom_is_arrear":1}},
-    # {"dt":"Income Tax Slab","filters": {"name": ["in", ["Old Regime 25-26", "New Regime 25-26"]]}},
+
 
 ]
 
@@ -252,6 +251,7 @@ doctype_js = {
     "Salary Appraisal Calculation": "public/js/salary_revision.js",
     "Employee Promotion": "public/js/employee_promotion.js",
     "Company": "public/js/company.js",
+    "Structure Setting": "public/js/structure_setting.js",
 
 }
 
@@ -265,10 +265,6 @@ override_doctype_class = {
 }
 
 doc_events = {
-    "Job Offer": {
-        "on_update_after_submit": "cn_indian_payroll.cn_indian_payroll.overrides.job_offer.on_update_after_submit",
-
-    },
 
     "LOP Reversal": {
         "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.lop_reversal.on_submit",
