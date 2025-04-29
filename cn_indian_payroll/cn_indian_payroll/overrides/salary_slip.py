@@ -193,7 +193,6 @@ class CustomSalarySlip(SalarySlip):
 
                 if get_tax.is_tax_applicable==1 and get_tax.custom_tax_exemption_applicable_based_on_regime==1:
                     if get_tax.custom_regime=="All":
-                        # frappe.msgprint(str(get_tax.name))
                         earning.is_tax_applicable=get_tax.is_tax_applicable
                         earning.custom_regime=get_tax.custom_regime
                         earning.custom_tax_exemption_applicable_based_on_regime=get_tax.custom_tax_exemption_applicable_based_on_regime
