@@ -231,8 +231,8 @@ fixtures = [
     {"dt": "Print Format", "filters": {"module": "cn-indian-payroll"}},
     {"dt":"Income Tax Regime"},
     {"dt":"Payroll Configuration","filters":{"name":"Payroll Configuration"}},
-    # {"dt":"Employee Tax Exemption Sub Category"},
-    # {"dt":"Employee Tax Exemption Category"},
+    {"dt":"Employee Tax Exemption Sub Category"},
+    {"dt":"Employee Tax Exemption Category"},
     # {"dt":"Salary Component","filter":{"custom_is_arrear":1}},
     # {"dt":"Income Tax Slab","filters": {"name": ["in", ["Old Regime 25-26", "New Regime 25-26"]]}},
 
