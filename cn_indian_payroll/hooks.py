@@ -291,9 +291,9 @@ doc_events = {
         "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.employee_promotion.on_submit",
     },
 
-    "Structure Setting": {
-        "validate": "cn_indian_payroll.cn_indian_payroll.overrides.structure_setting.validate",
-    },
+    # "Structure Setting": {
+    #     "validate": "cn_indian_payroll.cn_indian_payroll.overrides.structure_setting.validate",
+    # },
 
 }
 
