@@ -68,30 +68,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         if self.custom_tax_regime == "Old Regime":
             form_data = json.loads(self.custom_declaration_form_data or "{}")
 
-            # Ensure numeric values (default to 0 if None)
-            # mediclaim_self_spouse_children_below_60_years = form_data.get("amount", 0)
-            # mediclaim_self_senior_citizen_60_years_above = form_data.get("amount3", 0)
-            # parents_below_60_years = form_data.get("mpAmount3", 0)
-            # parents_above_60_years = form_data.get("mpAmount4", 0)
-            # preventive_health_check_up_for_parents = form_data.get("mp5", 0)
-            # preventive_health = form_data.get("mpAmount6", 0)
 
-            # self_below = mediclaim_self_spouse_children_below_60_years + preventive_health_check_up_for_parents
-            # self_above = mediclaim_self_senior_citizen_60_years_above + preventive_health_check_up_for_parents
-            # parents_below = parents_below_60_years + preventive_health
-            # parents_above = parents_above_60_years + preventive_health
-
-            # if self_below > 25000:
-            #     frappe.throw("Mediclaim Self, Spouse & Children (Below 60 years) and Preventive Checkup (Self + Family) should not exceed ₹25,000")
-
-            # if self_above > 50000:
-            #     frappe.throw("Mediclaim Self (Senior Citizen - 60 years & above) and Preventive Checkup (Self + Family) should not exceed ₹50,000")
-
-            # if parents_below > 25000:
-            #     frappe.throw("Parents (Below 60 years) and Preventive Health Check-up for Parents should not exceed ₹25,000")
-
-            # if parents_above > 50000:
-            #     frappe.throw("Parents (Senior Citizen - 60 years & above) and Preventive Health Check-up for Parents should not exceed ₹50,000")
 
             name_value = form_data.get("nameValue")
             address_one_value = form_data.get("addressoneValue")
