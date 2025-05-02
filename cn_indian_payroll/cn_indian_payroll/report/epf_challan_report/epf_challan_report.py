@@ -110,9 +110,9 @@ def execute(filters=None):
         {"fieldname": "epf_wages", "label": "EPF Wages", "fieldtype": "Currency", "width": 150},
         {"fieldname": "eps_wages", "label": "EPS Wages", "fieldtype": "Currency", "width": 150},
         {"fieldname": "edli_wages", "label": "EDLI Wages", "fieldtype": "Currency", "width": 150},
-        {"fieldname": "epf_amount_employee", "label": "EPF Employee Contribution", "fieldtype": "Currency", "width": 150},
-        {"fieldname": "epf_amount_employer", "label": "EPF Employer Contribution", "fieldtype": "Currency", "width": 150},
-        {"fieldname": "eps_amount", "label": "EPS Contribution", "fieldtype": "Currency", "width": 150},
+        {"fieldname": "epf_amount_employee", "label": "EPF Contribution (12%)", "fieldtype": "Currency", "width": 150},
+        {"fieldname": "epf_amount_employer", "label": "EPS Contribution(8.33%)", "fieldtype": "Currency", "width": 150},
+        {"fieldname": "eps_amount", "label": "EDLI Contribution", "fieldtype": "Currency", "width": 150},
         {"fieldname": "ncp_days", "label": "NCP Days", "fieldtype": "Float", "width": 120},
         {"fieldname": "refund", "label": "Refund Of Advances", "fieldtype": "Currency", "width": 150},
     ]
