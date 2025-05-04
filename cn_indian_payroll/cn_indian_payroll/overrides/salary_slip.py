@@ -40,7 +40,7 @@ class CustomSalarySlip(SalarySlip):
     def before_save(self):
 
         self.update_bonus_accrual()
-        self.new_joinee()
+        # self.new_joinee()
         self.insert_lop_days()
         self.set_taxale()
         self.actual_amount_ctc()
@@ -58,7 +58,7 @@ class CustomSalarySlip(SalarySlip):
 
 
         self.set_payroll_period()
-        # self.insert_loan_perquisite()
+        self.insert_loan_perquisite()
         self.update_declaration_component()
         self.update_total_lop()
 
@@ -1144,16 +1144,10 @@ class CustomSalarySlip(SalarySlip):
 
 
     def actual_amount_ctc(self):
-        if len(self.earnings)>0:
-            for k in self.earnings:
+        if self.earnings:
+            for earning in self.earnings:
+                earning.custom_actual_amount=earning.default_amount
 
-                salary_component_doc=frappe.get_doc("Salary Component",k.salary_component)
-
-                if salary_component_doc.custom_is_arrear==0:
-                    nps_ctc=(k.amount*self.total_working_days)/self.payment_days
-                    k.custom_actual_amount=nps_ctc
-                else:
-                    k.custom_actual_amount=0
 
 
 
@@ -1972,12 +1966,16 @@ class CustomSalarySlip(SalarySlip):
 
     def set_payroll_period(self):
 
-        latest_salary_structure = frappe.get_list('Salary Structure Assignment',
-                        filters={'employee': self.employee,'docstatus':1},
-                        fields=["*"],
-                        order_by='from_date desc',
-                        limit=1
-                    )
+        latest_salary_structure = frappe.get_list(
+        'Salary Structure Assignment',
+        filters={
+            'employee': self.employee,
+            'docstatus': 1,
+            'from_date': ['<', self.end_date]
+        },
+        fields=["*"],
+        limit=1
+        )
 
 
         self.custom_salary_structure_assignment=latest_salary_structure[0].name
@@ -1985,8 +1983,6 @@ class CustomSalarySlip(SalarySlip):
         self.custom_tax_regime=latest_salary_structure[0].custom_tax_regime
         self.custom_employee_state=latest_salary_structure[0].custom_state
         self.custom_annual_ctc=latest_salary_structure[0].base
-        # self.custom_payroll_period=latest_salary_structure[0].custom_payroll_period
-
 
         latest_payroll_period = frappe.get_list('Payroll Period',
             filters={'start_date': ('<', self.end_date),'company':self.company},
@@ -1996,18 +1992,6 @@ class CustomSalarySlip(SalarySlip):
         )
         if latest_payroll_period:
             self.custom_payroll_period=latest_payroll_period[0].name
-
-
-        # if self.custom_tax_regime:
-
-        #     for earning in self.earnings:
-
-        #         if earning.custom_regime==self.custom_tax_regime and earning.is_tax_applicable==1:
-        #             earning.custom_taxable=1
-        #         if earning.custom_regime=="None" and earning.is_tax_applicable==1:
-        #             earning.custom_taxable=1
-        #         if earning.custom_regime=="None" and earning.is_tax_applicable==0:
-        #             earning.custom_taxable=0
 
 
 
