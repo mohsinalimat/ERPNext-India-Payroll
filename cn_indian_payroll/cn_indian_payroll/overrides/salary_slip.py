@@ -61,38 +61,128 @@ class CustomSalarySlip(SalarySlip):
         self.insert_loan_perquisite()
         self.update_declaration_component()
         self.update_total_lop()
-
-
-
-
-        # if self.annual_taxable_amount and self.custom_perquisite_amount:
-        #     self.annual_taxable_amount=self.total_earnings - (
-        #         self.non_taxable_earnings
-        #         + self.deductions_before_tax_calculation
-        #         + self.tax_exemption_declaration
-        #         + self.standard_tax_exemption_amount
-
-        #         ) + self.custom_perquisite_amount
-        # else:
-        #     self.annual_taxable_amount=self.total_earnings - (
-        #         self.non_taxable_earnings
-        #         + self.deductions_before_tax_calculation
-        #         + self.tax_exemption_declaration
-        #         + self.standard_tax_exemption_amount
-
-        #         )
-
-        # if self.is_new():
-        #     self.add_reimbursement_taxable_new_doc()
-
-
-
-
-
         self.arrear_ytd()
         self.food_coupon()
         self.tax_calculation()
         self.calculate_grosspay()
+
+
+    def compute_income_tax_breakup(self):
+        self.standard_tax_exemption_amount = 0
+        self.tax_exemption_declaration = 0
+        self.deductions_before_tax_calculation = 0
+        self.custom_perquisite_amount = 0
+
+        self.non_taxable_earnings = self.compute_non_taxable_earnings()
+        self.ctc = self.compute_ctc()
+        self.income_from_other_sources = self.get_income_form_other_sources()
+        self.total_earnings = self.ctc + self.income_from_other_sources
+
+        # Fetch payroll period once
+        payroll_period = frappe.get_value(
+            'Payroll Period',
+            {'company': self.company, 'name': self.payroll_period.name},
+            ['name', 'start_date', 'end_date'],
+            as_dict=True
+        )
+
+        # If payroll period is not found, return without further processing
+        if not payroll_period:
+            return
+
+        # If payroll period is found, process further
+        start_date = frappe.utils.getdate(payroll_period["start_date"])
+        end_date = frappe.utils.getdate(payroll_period["end_date"])
+        fiscal_year = payroll_period["name"]
+
+        # Calculate loan perquisites within the fiscal year
+        loan_repayments = frappe.get_list(
+            'Loan Repayment Schedule',
+            filters={
+                'custom_employee': self.employee,
+                'status': 'Active',
+                'docstatus': 1
+            },
+            fields=['name']
+        )
+
+        total_perq = 0
+        for repayment in loan_repayments:
+            repayment_doc = frappe.get_doc("Loan Repayment Schedule", repayment.name)
+            for entry in repayment_doc.custom_loan_perquisite:
+                if entry.payment_date and start_date <= frappe.utils.getdate(entry.payment_date) <= end_date:
+                    total_perq += entry.perquisite_amount
+
+        self.custom_perquisite_amount = total_perq
+
+        # Tax slab logic
+        if hasattr(self, "tax_slab") and self.tax_slab:
+            if self.tax_slab.allow_tax_exemption:
+                self.standard_tax_exemption_amount = self.tax_slab.standard_tax_exemption_amount
+                self.deductions_before_tax_calculation = (
+                    self.compute_annual_deductions_before_tax_calculation()
+                )
+
+            self.tax_exemption_declaration = (
+                self.get_total_exemption_amount() - self.standard_tax_exemption_amount
+            )
+
+        # Final Taxable Income Calculation
+        self.annual_taxable_amount = (
+            self.total_earnings
+            + self.custom_perquisite_amount
+            - (
+                self.non_taxable_earnings
+                + self.deductions_before_tax_calculation
+                + self.tax_exemption_declaration
+                + self.standard_tax_exemption_amount
+            )
+        )
+
+
+
+    def insert_loan_perquisite(self):
+        if self.custom_payroll_period:
+
+            get_payroll_period = frappe.get_list(
+            'Payroll Period',
+            filters={
+                'company': self.company,
+                'name': self.custom_payroll_period
+            },
+            fields=['*']
+            )
+
+
+            if get_payroll_period:
+                start_date = frappe.utils.getdate(get_payroll_period[0].start_date)
+                end_date = frappe.utils.getdate(get_payroll_period[0].end_date)
+
+
+
+                loan_repayments = frappe.get_list(
+                    'Loan Repayment Schedule',
+                    filters={
+                        'custom_employee': self.employee,
+                        'status': 'Active',
+                        'docstatus':1
+                    },
+                    fields=['*']
+                )
+                if loan_repayments:
+                    sum=0
+                    for repayment in loan_repayments:
+                        get_each_perquisite=frappe.get_doc("Loan Repayment Schedule",repayment.name)
+                        if len(get_each_perquisite.custom_loan_perquisite)>0:
+                            for date in get_each_perquisite.custom_loan_perquisite:
+
+                                payment_date = frappe.utils.getdate(date.payment_date)
+                                if start_date <= payment_date <= end_date:
+                                    sum=sum+date.perquisite_amount
+
+                    self.custom_perquisite_amount=sum
+
+
 
     def insert_other_perquisites(self):
         latest_salary_structure = frappe.get_list(
@@ -136,13 +226,6 @@ class CustomSalarySlip(SalarySlip):
                     is_tax_applicable=1
                     custom_regime=get_tax.custom_regime
                     custom_tax_exemption_applicable_based_on_regime=get_tax.custom_tax_exemption_applicable_based_on_regime
-
-
-
-
-
-
-
 
 
                 if perquisite.title not in existing_components:
@@ -1578,46 +1661,6 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-    def insert_loan_perquisite(self):
-        if self.custom_payroll_period:
-
-            get_payroll_period = frappe.get_list(
-            'Payroll Period',
-            filters={
-                'company': self.company,
-                'name': self.custom_payroll_period
-            },
-            fields=['*']
-            )
-
-
-            if get_payroll_period:
-                start_date = frappe.utils.getdate(get_payroll_period[0].start_date)
-                end_date = frappe.utils.getdate(get_payroll_period[0].end_date)
-
-
-
-                loan_repayments = frappe.get_list(
-                    'Loan Repayment Schedule',
-                    filters={
-                        'custom_employee': self.employee,
-                        'status': 'Active',
-                        'docstatus':1
-                    },
-                    fields=['*']
-                )
-                if loan_repayments:
-                    sum=0
-                    for repayment in loan_repayments:
-                        get_each_perquisite=frappe.get_doc("Loan Repayment Schedule",repayment.name)
-                        if len(get_each_perquisite.custom_loan_perquisite)>0:
-                            for date in get_each_perquisite.custom_loan_perquisite:
-
-                                payment_date = frappe.utils.getdate(date.payment_date)
-                                if start_date <= payment_date <= end_date:
-                                    sum=sum+date.perquisite_amount
-
-                    self.custom_perquisite_amount=sum
 
 
 
@@ -1984,14 +2027,14 @@ class CustomSalarySlip(SalarySlip):
         self.custom_employee_state=latest_salary_structure[0].custom_state
         self.custom_annual_ctc=latest_salary_structure[0].base
 
-        latest_payroll_period = frappe.get_list('Payroll Period',
-            filters={'start_date': ('<', self.end_date),'company':self.company},
-            fields=["*"],
-            order_by='start_date desc',
-            limit=1
-        )
-        if latest_payroll_period:
-            self.custom_payroll_period=latest_payroll_period[0].name
+        # latest_payroll_period = frappe.get_list('Payroll Period',
+        #     filters={'start_date': ('<', self.end_date),'company':self.company},
+        #     fields=["*"],
+        #     order_by='start_date desc',
+        #     limit=1
+        # )
+        # if latest_payroll_period:
+        self.custom_payroll_period=self.payroll_period.name
 
 
 
