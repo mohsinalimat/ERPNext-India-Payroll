@@ -39,7 +39,7 @@ class CustomSalarySlip(SalarySlip):
 
     def before_save(self):
 
-        self.update_bonus_accrual()
+        # self.update_bonus_accrual()
         self.insert_lop_days()
         self.set_taxale()
         self.actual_amount_ctc()
@@ -50,10 +50,10 @@ class CustomSalarySlip(SalarySlip):
         #     # self.insert_lta_reimbursement_lop()
         #     # self.accrual_update()
         #     self.driver_reimbursement_lop()
-        if self.leave_without_pay==0:
-            self.insert_lta_reimbursement()
-            self.insert_reimbursement()
-            self.driver_reimbursement()
+        # if self.leave_without_pay==0:
+        #     self.insert_lta_reimbursement()
+        #     self.insert_reimbursement()
+        #     self.driver_reimbursement()
 
 
         self.set_payroll_period()
