@@ -968,10 +968,33 @@ class CustomSalarySlip(SalarySlip):
                     k.custom_actual_amount=k.amount
 
 
+    # def actual_amount_ctc(self):
+    #     if len(self.earnings)>0:
+    #         for k in self.earnings:
+
+    #             salary_component_doc=frappe.get_doc("Salary Component",k.salary_component)
+
+    #             if salary_component_doc.custom_is_arrear==0:
+    #                 nps_ctc=(k.amount*self.total_working_days)/self.payment_days
+    #                 k.custom_actual_amount=nps_ctc
+    #             else:
+    #                 k.custom_actual_amount=0
+
     def actual_amount_ctc(self):
         if self.earnings:
-            for earning in self.earnings:
-                earning.custom_actual_amount=earning.default_amount
+            for k in self.earnings:
+                salary_component_doc = frappe.get_doc("Salary Component", k.salary_component)
+
+                if salary_component_doc.custom_is_arrear == 0:
+                    if self.payment_days and self.payment_days > 0:
+                        k.custom_actual_amount = (k.amount * self.total_working_days) / self.payment_days
+                    else:
+                        k.custom_actual_amount = 0
+                else:
+                    k.custom_actual_amount = 0
+
+
+
 
 
 
