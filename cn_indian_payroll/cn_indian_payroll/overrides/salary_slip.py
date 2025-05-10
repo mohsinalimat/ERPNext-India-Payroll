@@ -2,6 +2,9 @@ import frappe
 import datetime
 from frappe.query_builder.functions import Count, Sum
 import json
+from frappe.query_builder import Order
+from frappe import _
+
 
 
 
@@ -22,10 +25,18 @@ from frappe.utils import (
 	rounded,
 )
 from datetime import datetime, timedelta
+from hrms.utils.holiday_list import get_holiday_dates_between
+from hrms.payroll.doctype.payroll_period.payroll_period import get_period_factor
+
 
 
 
 class CustomSalarySlip(SalarySlip):
+
+    def validate(self):
+        super().validate()
+        self.set_sub_period()
+
 
     def before_update_after_submit(self):
         self.tax_calculation()
@@ -40,11 +51,11 @@ class CustomSalarySlip(SalarySlip):
     def before_save(self):
 
         # self.update_bonus_accrual()
-        self.insert_lop_days()
+        # self.insert_lop_days()
         self.set_taxale()
         self.actual_amount_ctc()
         self.set_month()
-        self.remaining_day()
+        # self.remaining_day()
 
         # if self.leave_without_pay>0:
         #     # self.insert_lta_reimbursement_lop()
@@ -56,13 +67,33 @@ class CustomSalarySlip(SalarySlip):
         #     self.driver_reimbursement()
 
 
-        self.set_payroll_period()
+        # self.set_payroll_period()
         self.update_declaration_component()
         self.update_total_lop()
         self.arrear_ytd()
         self.food_coupon()
         self.tax_calculation()
         self.calculate_grosspay()
+
+
+
+
+
+
+
+    def set_sub_period(self):
+        sub_period=get_period_factor(
+                    self.employee,
+                    self.start_date,
+                    self.end_date,
+                    self.payroll_frequency,
+                    self.payroll_period,
+                    joining_date=self.joining_date,
+                    relieving_date=self.relieving_date,
+                )[1]
+
+
+        self.custom_month_count=sub_period-1
 
 
     def compute_income_tax_breakup(self):
@@ -136,6 +167,62 @@ class CustomSalarySlip(SalarySlip):
                 + self.standard_tax_exemption_amount
             )
         )
+
+
+    def check_sal_struct(self):
+        ss = frappe.qb.DocType("Salary Structure")
+        ssa = frappe.qb.DocType("Salary Structure Assignment")
+
+        query = (
+            frappe.qb.from_(ssa)
+            .join(ss)
+            .on(ssa.salary_structure == ss.name)
+            .select(
+                ssa.salary_structure,
+                ssa.custom_payroll_period,
+                ssa.name,
+                ssa.income_tax_slab,
+                ssa.custom_tax_regime
+            )
+            .where(
+                (ssa.docstatus == 1)
+                & (ss.docstatus == 1)
+                & (ss.is_active == "Yes")
+                & (ssa.employee == self.employee)
+                & (
+                    (ssa.from_date <= self.start_date)
+                    | (ssa.from_date <= self.end_date)
+                    | (ssa.from_date <= self.joining_date)
+                )
+            )
+            .orderby(ssa.from_date, order=Order.desc)
+            .limit(1)
+        )
+
+        if not self.salary_slip_based_on_timesheet and self.payroll_frequency:
+            query = query.where(ss.payroll_frequency == self.payroll_frequency)
+
+        st_name = query.run()
+
+        if st_name:
+            self.salary_structure = st_name[0][0]
+            self.custom_payroll_period = st_name[0][1]
+            self.custom_salary_structure_assignment=st_name[0][2]
+            self.custom_income_tax_slab=st_name[0][3]
+            self.custom_tax_regime=st_name[0][4]
+
+
+            return self.salary_structure
+
+        else:
+            self.salary_structure = None
+            frappe.msgprint(
+                _("No active or default Salary Structure found for employee {0} for the given dates").format(
+                    self.employee
+                ),
+                title=_("Salary Structure Missing"),
+            )
+
 
 
 
@@ -1772,34 +1859,34 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-    def set_payroll_period(self):
+    # def set_payroll_period(self):
 
-        latest_salary_structure = frappe.get_list(
-        'Salary Structure Assignment',
-        filters={
-            'employee': self.employee,
-            'docstatus': 1,
-            'from_date': ['<', self.end_date]
-        },
-        fields=["*"],
-        limit=1
-        )
+    #     latest_salary_structure = frappe.get_list(
+    #     'Salary Structure Assignment',
+    #     filters={
+    #         'employee': self.employee,
+    #         'docstatus': 1,
+    #         'from_date': ['<', self.end_date]
+    #     },
+    #     fields=["*"],
+    #     limit=1
+    #     )
 
 
-        self.custom_salary_structure_assignment=latest_salary_structure[0].name
-        self.custom_income_tax_slab=latest_salary_structure[0].income_tax_slab
-        self.custom_tax_regime=latest_salary_structure[0].custom_tax_regime
-        self.custom_employee_state=latest_salary_structure[0].custom_state
-        self.custom_annual_ctc=latest_salary_structure[0].base
+    #     self.custom_salary_structure_assignment=latest_salary_structure[0].name
+    #     self.custom_income_tax_slab=latest_salary_structure[0].income_tax_slab
+    #     self.custom_tax_regime=latest_salary_structure[0].custom_tax_regime
+    #     self.custom_employee_state=latest_salary_structure[0].custom_state
+    #     self.custom_annual_ctc=latest_salary_structure[0].base
 
-        # latest_payroll_period = frappe.get_list('Payroll Period',
-        #     filters={'start_date': ('<', self.end_date),'company':self.company},
-        #     fields=["*"],
-        #     order_by='start_date desc',
-        #     limit=1
-        # )
-        # if latest_payroll_period:
-        self.custom_payroll_period=self.payroll_period.name
+    #     # latest_payroll_period = frappe.get_list('Payroll Period',
+    #     #     filters={'start_date': ('<', self.end_date),'company':self.company},
+    #     #     fields=["*"],
+    #     #     order_by='start_date desc',
+    #     #     limit=1
+    #     # )
+    #     # if latest_payroll_period:
+    #     self.custom_payroll_period=self.payroll_period.name
 
 
 
