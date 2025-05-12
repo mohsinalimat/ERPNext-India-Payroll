@@ -58,6 +58,7 @@ class CustomSalarySlip(SalarySlip):
         self.calculate_grosspay()
 
     def on_cancel(self):
+        super().on_cancel()
         self.delete_bonus_accruals()
         self.delete_benefit_accruals()
 
