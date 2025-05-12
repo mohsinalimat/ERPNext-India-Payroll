@@ -678,17 +678,17 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-    def new_joinee(self):
-        if self.employee:
-            employee_doc = frappe.get_doc("Employee", self.employee)
+    # def new_joinee(self):
+    #     if self.employee:
+    #         employee_doc = frappe.get_doc("Employee", self.employee)
 
-            start_date = frappe.utils.getdate(self.start_date)
-            end_date = frappe.utils.getdate(self.end_date)
+    #         start_date = frappe.utils.getdate(self.start_date)
+    #         end_date = frappe.utils.getdate(self.end_date)
 
-            if start_date <= employee_doc.date_of_joining <= end_date:
-                self.custom_new_joinee="New Joinee"
-            else:
-                self.custom_new_joinee="-"
+    #         if start_date <= employee_doc.date_of_joining <= end_date:
+    #             self.custom_new_joinee="New Joinee"
+    #         else:
+    #             self.custom_new_joinee="-"
 
 
     def add_reimbursement_taxable_new_doc(self):
