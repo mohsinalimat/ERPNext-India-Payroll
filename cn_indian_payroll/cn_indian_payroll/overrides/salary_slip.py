@@ -783,11 +783,10 @@ class CustomSalarySlip(SalarySlip):
                 component_type = salary_components.get(deduction.salary_component)
                 if component_type == "Provident Fund":
                     current_epf_value = deduction.amount
-                    future_epf_value = (deduction.default_amount)*(self.custom_month_count)
-                elif component_type == "Professional Tax":
+                    future_epf_value = (deduction.custom_actual_amount)*(self.custom_month_count)
+                if component_type == "Professional Tax":
                     current_pt_value = deduction.amount
-                    future_pt_value = (deduction.default_amount)*(self.custom_month_count)
-
+                    future_pt_value = (deduction.custom_actual_amount)*(self.custom_month_count)
         get_previous_salary_slip = frappe.get_list(
             'Salary Slip',
             filters={
@@ -796,7 +795,7 @@ class CustomSalarySlip(SalarySlip):
                 'docstatus': 1,
                 'name': ['!=', self.name]
             },
-            fields=['name']
+            fields=['name',"custom_payroll_period"]
         )
         if get_previous_salary_slip:
                 for slip in get_previous_salary_slip:
@@ -805,19 +804,19 @@ class CustomSalarySlip(SalarySlip):
                         for earning in previous_salary_slip.earnings:
                             component_type = salary_components.get(earning.salary_component)
                             if component_type == "NPS":
-                                previous_nps_value = earning.amount
+                                previous_nps_value += earning.amount
                             if earning.salary_component == current_basic:
-                                previous_basic_value = earning.amount
+                                previous_basic_value += earning.amount
                             if earning.salary_component == current_hra:
-                                previous_hra_value = earning.amount
+                                previous_hra_value += earning.amount
 
                     if previous_salary_slip.deductions:
                         for deduction in previous_salary_slip.deductions:
                             component_type = salary_components.get(deduction.salary_component)
                             if component_type == "Provident Fund":
-                                previous_epf_value = deduction.amount
-                            elif component_type == "Professional Tax":
-                                previous_pt_value = deduction.amount
+                                previous_epf_value += deduction.amount
+                            if component_type == "Professional Tax":
+                                previous_pt_value += deduction.amount
 
 
         if self.custom_tax_regime=="Old Regime":
@@ -1109,6 +1108,18 @@ class CustomSalarySlip(SalarySlip):
                         k.custom_actual_amount = 0
                 else:
                     k.custom_actual_amount = 0
+
+        if self.deductions:
+                for deduction in self.deductions:
+                    salary_component_doc = frappe.get_doc("Salary Component", deduction.salary_component)
+
+                    if salary_component_doc.custom_is_arrear == 0:
+                        if self.payment_days and self.payment_days > 0:
+                            deduction.custom_actual_amount = (deduction.amount * self.total_working_days) / self.payment_days
+                        else:
+                            deduction.custom_actual_amount = 0
+                    else:
+                        deduction.custom_actual_amount = 0
 
 
 
