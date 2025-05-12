@@ -57,6 +57,47 @@ class CustomSalarySlip(SalarySlip):
         self.tax_calculation()
         self.calculate_grosspay()
 
+    def on_cancel(self):
+        self.delete_bonus_accruals()
+        self.delete_benefit_accruals()
+
+
+
+    def delete_bonus_accruals(self):
+        bonus_accruals = frappe.get_list(
+            'Employee Bonus Accrual',
+            filters={
+                'salary_slip': self.name,
+                'payroll_entry': self.payroll_entry,
+                'payroll_period': self.custom_payroll_period,
+            },
+            fields=['name']
+        )
+
+        if bonus_accruals:
+            for accrual in bonus_accruals:
+                bonus_doc = frappe.get_doc('Employee Bonus Accrual', accrual.name)
+                bonus_doc.delete()
+
+    def delete_benefit_accruals(self):
+        benefit_accruals = frappe.get_list(
+            'Employee Benefit Accrual',
+            filters={
+                'salary_slip': self.name,
+                'payroll_entry': self.payroll_entry,
+                'payroll_period': self.custom_payroll_period,
+            },
+            fields=['name']
+        )
+        if benefit_accruals:
+            for accrual in benefit_accruals:
+                benefit_doc = frappe.get_doc('Employee Benefit Accrual', accrual.name)
+                benefit_doc.delete()
+
+
+
+
+
 
 
 
