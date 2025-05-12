@@ -195,7 +195,6 @@ class CustomSalarySlip(SalarySlip):
             for entry in repayment_doc.custom_loan_perquisite:
                 if entry.payment_date and start_date <= frappe.utils.getdate(entry.payment_date) <= end_date:
                     total_perq += entry.perquisite_amount
-
         self.custom_perquisite_amount = total_perq
 
         # Tax slab logic
@@ -1808,17 +1807,7 @@ class CustomSalarySlip(SalarySlip):
 
     def calculate_grosspay(self):
         gross_pay_sum = 0
-
         gross_pay_year_sum=0
-
-        reimbursement_sum=0
-
-        total_income=0
-
-        gross_earning=0
-
-
-
         if self.earnings:
             for i in self.earnings:
                 component = frappe.get_doc('Salary Component', i.salary_component)
@@ -1827,47 +1816,16 @@ class CustomSalarySlip(SalarySlip):
                     gross_pay_year_sum +=i.year_to_date
 
 
-                if component.custom_is_reimbursement == 1 or component.component_type=="LTA Taxable" or component.component_type=="LTA Non Taxable":
-                    reimbursement_sum += i.amount
-
-                if component.do_not_include_in_total==0 and component.custom_is_reimbursement==0:
-                    total_income+=i.amount
-
-
-                # if component.custom_is_gross_earning == 1:
-                #     gross_earning += i.amount
-
-
-        total_loan_amount=0
-        if len(self.loans)>0:
-            for ji in self.loans:
-                total_loan_amount+=ji.total_payment
-
-
-
-        self.custom_total_deduction_amount=total_loan_amount+self.total_deduction
 
         self.custom_statutory_grosspay=round(gross_pay_sum)
-
         self.custom_statutory_year_to_date=round(gross_pay_year_sum)
-
-        self.custom_total_income=round(total_income)
-
-        self.custom_net_pay_amount=round((total_income-self.custom_total_deduction_amount)+reimbursement_sum)
-
-        self.custom_in_words=money_in_words(self.custom_net_pay_amount)
-
-        if self.total_loan_repayment:
-            self.custom_loan_amount=self.total_loan_repayment
 
 
 
 
     def set_taxale(self):
-
         for earning in self.earnings:
             get_tax=frappe.get_doc("Salary Component",earning.salary_component)
-
             earning.custom_tax_exemption_applicable_based_on_regime=get_tax.custom_tax_exemption_applicable_based_on_regime
             earning.custom_regime=get_tax.custom_regime
 
