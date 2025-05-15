@@ -73,7 +73,7 @@
    "fieldname": "component_type",
    "fieldtype": "Select",
    "label": "Component Type",
-   "options": "\nProvident Fund\nAdditional Provident Fund\nProvident Fund Loan\nProfessional Tax\nLoan Perquisite\nLTA Taxable\nLTA Non Taxable\nVehicle Maintenance Reimbursement\nLTA Reimbursement\nNPS\nEPF\nEPF Employer\nESIC\nUniform"
+   "options": "\nProvident Fund\nProfessional Tax\nLTA Taxable\nLTA Non Taxable\nVehicle Maintenance\nLTA Reimbursement\nNPS\nEPF\nESIC"
   },
   {
    "depends_on": "eval:doc.component_type==\"LTA Reimbursement\"",
@@ -94,17 +94,20 @@
   },
   {
    "default": "0",
+   "description": "It will be true when the component is inserted from the Component Library master.",
    "fieldname": "component_added",
    "fieldtype": "Check",
    "label": "Component Added"
   },
   {
    "default": "0",
+   "description": "When 'Multi Select' is checked, you can add multiple instances of the component with different abbreviations. When it is not checked, you can add only a single instance of the component.",
    "fieldname": "multi_select",
    "fieldtype": "Check",
    "label": "Multi Select"
   },
   {
+   "description": "If the Visibility Type is 'Fixed', you cannot edit or add the condition and formula. If it is 'Not Fixed', you can edit the formula.",
    "fieldname": "visibility_type",
    "fieldtype": "Select",
    "label": "Visibility Type",
@@ -316,7 +319,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-15 14:06:00.186529",
+ "modified": "2025-05-15 15:22:49.156067",
  "modified_by": "Administrator",
  "module": "cn-indian-payroll",
  "name": "Salary Component Library Item",
