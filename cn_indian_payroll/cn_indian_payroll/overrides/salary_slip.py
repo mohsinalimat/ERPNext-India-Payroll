@@ -45,7 +45,6 @@ class CustomSalarySlip(SalarySlip):
 
     def before_save(self):
 
-        self.set_sub_period()
         self.insert_lop_days()
         self.set_taxale()
         self.actual_amount_ctc()
@@ -62,9 +61,6 @@ class CustomSalarySlip(SalarySlip):
     def validate(self):
         super().validate()
         self.set_sub_period()
-
-
-
 
     def on_cancel(self):
         super().on_cancel()
@@ -157,6 +153,7 @@ class CustomSalarySlip(SalarySlip):
 
 
         self.custom_month_count=sub_period-1
+        print(sub_period,"*************************\n\n\n\n\n\n")
 
 
     def compute_income_tax_breakup(self):
