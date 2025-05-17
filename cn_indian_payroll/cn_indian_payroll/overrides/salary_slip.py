@@ -1106,7 +1106,7 @@ class CustomSalarySlip(SalarySlip):
         if self.earnings:
             for k in self.earnings:
                 if self.payment_days and self.payment_days > 0:
-                    k.custom_actual_amount = (k.amount * self.total_working_days) / self.payment_days
+                    k.custom_actual_amount = round((k.amount * self.total_working_days) / self.payment_days)
                 else:
                     k.custom_actual_amount = 0
 
@@ -1114,7 +1114,7 @@ class CustomSalarySlip(SalarySlip):
         if self.deductions:
             for deduction in self.deductions:
                 if self.payment_days and self.payment_days > 0:
-                    deduction.custom_actual_amount = (deduction.amount * self.total_working_days) / self.payment_days
+                    deduction.custom_actual_amount = round((deduction.amount * self.total_working_days) / self.payment_days)
                 else:
                     deduction.custom_actual_amount = 0
 
