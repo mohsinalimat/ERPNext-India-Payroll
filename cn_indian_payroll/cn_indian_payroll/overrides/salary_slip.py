@@ -62,6 +62,7 @@ class CustomSalarySlip(SalarySlip):
     def validate(self):
         super().validate()
         self.set_sub_period()
+        self.apply_lop_amount_in_reimbursement_component()
 
     def on_cancel(self):
         super().on_cancel()
@@ -100,6 +101,51 @@ class CustomSalarySlip(SalarySlip):
             for accrual in benefit_accruals:
                 benefit_doc = frappe.get_doc('Employee Benefit Accrual', accrual.name)
                 benefit_doc.delete()
+
+
+
+    def apply_lop_amount_in_reimbursement_component(self):
+        if not self.custom_salary_structure_assignment:
+            frappe.throw("Salary Structure Assignment not linked.")
+
+        ssa_doc = frappe.get_doc(
+            "Salary Structure Assignment", self.custom_salary_structure_assignment
+        )
+
+        if not self.earnings:
+            return
+
+        for earning in self.earnings:
+            component = frappe.get_doc("Salary Component", earning.salary_component)
+
+            for reimbursement in ssa_doc.custom_employee_reimbursements or []:
+                if reimbursement.reimbursements == earning.salary_component:
+                    if self.total_working_days and self.payment_days:
+                        prorated_amount = round(
+                            (reimbursement.monthly_total_amount or 0)
+                            / self.total_working_days
+                            * (self.total_working_days - self.payment_days),
+                            2,
+                        )
+
+                        earning.amount -= prorated_amount
+
+            for reimbursement in ssa_doc.custom_employee_reimbursements or []:
+                lta_component = frappe.get_doc(
+                    "Salary Component", reimbursement.reimbursements
+                )
+                if lta_component.component_type == "LTA Reimbursement":
+                    if component.component_type in ["LTA Taxable", "LTA Non Taxable"]:
+                        if self.total_working_days and self.payment_days:
+                            prorated_amount = round(
+                                (reimbursement.monthly_total_amount or 0)
+                                / self.total_working_days
+                                * (self.total_working_days - self.payment_days),
+                                2,
+                            )
+                            earning.amount -= prorated_amount
+                    break
+
 
 
 
@@ -154,7 +200,6 @@ class CustomSalarySlip(SalarySlip):
 
 
         self.custom_month_count=sub_period-1
-        print(sub_period,"*************************\n\n\n\n\n\n")
 
 
     def compute_income_tax_breakup(self):
@@ -1901,8 +1946,8 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-    def add_employee_benefits(self):
-        pass
+    # def add_employee_benefits(self):
+    #     pass
 
 
 
