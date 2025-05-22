@@ -42,6 +42,7 @@ class CustomSalarySlip(SalarySlip):
         super().on_submit()
         self.insert_bonus_accruals()
         self.employee_accrual_insert()
+        self.update_benefit_claim_amount()
 
 
     def before_save(self):
@@ -101,6 +102,47 @@ class CustomSalarySlip(SalarySlip):
             for accrual in benefit_accruals:
                 benefit_doc = frappe.get_doc('Employee Benefit Accrual', accrual.name)
                 benefit_doc.delete()
+
+
+    def update_benefit_claim_amount(self):
+        if not self.earnings:
+            return
+
+        for earning in self.earnings:
+            additional_salary_name = earning.get("additional_salary")
+            if not additional_salary_name:
+                continue
+
+            # Fetch the Additional Salary document safely
+            additional_salary = frappe.get_value(
+                "Additional Salary",
+                additional_salary_name,
+                ["ref_doctype", "ref_docname"],
+            )
+
+            if not additional_salary:
+                frappe.log_error(
+                    f"Additional Salary '{additional_salary_name}' not found.",
+                    "update_benefit_claim_amount",
+                )
+                continue
+
+            ref_doctype, ref_docname = additional_salary
+
+            # Check if it's linked to an Employee Benefit Claim
+            if ref_doctype == "Employee Benefit Claim" and ref_docname:
+                try:
+                    benefit_claim = frappe.get_doc(
+                        "Employee Benefit Claim", ref_docname
+                    )
+                    benefit_claim.custom_is_paid = 1
+                    benefit_claim.custom_paid_amount = earning.amount
+                    benefit_claim.save(ignore_permissions=True)
+                except frappe.DoesNotExistError:
+                    frappe.log_error(
+                        f"Employee Benefit Claim '{ref_docname}' not found.",
+                        "update_benefit_claim_amount",
+                    )
 
 
 

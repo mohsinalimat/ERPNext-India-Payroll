@@ -140,9 +140,9 @@ def get_max_amount(doc):
                     "docstatus": 1,
                     "custom_payroll_period": payroll_period,
                 },
-                fields=["claimed_amount"],
+                fields=["*"],
             )
-            claimed_total = sum([row.claimed_amount for row in claims])
+            claimed_total = sum([row.custom_paid_amount for row in claims])
 
             # For non-Vehicle Maintenance components
             if salary_component.component_type != "Vehicle Maintenance Reimbursement":
