@@ -64,7 +64,7 @@ class CustomFullAndFinalStatement(FullandFinalStatement):
                     "component": "Loan",
                     "amount": 0,
                     "status": "Unsettled",
-                    "custom_reference_component": comp.name,
+                    # "custom_reference_component": comp.name,
                 },
             )
             receivables.append("Loan")

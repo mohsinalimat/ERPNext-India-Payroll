@@ -18,6 +18,7 @@ class CustomLeaveEncashment(LeaveEncashment):
                     "employee": self.employee,
                     "company": self.company,
                     "docstatus": 1,
+                    "from_date": ["<=", self.encashment_date],
                 },
                 fields=["*"],
                 order_by="from_date desc",
