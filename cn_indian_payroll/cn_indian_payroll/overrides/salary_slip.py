@@ -1097,7 +1097,7 @@ class CustomSalarySlip(SalarySlip):
         if self.earnings:
             for k in self.earnings:
                 if self.payment_days and self.payment_days > 0:
-                    k.custom_actual_amount = round((k.amount * self.total_working_days) / self.payment_days)
+                    k.custom_actual_amount = (k.amount * self.total_working_days) / self.payment_days
                 else:
                     k.custom_actual_amount = 0
 
@@ -1107,14 +1107,14 @@ class CustomSalarySlip(SalarySlip):
                 original_amount = float(deduction.amount or 0)
 
                 if self.payment_days and self.payment_days > 0:
-                    deduction.custom_actual_amount = round((original_amount * self.total_working_days) / self.payment_days)
+                    deduction.custom_actual_amount = (original_amount * self.total_working_days) / self.payment_days
                 else:
                     deduction.custom_actual_amount = 0
 
                 if component_doc.component_type == "ESIC":
                     deduction.amount = math.ceil(original_amount)
-                else:
-                    deduction.amount = round(original_amount)
+                # else:
+                #     deduction.amount = round(original_amount)
 
 
         if self.total_deduction or self.total_loan_repayment:
