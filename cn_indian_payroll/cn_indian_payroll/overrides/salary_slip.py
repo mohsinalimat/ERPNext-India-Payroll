@@ -1093,7 +1093,6 @@ class CustomSalarySlip(SalarySlip):
 
 
     def actual_amount_ctc(self):
-        print("33333333333333333333333333333333\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
         if self.earnings:
             for k in self.earnings:
                 if self.payment_days and self.payment_days > 0:
@@ -1113,8 +1112,6 @@ class CustomSalarySlip(SalarySlip):
 
                 if component_doc.component_type == "ESIC":
                     deduction.amount = math.ceil(original_amount)
-                # else:
-                #     deduction.amount = round(original_amount)
 
 
         if self.total_deduction or self.total_loan_repayment:
@@ -1829,53 +1826,6 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-
-
-    # def set_payroll_period(self):
-
-    #     latest_salary_structure = frappe.get_list(
-    #     'Salary Structure Assignment',
-    #     filters={
-    #         'employee': self.employee,
-    #         'docstatus': 1,
-    #         'from_date': ['<', self.end_date]
-    #     },
-    #     fields=["*"],
-    #     limit=1
-    #     )
-
-
-    #     self.custom_salary_structure_assignment=latest_salary_structure[0].name
-    #     self.custom_income_tax_slab=latest_salary_structure[0].income_tax_slab
-    #     self.custom_tax_regime=latest_salary_structure[0].custom_tax_regime
-    #     self.custom_employee_state=latest_salary_structure[0].custom_state
-    #     self.custom_annual_ctc=latest_salary_structure[0].base
-
-    #     # latest_payroll_period = frappe.get_list('Payroll Period',
-    #     #     filters={'start_date': ('<', self.end_date),'company':self.company},
-    #     #     fields=["*"],
-    #     #     order_by='start_date desc',
-    #     #     limit=1
-    #     # )
-    #     # if latest_payroll_period:
-    #     self.custom_payroll_period=self.payroll_period.name
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     # def add_employee_benefits(self):
     #     pass
 
@@ -1888,7 +1838,6 @@ class CustomSalarySlip(SalarySlip):
 
 
     def tax_calculation(self):
-
         latest_salary_structure = frappe.get_list('Salary Structure Assignment',
                         filters={'employee': self.employee,'docstatus':1},
                         fields=["*"],
