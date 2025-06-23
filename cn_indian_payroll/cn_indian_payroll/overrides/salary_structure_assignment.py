@@ -3,7 +3,7 @@ from hrms.payroll.doctype.salary_structure_assignment.salary_structure_assignmen
 
 from hrms.payroll.doctype.salary_structure.salary_structure import make_salary_slip
 from frappe.utils import getdate
-
+from datetime import datetime
 
 class CustomSalaryStructureAssignment(SalaryStructureAssignment):
 
@@ -130,4 +130,3 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
         new_declaration.insert()
         new_declaration.submit()
         frappe.db.commit()
-        # frappe.msgprint("Tax Exemption declaration is created")

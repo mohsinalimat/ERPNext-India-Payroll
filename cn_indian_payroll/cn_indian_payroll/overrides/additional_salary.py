@@ -6,19 +6,19 @@ import frappe
 @frappe.whitelist()
 def get_additional_salary(payroll_id, company):
     if payroll_id:
-        doc1 = frappe.get_doc('Payroll Entry', payroll_id)
+        get_payroll_entry_doc = frappe.get_doc('Payroll Entry', payroll_id)
         employee_bonus_dict = {}
 
-        for employee in doc1.employees:
+        for employee in get_payroll_entry_doc.employees:
             employee_bonus = frappe.db.get_list('Employee Bonus Accrual',
-                                                 filters={
-                                                     'employee': employee.employee,
-                                                     'docstatus': 1,
-                                                     'is_paid': 0,
-                                                     'accrual_paid_on': "Payroll"
-                                                 },
-                                                 fields=['*']
-                                                )
+                                filters={
+                                    'employee': employee.employee,
+                                    'docstatus': 1,
+                                    'is_paid': 0,
+                                    'accrual_paid_on': "Payroll"
+                                },
+                                fields=['*']
+                            )
 
             for bonus in employee_bonus:
                 employee_id = bonus['employee']
@@ -51,11 +51,12 @@ def get_additional_salary(payroll_id, company):
                     additional_salary_insert = frappe.get_doc({
                         'doctype': 'Additional Salary',
                         'employee': employee_id,
-                        'company': doc1.company,
+                        'company': get_payroll_entry_doc.company,
                         'salary_component': salary_component_doc.custom_paidout_component,
                         'amount': total_amount,
-                        'payroll_date': doc1.posting_date,
-                        'custom_payroll_entry': payroll_id
+                        'payroll_date': get_payroll_entry_doc.posting_date,
+                        'ref_doctype': 'Payroll Entry',
+                        'ref_docname': get_payroll_entry_doc.name,
                     })
 
                     additional_salary_insert.insert()
@@ -87,10 +88,10 @@ def get_additional_salary(payroll_id, company):
 @frappe.whitelist()
 def additional_salary_submit(additional):
     if additional:
-
         additional_list=frappe.db.get_list('Additional Salary',
         filters={
-            'custom_payroll_entry': additional,
+            'ref_doctype': 'Payroll Entry',
+            'ref_docname': additional,
             'docstatus':0
         },
         fields=['*'],
@@ -99,15 +100,9 @@ def additional_salary_submit(additional):
 
         if len(additional_list)>0:
             for i in additional_list:
-
                 additional_doc = frappe.get_doc('Additional Salary',i.name)
-
-
                 additional_doc.docstatus = 1
                 additional_doc.save()
-
-
-
                 employee_bonus = frappe.db.get_list('Employee Bonus Accrual',
                                                  filters={
                                                      'employee': i.employee,
@@ -117,12 +112,9 @@ def additional_salary_submit(additional):
                                                  fields=['*']
                                                  )
 
-
                 for bonus in employee_bonus:
                     doc_id = bonus['name']
                     bonus_doc1 = frappe.get_doc('Employee Bonus Accrual',doc_id)
-
-
                     bonus_doc1.is_paid = 1
                     bonus_doc1.bonus_paid_date=additional_doc.payroll_date
                     bonus_doc1.save()

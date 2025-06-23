@@ -38,8 +38,7 @@ class CustomSalarySlip(SalarySlip):
 
 
     def before_save(self):
-
-        self.insert_lop_days()
+        # self.insert_lop_days()
         self.set_taxale()
         self.actual_amount_ctc()
         self.set_month()
@@ -56,6 +55,7 @@ class CustomSalarySlip(SalarySlip):
         super().validate()
         self.set_sub_period()
         self.apply_lop_amount_in_reimbursement_component()
+        self.insert_lop_days()
 
     def on_cancel(self):
         super().on_cancel()
@@ -1849,7 +1849,6 @@ class CustomSalarySlip(SalarySlip):
             from_amount=[]
             to_amount=[]
             percentage=[]
-
             total_array=[]
             difference=[]
 
@@ -1857,7 +1856,6 @@ class CustomSalarySlip(SalarySlip):
             max_amount=income_doc.custom_maximum_amount
 
             for i in income_doc.slabs:
-
 
                 array_list={
                     'from':i.from_amount,
@@ -1933,8 +1931,6 @@ class CustomSalarySlip(SalarySlip):
 
 
             total_sum = sum(total_value)
-
-
 
             if self.custom_taxable_amount<rebate:
 
