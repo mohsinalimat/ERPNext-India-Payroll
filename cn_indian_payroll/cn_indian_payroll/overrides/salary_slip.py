@@ -1085,32 +1085,37 @@ class CustomSalarySlip(SalarySlip):
 
     def actual_amount_ctc(self):
         if self.earnings:
-            for k in self.earnings:
-                if self.payment_days and self.payment_days > 0:
-                    k.custom_actual_amount = (k.amount * self.total_working_days) / self.payment_days
+            for earning in self.earnings:
+                if earning.depends_on_payment_days == 1:
+                    if self.payment_days and self.payment_days > 0:
+                        earning.custom_actual_amount = (earning.amount * self.total_working_days) / self.payment_days
+                    else:
+                        earning.custom_actual_amount = 0
                 else:
-                    k.custom_actual_amount = 0
+                    earning.custom_actual_amount = earning.amount
+
 
         if self.deductions:
             for deduction in self.deductions:
                 component_doc = frappe.get_doc("Salary Component", deduction.salary_component)
                 original_amount = float(deduction.amount or 0)
 
-                if self.payment_days and self.payment_days > 0:
-                    deduction.custom_actual_amount = (original_amount * self.total_working_days) / self.payment_days
-                else:
-                    deduction.custom_actual_amount = 0
+                if deduction.depends_on_payment_days == 1:
+                    if self.payment_days and self.payment_days > 0:
+                        deduction.custom_actual_amount = (original_amount * self.total_working_days) / self.payment_days
+                    else:
+                        deduction.custom_actual_amount = 0
 
-                if component_doc.component_type == "ESIC":
-                    deduction.amount = math.ceil(original_amount)
+                    if component_doc.component_type == "ESIC":
+                        deduction.amount = math.ceil(original_amount)
+                else:
+                    deduction.custom_actual_amount = original_amount
 
 
         if self.total_deduction or self.total_loan_repayment:
             self.custom_total_deduction_amount = (self.total_deduction or 0) + (self.total_loan_repayment or 0)
         else:
             self.custom_total_deduction_amount = 0
-
-
 
 
     def accrual_update(self):
