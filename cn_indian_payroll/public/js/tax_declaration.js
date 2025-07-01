@@ -3652,7 +3652,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
       if(frm.doc.custom_declaration_form_data)
       {
         frm.set_value("custom_status","Pending")
-        frm.set_value("workflow_state","Pending")
+        // frm.set_value("workflow_state","Pending")
         process_form_data(frm);
 
       }
