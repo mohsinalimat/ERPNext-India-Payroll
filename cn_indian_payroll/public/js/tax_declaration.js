@@ -3679,7 +3679,7 @@ async function process_form_data(frm) {
   const form_data = JSON.parse(frm.doc.custom_declaration_form_data || '{}');
 
   if (["Approved", "Pending"].includes(frm.doc.custom_status)) {
-      let declarations = [];
+      // let declarations = [];
 
       if (frm.doc.custom_tax_regime === "Old Regime") {
           let mediclaim_self_below = parseFloat(form_data["amount"] || 0);
