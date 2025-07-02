@@ -26,32 +26,9 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
     def before_save(self):
         self.update_json_data()
-        if self.custom_tax_regime == "Old Regime":
-            form_data = json.loads(self.custom_declaration_form_data or "{}")
-
-            for k in self.declarations:
-                if k.exemption_sub_category == "Employee Provident Fund (Auto)":
-                    form_data["pfValue"] = round(k.amount)
-
-                elif k.exemption_sub_category == "NPS Contribution by Employer":
-                    form_data["nineNumber"] = round(k.amount)
-
-                elif k.exemption_sub_category == "Tax on employment (Professional Tax)":
-                    form_data["nineteenNumber"] = round(k.amount)
-
-            self.custom_declaration_form_data = json.dumps(form_data)
-
-        if self.custom_tax_regime == "New Regime":
-            form_data = json.loads(self.custom_declaration_form_data or "{}")
-
-            for k in self.declarations:
-                if k.exemption_sub_category == "NPS Contribution by Employer":
-                    form_data["nineNumber"] = round(k.amount)
-
-            self.custom_declaration_form_data = json.dumps(form_data)
 
     def before_update_after_submit(self):
-        self.update_json_data()
+
         # self.process_form_data()
         # self.mediclaim_condition()
 
@@ -118,6 +95,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
                     form_data[key] = round(row.amount)
 
             self.custom_declaration_form_data = json.dumps(form_data)
+
 
     def mediclaim_condition(self):
         if self.custom_tax_regime == "Old Regime":
