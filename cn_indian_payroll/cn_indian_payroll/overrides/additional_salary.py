@@ -26,28 +26,28 @@ def get_additional_salary(payroll_id, company):
                 salary_component = bonus['salary_component']
                 document_name = bonus['name']
 
-                # Initialize employee data if not present
+
                 if employee_id not in employee_bonus_dict:
                     employee_bonus_dict[employee_id] = {'components': {}, 'documents': []}
 
-                # Add the amount for each salary component
+
                 if salary_component in employee_bonus_dict[employee_id]['components']:
                     employee_bonus_dict[employee_id]['components'][salary_component] += amount
                 else:
                     employee_bonus_dict[employee_id]['components'][salary_component] = amount
 
-                # Add the document name to the list
+
                 employee_bonus_dict[employee_id]['documents'].append(document_name)
 
-        # Loop through each employee's bonus data
+
         for employee_id, data in employee_bonus_dict.items():
             for component, total_amount in data['components'].items():
-                # Fetch the Salary Component document for each component
+
                 salary_component_doc = frappe.get_doc("Salary Component", component)
 
-                # Check if the custom_paidout_component exists
+
                 if salary_component_doc.custom_paidout_component:
-                    # Insert Additional Salary for each component
+
                     additional_salary_insert = frappe.get_doc({
                         'doctype': 'Additional Salary',
                         'employee': employee_id,
@@ -68,18 +68,6 @@ def get_additional_salary(payroll_id, company):
 
                 else:
                     frappe.msgprint(f"Please set up Accrual Paid out component for {component}")
-
-        # doc1.custom_additional_salary_created=1
-        # doc1.save()
-        # doc1.reload()
-
-
-
-
-
-
-
-
 
 
 
