@@ -21,9 +21,6 @@ def get_doc_data(doc_name, employee, company, payroll_period):
     start = None
     end = None
 
-    old_annual_taxable_income = []
-    new_annual_taxable_income = []
-
     if employee:
         latest_salary_structure = frappe.get_list(
             "Salary Structure Assignment",
@@ -134,16 +131,6 @@ def get_doc_data(doc_name, employee, company, payroll_period):
                         perquisite_component.append("Loan Perquisite")
                         perquisite_amount.append(0)
 
-            # OTHER PERQUISITE
-            # get_other_perquisite = frappe.get_doc(
-            #     "Salary Structure Assignment", latest_salary_structure[0].name
-            # )
-
-            # if len(get_other_perquisite.custom_other_perquisites) > 0:
-            #     for other_perquisite in get_other_perquisite.custom_other_perquisites:
-            #         perquisite_component.append(other_perquisite.title)
-            #         perquisite_amount.append(other_perquisite.amount * num_months)
-
         accrued_data = {}
 
         accrued_component_array = []
@@ -247,7 +234,7 @@ def get_doc_data(doc_name, employee, company, payroll_period):
                         "Salary Component", deduction.salary_component
                     )
                     # EPF
-                    if taxable_component.component_type == "EPF":
+                    if taxable_component.component_type == "Provident Fund":
                         epf_amount += deduction.amount
                     # PT
                     if taxable_component.component_type == "Professional Tax":
@@ -360,7 +347,7 @@ def get_doc_data(doc_name, employee, company, payroll_period):
 
             # EPF
             if (
-                taxable_component.component_type == "EPF"
+                taxable_component.component_type == "Provident Fund"
 
             ):
                 epf_amount += deduction.amount * (num_months - salary_slip_count)
@@ -672,9 +659,6 @@ def slab_calculation(
                         }
                     )
 
-                # frappe.msgprint(str(total_array_new))
-
-                # Iterate through the slabs to calculate tax
                 for slab_new in total_array_new:
                     if slab_new["to"] == 0.0:  # Upper limit not defined
                         if round(new_annual_slab) >= slab_new["from"]:
