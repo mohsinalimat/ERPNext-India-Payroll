@@ -246,7 +246,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
     def update_hra_breakup(self):
         if self.monthly_house_rent:
-            if self.workflow_state in ["Approved"]:
+            if self.custom_status in ["Approved"]:
                 array = []
                 for t1 in self.custom_hra_breakup:
                     array.append(
@@ -298,7 +298,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
                     frappe.db.commit()
 
     def update_tax_declaration(self):
-        if self.workflow_state in ["Approved"]:
+        if self.custom_status in ["Approved"]:
             if len(self.declarations) > 0:
                 tax_component = []
                 for component in self.declarations:
