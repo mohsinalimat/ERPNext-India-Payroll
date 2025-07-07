@@ -65,7 +65,7 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
             source_name=self.salary_structure,
             employee=self.employee,
             print_format='Salary Slip Standard',
-            posting_date=self.from_date,
+            # posting_date=self.from_date,
             for_preview=1,
         )
 
@@ -73,7 +73,7 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
             total_amount = monthly_amount * num_months
             exemption_components = frappe.get_all(
                 'Employee Tax Exemption Sub Category',
-                filters={'custom_component_type': component_type},
+                filters={'custom_component_type': component_type,"is_active":1},
                 fields=['name', 'max_amount']
             )
             for comp in exemption_components:

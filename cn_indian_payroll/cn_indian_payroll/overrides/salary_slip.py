@@ -38,11 +38,8 @@ class CustomSalarySlip(SalarySlip):
 
 
     def before_save(self):
-        self.set_taxale()
         self.actual_amount_ctc()
-        self.set_month()
         self.update_declaration_component()
-        self.update_total_lop()
         self.arrear_ytd()
         self.food_coupon_tax()
         self.tax_calculation()
@@ -52,9 +49,12 @@ class CustomSalarySlip(SalarySlip):
 
     def validate(self):
         super().validate()
+        self.set_month()
         self.set_sub_period()
         self.apply_lop_amount_in_reimbursement_component()
         self.insert_lopreversal_days()
+        self.update_total_lop()
+        self.set_taxale_regime()
 
     def on_cancel(self):
         super().on_cancel()
@@ -681,13 +681,13 @@ class CustomSalarySlip(SalarySlip):
         ss = frappe.qb.DocType("Salary Slip")
         sd = frappe.qb.DocType("Salary Detail")
 
-        # Select the field based on the input
+
         if field_to_select == "amount":
             field = sd.amount
         else:
             field = sd.additional_amount
 
-        # Build the base query
+
         query = (
             frappe.qb.from_(ss)
             .join(sd)
@@ -1190,20 +1190,27 @@ class CustomSalarySlip(SalarySlip):
 
     def calculate_grosspay(self):
         gross_pay_sum = 0
-        gross_pay_year_sum=0
+        gross_pay_year_sum = 0
+
         if self.earnings:
-            for i in self.earnings:
-                component = frappe.get_doc('Salary Component', i.salary_component)
+            for gross_pay in self.earnings:
+                if not gross_pay.salary_component:
+                    continue
+
+                component = frappe.get_doc('Salary Component', gross_pay.salary_component)
+
                 if component.custom_is_part_of_gross_pay == 1:
-                    gross_pay_sum += i.amount
-                    gross_pay_year_sum +=i.year_to_date
-        self.custom_statutory_grosspay=round(gross_pay_sum)
-        self.custom_statutory_year_to_date=round(gross_pay_year_sum)
+                    gross_pay_sum += gross_pay.amount or 0
+                    gross_pay_year_sum += (gross_pay.year_to_date or 0) + (gross_pay.custom_arrear_ytd or 0)
+
+        self.custom_statutory_grosspay = round(gross_pay_sum)
+        self.custom_statutory_year_to_date = round(gross_pay_year_sum)
 
 
 
 
-    def set_taxale(self):
+
+    def set_taxale_regime(self):
         for earning in self.earnings:
             get_tax_component=frappe.get_doc("Salary Component",earning.salary_component)
             earning.custom_tax_exemption_applicable_based_on_regime=get_tax_component.custom_tax_exemption_applicable_based_on_regime
@@ -1215,12 +1222,6 @@ class CustomSalarySlip(SalarySlip):
 
     # def add_employee_benefits(self):
     #     pass
-
-
-
-
-
-
 
 
 

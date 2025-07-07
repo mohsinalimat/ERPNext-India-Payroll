@@ -158,7 +158,7 @@ async function processSalaryComponents(frm) {
 
             if (res.message && res.message.custom_is_part_of_ctc == 1) {
 
-                total_ctc.push(v.amount)
+                total_ctc.push(Math.round(v.amount))
                 let newRow = tableBody.insertRow();
 
                 let componentCell = newRow.insertCell();
@@ -209,7 +209,7 @@ async function processSalaryComponents(frm) {
                 amountCell.className = "text-right";
                 amountCell.textContent = component.monthly_total_amount.toLocaleString();
 
-                total_ctc.push(component.monthly_total_amount)
+                total_ctc.push(Math.round(component.monthly_total_amount))
 
                 let annualAmountCell = newRow.insertCell();
                 annualAmountCell.className = "text-right";
@@ -252,7 +252,7 @@ async function processSalaryComponents(frm) {
 
             if (res.message && res.message.custom_is_part_of_ctc == 1) {
 
-                total_ctc.push(v.amount)
+                total_ctc.push(Math.round(v.amount))
                 let newRow = deductionTableBody.insertRow();
 
                 let componentCell = newRow.insertCell();
