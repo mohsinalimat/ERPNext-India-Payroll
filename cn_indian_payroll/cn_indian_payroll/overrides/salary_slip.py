@@ -676,7 +676,6 @@ class CustomSalarySlip(SalarySlip):
         field_to_select="amount",
         custom_tax_exemption_applicable_based_on_regime=None,
         custom_regime=None,
-        custom_taxable=None,
         custom_tax_regime=None
     ):
         ss = frappe.qb.DocType("Salary Slip")
@@ -720,8 +719,6 @@ class CustomSalarySlip(SalarySlip):
         if custom_regime:
             query = query.where(sd.custom_regime == custom_regime)
 
-        if custom_taxable:
-            query = query.where(sd.custom_taxable == custom_taxable)
 
         if custom_tax_regime:
             query = query.where(ss.custom_tax_regime == custom_tax_regime)

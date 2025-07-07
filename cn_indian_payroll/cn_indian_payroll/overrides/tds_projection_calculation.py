@@ -283,7 +283,7 @@ def get_doc_data(doc_name, employee, company, payroll_period):
                 and taxable_component.custom_tax_exemption_applicable_based_on_regime
                 == 1
                 and taxable_component.custom_regime == "All"
-                and taxable_component.custom_component_category == "Fixed"
+
             ):
                 old_future_amount += new_earning.amount * (
                     num_months - salary_slip_count
@@ -322,7 +322,7 @@ def get_doc_data(doc_name, employee, company, payroll_period):
                 and taxable_component.custom_tax_exemption_applicable_based_on_regime
                 == 1
                 and taxable_component.custom_regime == "Old Regime"
-                and taxable_component.custom_component_category == "Fixed"
+
             ):
                 old_future_amount += new_earning.amount * (
                     num_months - salary_slip_count
@@ -334,7 +334,7 @@ def get_doc_data(doc_name, employee, company, payroll_period):
                 and taxable_component.custom_tax_exemption_applicable_based_on_regime
                 == 1
                 and taxable_component.custom_regime == "New Regime"
-                and taxable_component.custom_component_category == "Fixed"
+
             ):
                 new_future_amount += new_earning.amount * (
                     num_months - salary_slip_count
@@ -344,7 +344,7 @@ def get_doc_data(doc_name, employee, company, payroll_period):
             if (
                 taxable_component.is_tax_applicable == 1
                 and taxable_component.component_type == "NPS"
-                and taxable_component.custom_component_category == "Fixed"
+
             ):
                 nps_amount += new_earning.amount * (num_months - salary_slip_count)
 
@@ -361,14 +361,14 @@ def get_doc_data(doc_name, employee, company, payroll_period):
             # EPF
             if (
                 taxable_component.component_type == "EPF"
-                and taxable_component.custom_component_category == "Fixed"
+
             ):
                 epf_amount += deduction.amount * (num_months - salary_slip_count)
 
                 # Professional Tax
             if (
                 taxable_component.component_type == "Professional Tax"
-                and taxable_component.custom_component_category == "Fixed"
+
             ):
                 pt_amount += deduction.amount * (num_months - salary_slip_count)
 

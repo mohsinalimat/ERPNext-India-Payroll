@@ -134,7 +134,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         form_data = json.loads(self.custom_declaration_form_data or "{}")
 
         allowances = {
-            "twentyeight": "LTA Allowance",
+
             "twentysix": "Hostel Allowance",
             "twentyseven": "Gratuity",
             "twentyFour": "Uniform Allowance",
@@ -164,11 +164,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         ):
             frappe.throw("You are not allow to define the Hostel Allowance")
 
-        if (
-            "LTA Allowance" in selected_allowances.values()
-            and required_components.get("twentyeight") is None
-        ):
-            frappe.throw("You are not allow to define the LTA Allowance")
+
 
         if (
             "Uniform Allowance" in selected_allowances.values()
