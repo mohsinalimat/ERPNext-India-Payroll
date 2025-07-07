@@ -3862,7 +3862,6 @@ function tds_projection_html(frm) {
 
                   const maxLength = Math.max(per_comp.length, per_values.length);
 
-                  // console.log(accrued_data,"8888888888888888888")
                   const accruedData = accrued_data; // just assign it, no Math.max
 
 
@@ -3900,11 +3899,6 @@ function tds_projection_html(frm) {
                         </tr>`;
                     }
 
-                    // console.log(accrued_components, "-----");
-                    // console.log(`Total Combined Amount: ₹${total_accrued + total_future}`);
-
-
-                  // console.log(frm.doc.custom_declaration_form_data,"------------------")
                   if (frm.doc.custom_declaration_form_data) {
                     // Parse the JSON field if it's a string
                     let jsonData = typeof frm.doc.custom_declaration_form_data === 'string'
@@ -3955,14 +3949,6 @@ function tds_projection_html(frm) {
                 }
 
 
-
-
-
-
-
-
-
-                  // Check if declarations exist
                   if (frm.doc.declarations) {
                       $.each(frm.doc.declarations, function (i, v) {
                           if (v.exemption_category == "Section 10(14)") {
@@ -4105,10 +4091,6 @@ function tds_projection_html(frm) {
 
                   let tds_already_deducted=frm.doc.custom_tds_already_deducted_amount
 
-                  // console.log(tds_already_deducted,"*****************************************")
-
-                  // console.log(annual_old_taxable_income,"1111111")
-                  // console.log(annual_new_taxable_income,"22222222")
 
 
 
