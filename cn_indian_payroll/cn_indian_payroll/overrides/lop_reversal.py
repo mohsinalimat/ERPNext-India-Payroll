@@ -128,6 +128,7 @@ def insert_breakup_table(self):
 
 def insert_additional_salary(self):
     for comp in (self.arrear_breakup or []) + (self.arrear_deduction_breakup or []):
+        get_currency=frappe.get_doc("Company",self.company)
         additional_salary = frappe.get_doc(
             {
                 "doctype": "Additional Salary",
@@ -137,6 +138,7 @@ def insert_additional_salary(self):
                 "salary_component": comp.salary_component,
                 "currency": self.currency,
                 "amount": comp.amount,
+                "currency":get_currency.default_currency,
                 "ref_doctype": "LOP Reversal",
                 "ref_docname": self.name,
             }
@@ -146,7 +148,6 @@ def insert_additional_salary(self):
 
 
 def on_cancel(self, method):
-    # Delete associated Additional Salary records linked by ref_docname
     additional_arrears = frappe.get_all(
         "Additional Salary", filters={"ref_docname": self.name}, fields=["name"]
     )
@@ -154,7 +155,6 @@ def on_cancel(self, method):
     for arrear in additional_arrears:
         frappe.delete_doc("Additional Salary", arrear.get("name"))
 
-    # Adjust Employee Benefit Accrual entries using get_doc
     benefit_accruals = frappe.get_all(
         "Employee Benefit Accrual",
         filters={
@@ -176,7 +176,6 @@ def on_cancel(self, method):
             accrual_doc.amount = round(eligible_amount)
             accrual_doc.save()
 
-    # Adjust Employee Bonus Accrual entries using get_doc
     bonus_accruals = frappe.get_all(
         "Employee Bonus Accrual",
         filters={

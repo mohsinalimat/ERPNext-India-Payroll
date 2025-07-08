@@ -18,6 +18,15 @@ frappe.ui.form.on('Salary Component', {
 
 	custom_is_arrear: function(frm) {
 		frm.trigger('toggle_appraisal_visibility');
+		if (frm.doc.custom_is_arrear==1)
+		{
+			frm.set_value('depends_on_payment_days',0)
+			frm.set_df_property('depends_on_payment_days', 'hidden', 1)
+		}
+		else{
+			frm.set_value('depends_on_payment_days',1)
+			frm.set_df_property('depends_on_payment_days', 'hidden', 0);
+		}
 	},
 
 	custom_is_reimbursement: function(frm) {

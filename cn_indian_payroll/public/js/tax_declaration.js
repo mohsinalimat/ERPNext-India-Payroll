@@ -3547,7 +3547,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
             wrapper.html('');
             wrapper.append(formContainer);
 
-            // Create Form.io form
+
             Formio.createForm(formContainer, DECLARATION_FORM, { baseUrl: window?.location?.origin || '' })
                 .then((form) => {
                     window.cur_formioInstance = form;

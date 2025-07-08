@@ -813,10 +813,17 @@ class CustomSalarySlip(SalarySlip):
                 )
                 if earning_component_data.component_type == "NPS":
                     current_nps_value += earning.amount or 0
+
+
+
                     if earning_component_data.custom_is_arrear == 0:
                         future_nps_value = (
                             earning.custom_actual_amount or 0
                         ) * self.custom_month_count
+
+
+
+
                 if earning.salary_component == current_basic:
                     current_basic_value += earning.amount
                     if earning_component_data.custom_is_arrear == 0:
@@ -837,7 +844,7 @@ class CustomSalarySlip(SalarySlip):
                 deduction_component_data = frappe.get_doc(
                     "Salary Component", deduction.salary_component
                 )
-                if deduction_component_data.component_type == "EPF":
+                if deduction_component_data.component_type == "Provident Fund":
                     current_epf_value += deduction.amount
                     if deduction_component_data.custom_is_arrear == 0:
                         future_epf_value = (deduction.custom_actual_amount) * (
@@ -865,45 +872,67 @@ class CustomSalarySlip(SalarySlip):
             fields=['name',"custom_payroll_period"]
         )
         if get_previous_salary_slip:
-                for slip in get_previous_salary_slip:
-                    previous_salary_slip = frappe.get_doc("Salary Slip", slip.name)
-                    if previous_salary_slip.earnings:
-                        for earning in previous_salary_slip.earnings:
-                            component_data = frappe.get_doc(
-                                "Salary Component", earning.salary_component
-                            )
-                            if component_data.component_type == "NPS":
-                                previous_nps_value += earning.amount
-                            if earning.salary_component == current_basic:
-                                previous_basic_value += earning.amount
-                            if earning.salary_component == current_hra:
-                                previous_hra_value += earning.amount
-
-                    if previous_salary_slip.deductions:
-                        for deduction in previous_salary_slip.deductions:
-                            component_data = frappe.get_doc(
-                            "Salary Component", deduction.salary_component
-                            )
-                            if component_data.component_type == "EPF":
-                                previous_epf_value += deduction.amount
-                            if component_data.component_type == "Professional Tax":
-                                previous_pt_value += deduction.amount
-
-
-        if self.custom_tax_regime=="Old Regime":
-            declaration = frappe.get_list(
-                            'Employee Tax Exemption Declaration',
-                            filters={'employee': self.employee, 'payroll_period': self.custom_payroll_period,"docstatus":1,'company':self.company},
-                            fields=['*'],
+            for slip in get_previous_salary_slip:
+                previous_salary_slip = frappe.get_doc("Salary Slip", slip.name)
+                if previous_salary_slip.earnings:
+                    for earning in previous_salary_slip.earnings:
+                        component_data = frappe.get_doc(
+                            "Salary Component", earning.salary_component
                         )
+                        if component_data.component_type == "NPS":
+                            previous_nps_value += earning.amount
+                        if earning.salary_component == current_basic:
+                            previous_basic_value += earning.amount
+                        if earning.salary_component == current_hra:
+                            previous_hra_value += earning.amount
+
+                if previous_salary_slip.deductions:
+                    for deduction in previous_salary_slip.deductions:
+                        component_data = frappe.get_doc(
+                        "Salary Component", deduction.salary_component
+                        )
+                        if component_data.component_type == "Provident Fund":
+                            previous_epf_value += deduction.amount
+                        if component_data.component_type == "Professional Tax":
+                            previous_pt_value += deduction.amount
+
+
+        if self.custom_tax_regime == "Old Regime":
+            declaration = frappe.get_list(
+                'Employee Tax Exemption Declaration',
+                filters={
+                    'employee': self.employee,
+                    'payroll_period': self.custom_payroll_period,
+                    'docstatus': 1,
+                    'company': self.company
+                },
+                fields=['*']
+            )
+
             if declaration:
                 form_data = json.loads(declaration[0].custom_declaration_form_data or '{}')
                 get_each_doc = frappe.get_doc("Employee Tax Exemption Declaration", declaration[0].name)
-                form_data['nineNumber'] = round(previous_nps_value+future_nps_value+current_nps_value)
-                form_data['pfValue'] = min(round(previous_epf_value + future_epf_value + current_epf_value), 150000)
-                form_data['nineteenNumber'] = round(previous_pt_value+future_pt_value+current_pt_value)
-                get_each_doc.custom_posting_date=self.posting_date
+
+                total_nps = round(previous_nps_value + future_nps_value + current_nps_value)
+                form_data['nineNumber'] = total_nps
+                total_pf = min(round(previous_epf_value + future_epf_value + current_epf_value), 150000)
+                form_data['pfValue'] = total_pf
+                total_pt=round(previous_pt_value + future_pt_value + current_pt_value)
+                form_data['nineteenNumber'] = total_pt
+
+                for subcategory in get_each_doc.declarations:
+                    check_component=frappe.get_doc("Employee Tax Exemption Sub Category",subcategory.exemption_sub_category)
+                    if check_component.custom_component_type=="NPS":
+                        subcategory.amount=total_nps
+                    if check_component.custom_component_type=="Provident Fund":
+                        subcategory.amount=total_pf
+                    if check_component.custom_component_type=="Professional Tax":
+                        subcategory.amount=total_pt
+
+                get_each_doc.custom_posting_date = self.posting_date
                 get_each_doc.custom_declaration_form_data = json.dumps(form_data)
+                get_each_doc.save()
+
 
                 if get_each_doc.monthly_house_rent>0:
                     ss_assignment = frappe.get_list(

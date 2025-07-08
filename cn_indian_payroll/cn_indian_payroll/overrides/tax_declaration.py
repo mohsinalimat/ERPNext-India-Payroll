@@ -219,14 +219,17 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
                 frappe.throw(f"You are not eligible to declare {allowances[key]}")
 
     def set_total_exemption_amount(self):
+
         self.total_exemption_amount = flt(
             get_total_exemption_amount(self.declarations),
             self.precision("total_exemption_amount"),
         )
+        # frappe.msgprint(str(self.total_exemption_amount))
         if self.annual_hra_exemption:
             self.total_exemption_amount = (
                 self.total_exemption_amount + self.annual_hra_exemption
             )
+
 
     def on_cancel(self):
         self.cancel_declaration_history()
