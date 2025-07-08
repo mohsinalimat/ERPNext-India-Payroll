@@ -3552,7 +3552,6 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                 .then((form) => {
                     window.cur_formioInstance = form;
 
-                    // Pre-fill the form with saved data (if available)
                     const savedData = frm.doc.custom_declaration_form_data
                         ? JSON.parse(frm.doc.custom_declaration_form_data)
                         : {};
@@ -3566,20 +3565,21 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                     form.on('change', ({ data }) => {
                         if (isUpdating) return;
                         isUpdating = true;
-                        const a = parseFloat(data.pfValue || 0);
-                        const b = parseFloat(data.aValue2 || 0);
-                        const c = parseFloat(data.bValue1 || 0);
-                        const d=parseFloat(data.amount4 || 0);
-                        const e=parseFloat(data.dValue1 || 0);
-                        const f=parseFloat(data.eValue1 || 0);
-                        const g=parseFloat(data.fValue1 || 0);
-                        const h=parseFloat(data.gValue1 || 0);
-                        const i=parseFloat(data.hValue1 || 0);
-                        const j=parseFloat(data.iValue1 || 0);
-                        const k=parseFloat(data.jValue1 || 0);
-                        const l=parseFloat(data.kValue1 || 0);
-                        const m=parseFloat(data.kValue2 || 0);
-                        total=a+b+c+d+e+f+g+h+i+j+k+l+m
+                        const section1 = parseFloat(data.pfValue || 0);
+                        const section2 = parseFloat(data.aValue2 || 0);
+                        const section3 = parseFloat(data.bValue1 || 0);
+                        const section4 =parseFloat(data.amount4 || 0);
+                        const section5 =parseFloat(data.dValue1 || 0);
+                        const section6 =parseFloat(data.eValue1 || 0);
+                        const section7 =parseFloat(data.fValue1 || 0);
+                        const section8 =parseFloat(data.gValue1 || 0);
+                        const section9 =parseFloat(data.hValue1 || 0);
+                        const section10 =parseFloat(data.iValue1 || 0);
+                        const section11 =parseFloat(data.jValue1 || 0);
+                        const section12 =parseFloat(data.kValue1 || 0);
+                        const section13 =parseFloat(data.kValue2 || 0);
+                        const total = section1 + section2 + section3 + section4 + section5 + section6 +
+                                      section7 + section8 + section9 + section10 + section11 + section12 + section13;
                         data.total80C = total;
                         form.submission.data = data;
                         frm.set_value("custom_declaration_form_data", JSON.stringify(data));
@@ -3618,7 +3618,6 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                   size: 'small',
                   primary_action_label: 'Submit',
                   primary_action(values) {
-                      console.log(values);
 
                       frappe.call({
                         "method":"cn_indian_payroll.cn_indian_payroll.overrides.declaration.choose_regime",
@@ -3656,7 +3655,6 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
     if(frm.doc.custom_declaration_form_data)
     {
       frm.set_value("custom_status","Pending")
-      frm.set_value("workflow_state","Pending")
       process_form_data(frm);
 
     }
@@ -3803,8 +3801,8 @@ if (["Approved", "Pending"].includes(frm.doc.custom_status)) {
 function tds_projection_html(frm) {
   if (frm.doc.docstatus == 1) {
 
-      let section10_component = []; // Ensure it's an array
-      let section10_amount = []; // Ensure it's an array
+      let section10_component = [];
+      let section10_amount = [];
 
       let section80c_component=[]
       let section80c_amount=[]
@@ -3862,7 +3860,7 @@ function tds_projection_html(frm) {
 
                   const maxLength = Math.max(per_comp.length, per_values.length);
 
-                  const accruedData = accrued_data; // just assign it, no Math.max
+                  const accruedData = accrued_data;
 
 
                   section80c_component.push("Investments In PF(Auto)")
@@ -3900,7 +3898,6 @@ function tds_projection_html(frm) {
                     }
 
                   if (frm.doc.custom_declaration_form_data) {
-                    // Parse the JSON field if it's a string
                     let jsonData = typeof frm.doc.custom_declaration_form_data === 'string'
                         ? JSON.parse(frm.doc.custom_declaration_form_data)
                         : frm.doc.custom_declaration_form_data;
@@ -4015,7 +4012,6 @@ function tds_projection_html(frm) {
 
                   const total_section10_sum = section10_amount.reduce((total, value) => total + value, 0);
                   const total_section80C_sum = Math.min(section80c_amount.reduce((total, value) => total + value, 0), 150000);
-                  // const total_section80d_sum = section80d_amount_total.reduce ((total, value) => total + value, 0);
                   const total_section80d_sum = [...section80d_amount_total, ...section80d_other_amount].reduce(
                     (total, value) => total + value,
                     0
@@ -4023,7 +4019,6 @@ function tds_projection_html(frm) {
 
                   const total_other_sum = other_amount.reduce((total, value) => total + value, 0);
 
-                  // console.log(total_section80d_sum,"total_section80d_sumtotal_section80d_sum")
 
 
                   const section10_maxLength = Math.max(section10_component.length, section10_amount.length);
@@ -4035,63 +4030,53 @@ function tds_projection_html(frm) {
 
                   const annual_hra_exemption=Math.max(frm.doc.annual_hra_exemption)
 
-
-
-
-                  // Create rows for section 10 details
                   let Section10Rows = "";
                   for (let i = 0; i < section10_maxLength; i++) {
-                      let Section10component = section10_component[i] || "-";  // If index out of bounds, insert "-"
+                      let Section10component = section10_component[i] || "-";
                       let oldSection10 = section10_amount[i] || "0";
-                      let newSection10 = 0;  // Assuming new value is 0 for now
+                      let newSection10 = 0;
                       Section10Rows += `<tr><td>${Section10component}</td><td>${"₹" + oldSection10}</td><td>${"₹" + newSection10}</td></tr>`;
                   }
 
 
                   let Section80Rows = "";
                   for (let i = 0; i < section80_maxLength; i++) {
-                      let Section80component = section80c_component[i] || "-";  // If index out of bounds, insert "-"
+                      let Section80component = section80c_component[i] || "-";
                       let oldSection80c = section80c_amount[i] || "0";
-                      let newSection80c = 0;  // Assuming new value is 0 for now
+                      let newSection80c = 0;
                       Section80Rows += `<tr><td>${Section80component}</td><td>${"₹" + oldSection80c}</td><td>${"₹" + newSection80c}</td></tr>`;
                   }
 
                   let Section80DRows = "";
                   for (let i = 0; i < section80D_maxLength; i++) {
-                      let Section80Dcomponent = section80d_component[i] || "-";  // If index out of bounds, insert "-"
+                      let Section80Dcomponent = section80d_component[i] || "-";
                       let oldSection80D = section80d_amount[i] || "0";
-                      let newSection80D = 0;  // Assuming new value is 0 for now
+                      let newSection80D = 0;
                       Section80DRows += `<tr><td>${Section80Dcomponent}</td><td>${"₹" + oldSection80D}</td><td>${"₹" + newSection80D}</td></tr>`;
                   }
 
 
                   let Section80DOtherRows = "";
                   for (let i = 0; i < section80DOther_maxLength; i++) {
-                      let Section80DOthercomponent = section80d_other[i] || "-";  // If index out of bounds, insert "-"
+                      let Section80DOthercomponent = section80d_other[i] || "-";
                       let oldSection80DOther = section80d_other_amount[i] || "0";
-                      let newSection80D_other = 0;  // Assuming new value is 0 for now
+                      let newSection80D_other = 0;
                       Section80DOtherRows += `<tr><td>${Section80DOthercomponent}</td><td>${"₹" + oldSection80DOther}</td><td>${"₹" + newSection80D_other}</td></tr>`;
                   }
 
                   let OtherRows = "";
                   for (let i = 0; i < other_maxLength; i++) {
-                      let Othercomponent = other_component[i] || "-";  // If index out of bounds, insert "-"
+                      let Othercomponent = other_component[i] || "-";
                       let oldSectionOther = other_amount[i] || "0";
-                      let newSectionOther = 0;  // Assuming new value is 0 for now
+                      let newSectionOther = 0;
                       OtherRows += `<tr><td>${Othercomponent}</td><td>${"₹" + oldSectionOther}</td><td>${"₹" + newSectionOther}</td></tr>`;
                   }
-
-
-
-
 
 
                   let annual_old_taxable_income=(oldValue+old_future_amount+total_per_sum)-(total_section10_sum+old_std+pt_value+total_section80C_sum+total_section80d_sum+total_other_sum+nps_value+annual_hra_exemption)
                   let annual_new_taxable_income=(newValue+new_future_amount+total_per_sum)-(nps_value+new_std)
 
-                  let tds_already_deducted=frm.doc.custom_tds_already_deducted_amount
-
-
+                  // let tds_already_deducted=frm.doc.custom_tds_already_deducted_amount
 
 
                   function getPerComp1() {
@@ -4117,7 +4102,7 @@ function tds_projection_html(frm) {
                                     let old_rebate_value=response.message.old_rebate_value
 
 
-                                    let  old_surcharge_m=response.message.old_surcharge_m
+                                    let old_surcharge_m=response.message.old_surcharge_m
                                     let old_education_cess=response.message.old_education_cess
                                     let new_from_amount = response.message.from_amount_new || [];
                                     let new_to_amount = response.message.to_amount_new || [];
@@ -4136,47 +4121,38 @@ function tds_projection_html(frm) {
                                     let old_regime_marginal_relief_min_value=response.message.old_regime_marginal_relief_min_value
                                     let old_regime_marginal_relief_max_value=response.message.old_regime_marginal_relief_max_value
 
-
-
-
-
-                                    let salary_slip_sum=Math.round(response.message.salary_slip_sum)
-
-
-
-
-
+                                    let tax_already_paid=Math.round(response.message.tax_already_paid)
 
                                     resolve({
                                       old_from_amount,
-                                       old_to_amount,
-                                       old_percentage_amount,
-                                       old_value_amount,
-                                       new_from_amount ,
-                                       new_to_amount,
-                                       new_percentage_amount,
-                                       new_value_amount,
-                                       total_sum,
-                                       total_sum_new,
-                                       rebate,
-                                       max_amount,
-                                       newrebate,
-                                       newmax_amount,
-                                       old_rebate_value,
-                                       new_rebate_value,
-                                       old_surcharge_m,
-                                        old_education_cess,
-                                        new_surcharge_m,
-                                        new_education_cess,
-                                        salary_slip_sum,
-                                        num_months,
-                                        salary_slip_count,
-                                        from_month,
-                                        to_month,
-                                        new_regime_marginal_relief_min_value,
-                                        new_regime_marginal_relief_max_value,
-                                        old_regime_marginal_relief_min_value,
-                                        old_regime_marginal_relief_max_value,
+                                      old_to_amount,
+                                      old_percentage_amount,
+                                      old_value_amount,
+                                      new_from_amount ,
+                                      new_to_amount,
+                                      new_percentage_amount,
+                                      new_value_amount,
+                                      total_sum,
+                                      total_sum_new,
+                                      rebate,
+                                      max_amount,
+                                      newrebate,
+                                      newmax_amount,
+                                      old_rebate_value,
+                                      new_rebate_value,
+                                      old_surcharge_m,
+                                      old_education_cess,
+                                      new_surcharge_m,
+                                      new_education_cess,
+                                      tax_already_paid,
+                                      num_months,
+                                      salary_slip_count,
+                                      from_month,
+                                      to_month,
+                                      new_regime_marginal_relief_min_value,
+                                      new_regime_marginal_relief_max_value,
+                                      old_regime_marginal_relief_min_value,
+                                      old_regime_marginal_relief_max_value,
 
 
 
@@ -4206,7 +4182,7 @@ function tds_projection_html(frm) {
                         old_education_cess,
                         new_surcharge_m,
                         new_education_cess,
-                        salary_slip_sum,
+                        tax_already_paid,
                         num_months,
                         salary_slip_count,
                         from_month,
@@ -4228,7 +4204,6 @@ function tds_projection_html(frm) {
 
 
                           OtherRows1 += `<tr><td>${fromcomponent}</td><td>${"₹" + tocomponent}</td><td>${"₹" + percentage}</td><td>${"₹" + final_amount}</td></tr>`;
-                          // console.log(OtherRows1,"OtherRows1OtherRows1")
 
                         }
 
@@ -4316,21 +4291,11 @@ function tds_projection_html(frm) {
                           </tr>
 
 
-
-
-
-
-
-
                            <tr>
                               <td>Total Taxable Income</td>
                               <td>₹ ${oldValue+old_future_amount+total_per_sum}</td>
                               <td>₹ ${newValue+new_future_amount+total_per_sum}</td>
                           </tr>
-
-
-
-
 
                           <tr>
                               <td>
@@ -4482,11 +4447,6 @@ function tds_projection_html(frm) {
                               <td>₹ 0</td>
                           </tr>
 
-
-
-
-
-
                           <tr>
                               <td>Total Exemption/Deductions</td>
                               <td>₹ ${total_section10_sum+old_std+pt_value+total_section80C_sum+total_section80d_sum+total_other_sum+nps_value+annual_hra_exemption}</td>
@@ -4621,41 +4581,25 @@ function tds_projection_html(frm) {
                               <td>₹ ${Math.round(new_education_cess+new_surcharge_m+(total_sum_new-new_rebate_value))}</td>
                           </tr>
 
-                          <tr>
-                              <td>TDS already deducted</td>
-                              <td>₹ ${Math.round(tds_already_deducted)}</td>
-                              <td>₹ ${Math.round(tds_already_deducted)}</td>
-
-                          </tr>
-
-                          <tr>
-                              <td>Balance TDS payable</td>
-                              <td>₹ ${Math.round((old_education_cess+old_surcharge_m+(total_sum-old_rebate_value))-tds_already_deducted)}</td>
-                              <td>₹ ${Math.round((new_education_cess+new_surcharge_m+(total_sum_new-new_rebate_value))-tds_already_deducted)}</td>
-                          </tr>
-
-
-
-
 
 
                           <tr>
                               <td>Tax Paid</td>
-                              <td>₹ ${Math.round(salary_slip_sum)}</td>
-                              <td>₹ ${Math.round(salary_slip_sum)}</td>
+                              <td>₹ ${Math.round(tax_already_paid)}</td>
+                              <td>₹ ${Math.round(tax_already_paid)}</td>
                           </tr>
 
                           <tr>
                           <td>Current Tax</td>
                           <td>
                             ₹ ${Math.round(
-                              (old_education_cess + old_surcharge_m + (total_sum - old_rebate_value) - tds_already_deducted - salary_slip_sum) /
+                              (old_education_cess + old_surcharge_m + (total_sum - old_rebate_value)  - tax_already_paid) /
                               ((num_months - salary_slip_count)+1)
                             )}
                           </td>
                           <td>
                             ₹ ${Math.round(
-                              (new_education_cess + new_surcharge_m + (total_sum_new - new_rebate_value) - tds_already_deducted - salary_slip_sum) /
+                              (new_education_cess + new_surcharge_m + (total_sum_new - new_rebate_value) - tax_already_paid) /
                               ((num_months - salary_slip_count)+1)
                             )}
                           </td>
@@ -4672,10 +4616,8 @@ function tds_projection_html(frm) {
                   </table>
               `;
 
-                      // Set the value of the HTML field
                       frm.set_df_property('custom_employee_tax_projection', 'options', table_html);
 
-                      // Add event listeners for dropdown buttons
                       setTimeout(() => {
                           document.querySelectorAll('.incomeTaxDropdown').forEach((button, index) => {
                               button.addEventListener('click', function () {
@@ -4690,7 +4632,6 @@ function tds_projection_html(frm) {
                   }
               }
 
-              // Call the function to fetch and process the data
               processPerComp1();
               }
           }

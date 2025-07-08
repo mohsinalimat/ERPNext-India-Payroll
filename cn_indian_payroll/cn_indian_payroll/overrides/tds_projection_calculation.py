@@ -451,7 +451,7 @@ def slab_calculation(
             difference = []
             total_array = []
 
-            total_sum = 0  # Initialize early to avoid UnboundLocalError
+            total_sum = 0
             old_rebate_value = 0
             old_surcharge_m = 0
             old_education_cess = 0
@@ -459,7 +459,7 @@ def slab_calculation(
             old_regime_marginal_relief_min_value = 0
             old_regime_marginal_relief_max_value = 0
 
-            # Retrieve Exemption & Maximum Values
+
             old_rebate = income_doc.custom_taxable_income_is_less_than
             old_max_amount = income_doc.custom_maximum_amount
 

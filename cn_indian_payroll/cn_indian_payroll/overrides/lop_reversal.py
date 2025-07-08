@@ -129,6 +129,7 @@ def insert_breakup_table(self):
 def insert_additional_salary(self):
     for comp in (self.arrear_breakup or []) + (self.arrear_deduction_breakup or []):
         get_currency=frappe.get_doc("Company",self.company)
+        currency=get_currency.default_currency
         additional_salary = frappe.get_doc(
             {
                 "doctype": "Additional Salary",
@@ -136,9 +137,9 @@ def insert_additional_salary(self):
                 "company": self.company,
                 "payroll_date": self.additional_salary_date,
                 "salary_component": comp.salary_component,
-                "currency": self.currency,
+                "currency": currency,
                 "amount": comp.amount,
-                "currency":get_currency.default_currency,
+                "currency":currency,
                 "ref_doctype": "LOP Reversal",
                 "ref_docname": self.name,
             }
