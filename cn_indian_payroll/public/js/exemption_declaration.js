@@ -4,7 +4,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
             method: "frappe.client.get_list",
             args: {
                 doctype: "Employee Tax Exemption Sub Category",
-                fields: ["name", "exemption_category", "max_amount", "custom_description"],
+                fields: ["name", "exemption_category", "max_amount", "custom_description","custom_component_type"],
                 filters: {
                     is_active: 1
                 },
@@ -30,13 +30,17 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
                         const stored_value = stored_row ? stored_row.value || stored_row.amount || '' : '';
 
+                        // Check if the row should be read-only
+                        const is_readonly = ["NPS", "Provident Fund", "Professional Tax"].includes(row.custom_component_type);
+                        const readonly_attr = is_readonly ? 'readonly' : '';
+
                         rows_html += `
                             <tr data-id="${row.name}" data-max="${row.max_amount}" data-category="${row.exemption_category}">
                                 <td>${row.name}</td>
                                 <td>${row.max_amount || ''}</td>
                                 <td>${row.exemption_category || ''}</td>
                                 <td>${row.custom_description || ''}</td>
-                                <td><input type="number" class="input-field" style="width: 100%" value="${stored_value}"/></td>
+                                <td><input type="number" class="input-field" style="width: 100%" value="${stored_value}" ${readonly_attr} /></td>
                             </tr>
                         `;
                     });
@@ -72,6 +76,21 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                                 ${rows_html}
                             </tbody>
                         </table>
+
+                        <table class="styled-declaration-table" id="summary-table">
+                            <thead>
+
+
+                                <tr>
+                                    <th>Annual HRA Exemption</th>
+                                    <td>${frm.doc.annual_hra_exemption || 0}</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Exemption Eligible Amount</th>
+                                    <td>${frm.doc.total_exemption_amount || 0}</td>
+                                </tr>
+                            </thead>
+                        </table>
                     `;
 
                     frm.fields_dict.custom_declaration_form.$wrapper.html(html);
@@ -90,8 +109,9 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                                 const exemption_category = row.getAttribute("data-category");
                                 let value = parseFloat(row.querySelector("input").value || 0);
 
-                                if (value > max) {
-                                    frappe.msgprint(`Amount for "${id}" exceeds max (${max}). Reset to 0.`);
+                                // Validate only if max > 0
+                                if (max > 0 && value > max) {
+                                    frappe.msgprint(`Amount for "${id}" exceeds the max (${max}). Resetting to 0.`);
                                     value = 0;
                                     row.querySelector("input").value = 0;
                                 }
@@ -121,5 +141,6 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                 }
             }
         });
-    }
+    },
+
 });
