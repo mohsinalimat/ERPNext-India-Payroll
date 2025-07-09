@@ -61,7 +61,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                     source_name=salary_structure,
                     employee=employee,
                     print_format='Salary Slip Standard for CTC',
-                    posting_date=latest_salary_structure[0].from_date,
+                    # posting_date=latest_salary_structure[0].from_date,
                     for_preview=1,
                     )
 
@@ -83,7 +83,6 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                         total_nps=round(num_months*new_earning.amount)
 
                         get_declaration = frappe.get_doc("Employee Tax Exemption Declaration", doc_id)
-
 
                         get_declaration.declarations = []
 
@@ -128,7 +127,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                     source_name=salary_structure,
                     employee=employee,
                     print_format='Salary Slip Standard for CTC',
-                    posting_date=latest_salary_structure[0].from_date,
+                    # posting_date=latest_salary_structure[0].from_date,
                     for_preview=1,
                     )
 
@@ -195,7 +194,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                     source_name=salary_structure,
                     employee=employee,
                     print_format='Salary Slip Standard for CTC',
-                    posting_date=latest_salary_structure[0].from_date,
+                    # posting_date=latest_salary_structure[0].from_date,
                     for_preview=1,
                     )
 
@@ -289,7 +288,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                     source_name=salary_structure,
                     employee=employee,
                     print_format='Salary Slip Standard for CTC',
-                    posting_date=latest_salary_structure[0].from_date,
+                    # posting_date=latest_salary_structure[0].from_date,
                     for_preview=1,
                 )
 

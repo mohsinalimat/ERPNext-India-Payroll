@@ -813,15 +813,10 @@ class CustomSalarySlip(SalarySlip):
                 )
                 if earning_component_data.component_type == "NPS":
                     current_nps_value += earning.amount or 0
-
-
-
                     if earning_component_data.custom_is_arrear == 0:
                         future_nps_value = (
                             earning.custom_actual_amount or 0
                         ) * self.custom_month_count
-
-
 
 
                 if earning.salary_component == current_basic:
@@ -910,18 +905,14 @@ class CustomSalarySlip(SalarySlip):
             )
 
             if declaration:
-                # Get the full document
                 get_each_doc = frappe.get_doc("Employee Tax Exemption Declaration", declaration[0].name)
 
-                # Parse the stored JSON declaration data
                 form_data = json.loads(declaration[0].custom_declaration_form_data or '[]')
 
-                # Calculate totals
                 total_nps = round(previous_nps_value + future_nps_value + current_nps_value)
                 total_pf = min(round(previous_epf_value + future_epf_value + current_epf_value), 150000)
                 total_pt = round(previous_pt_value + future_pt_value + current_pt_value)
 
-                # Update amounts in child table rows based on custom_component_type
                 for subcategory in get_each_doc.declarations:
                     check_component = frappe.get_doc("Employee Tax Exemption Sub Category", subcategory.exemption_sub_category)
 
@@ -934,7 +925,6 @@ class CustomSalarySlip(SalarySlip):
                     elif check_component.custom_component_type == "Professional Tax":
                         subcategory.amount = total_pt
 
-                # Optional: update form_data JSON if you're using it elsewhere
                 for entry in form_data:
                     subcat = entry.get("sub_category") or entry.get("id")
                     component = frappe.get_all(
@@ -957,7 +947,6 @@ class CustomSalarySlip(SalarySlip):
 
                 get_each_doc.custom_posting_date = self.posting_date
                 get_each_doc.custom_declaration_form_data = json.dumps(form_data)
-                get_each_doc.save()
 
 
 
@@ -1072,18 +1061,45 @@ class CustomSalarySlip(SalarySlip):
 
         if self.custom_tax_regime=="New Regime":
             declaration = frappe.get_list(
-                            'Employee Tax Exemption Declaration',
-                            filters={'employee': self.employee, 'payroll_period': self.custom_payroll_period,"docstatus":1,'company':self.company},
-                            fields=['*'],
-                        )
+                'Employee Tax Exemption Declaration',
+                filters={
+                    'employee': self.employee,
+                    'payroll_period': self.custom_payroll_period,
+                    'docstatus': 1,
+                    'company': self.company
+                },
+                fields=['*']
+            )
+
             if declaration:
-                form_data = json.loads(declaration[0].custom_declaration_form_data or '{}')
                 get_each_doc = frappe.get_doc("Employee Tax Exemption Declaration", declaration[0].name)
 
-                form_data['nineNumber'] = round(previous_nps_value+future_nps_value+current_nps_value)
+                form_data = json.loads(declaration[0].custom_declaration_form_data or '[]')
+
+                total_nps = round(previous_nps_value + future_nps_value + current_nps_value)
+
+                for subcategory in get_each_doc.declarations:
+                    check_component = frappe.get_doc("Employee Tax Exemption Sub Category", subcategory.exemption_sub_category)
+
+                    if check_component.custom_component_type == "NPS":
+                        subcategory.amount = total_nps
 
 
-                get_each_doc.custom_posting_date=self.posting_date
+                for entry in form_data:
+                    subcat = entry.get("sub_category") or entry.get("id")
+                    component = frappe.get_all(
+                        "Employee Tax Exemption Sub Category",
+                        filters={"name": subcat},
+                        fields=["custom_component_type"],
+                        limit=1
+                    )
+                    if component:
+                        ctype = component[0].custom_component_type
+                        if ctype == "NPS":
+                            entry["amount"] = total_nps
+                            entry["value"] = total_nps
+
+                get_each_doc.custom_posting_date = self.posting_date
                 get_each_doc.custom_declaration_form_data = json.dumps(form_data)
 
                 get_each_doc.custom_status="Approved"
