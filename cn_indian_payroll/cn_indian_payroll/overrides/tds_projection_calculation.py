@@ -1,6 +1,114 @@
 import frappe
 from hrms.payroll.doctype.salary_structure.salary_structure import make_salary_slip
 from datetime import datetime
+from frappe import _
+import json
+
+
+
+@frappe.whitelist()
+def calculate_tds_projection(doc):
+
+    loan_perquisite_component=None
+    loan_perquisite_amount=0
+
+    if isinstance(doc, str):
+        doc = frappe._dict(json.loads(doc))
+
+    if doc.get('employee'):
+        latest_salary_structure = frappe.get_list(
+            "Salary Structure Assignment",
+            filters={
+                "employee": doc.get('employee'),
+                "docstatus": 1,
+                "custom_payroll_period": doc.get('payroll_period'),
+            },
+            fields=["*"],
+            order_by="from_date desc",
+        )
+
+        if latest_salary_structure:
+            assignment = latest_salary_structure[0]
+            employee=frappe.get_doc("Employee", assignment.employee)
+            get_payroll_period = frappe.get_doc("Payroll Period", assignment.custom_payroll_period)
+
+            effective_start_date = assignment.from_date
+            payroll_end_date = get_payroll_period.end_date
+            payroll_start_date = get_payroll_period.start_date
+            doj = employee.date_of_joining
+
+            start_candidates = [d for d in [effective_start_date, payroll_start_date, doj] if d]
+            start = max(datetime.strptime(str(d), "%Y-%m-%d").date() if isinstance(d, str) else d for d in start_candidates)
+            end = datetime.strptime(str(payroll_end_date), "%Y-%m-%d").date() if isinstance(payroll_end_date, str) else payroll_end_date
+
+            num_months = (end.year - start.year) * 12 + (end.month - start.month) + 1
+
+            loan_repayments = frappe.get_list(
+                "Loan Repayment Schedule",
+                filters={
+                    "custom_employee": employee,
+                    "status": "Active",
+                    "docstatus": 1,
+                },
+                fields=["*"],
+            )
+
+            if loan_repayments:
+                loan_perquisite_component="Loan Perquisite"
+                for repayment in loan_repayments:
+                    get_each_perquisite = frappe.get_doc(
+                        "Loan Repayment Schedule", repayment.name
+                    )
+                    if len(get_each_perquisite.custom_loan_perquisite) > 0:
+                        for date in get_each_perquisite.custom_loan_perquisite:
+                            payment_date = frappe.utils.getdate(
+                                date.payment_date
+                            )
+                            if payroll_start_date <= payment_date <= payroll_end_date:
+                                loan_perquisite_amount += date.perquisite_amount
+
+            else:
+                loan_perquisite_component="Loan Perquisite"
+                loan_perquisite_amount=0
+
+        # get_all_salary_slip = frappe.get_list(
+        #     "Salary Slip",
+        #     filters={
+        #         "employee": doc.get('employee'),
+        #         "custom_payroll_period": doc.get('payroll_period'),
+        #         "docstatus": ["in", [0, 1]],
+        #     },
+        #     fields=["*"],
+        #     order_by="posting_date desc",
+        # )
+        # if len(get_all_salary_slip)==0:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @frappe.whitelist()
@@ -35,12 +143,12 @@ def get_doc_data(doc_name, employee, company, payroll_period):
         )
 
         if len(latest_salary_structure) > 0:
-            get_payroll = frappe.get_doc(
+            get_payroll_period = frappe.get_doc(
                 "Payroll Period", latest_salary_structure[0].custom_payroll_period
             )
             effective_start_date = latest_salary_structure[-1].from_date
-            payroll_end_date = get_payroll.end_date
-            payroll_start_date = get_payroll.start_date
+            payroll_end_date = get_payroll_period.end_date
+            payroll_start_date = get_payroll_period.start_date
             doj = latest_salary_structure[0].custom_date_of_joining
 
             start_date = max(effective_start_date, payroll_start_date, doj)
@@ -91,15 +199,15 @@ def get_doc_data(doc_name, employee, company, payroll_period):
             annual_perquisite = 0
 
             if payroll_period:
-                get_payroll_period = frappe.get_list(
+                get_payroll_period_period = frappe.get_list(
                     "Payroll Period",
                     filters={"company": company, "name": payroll_period},
                     fields=["*"],
                 )
 
-                if get_payroll_period:
-                    start_date = frappe.utils.getdate(get_payroll_period[0].start_date)
-                    end_date = frappe.utils.getdate(get_payroll_period[0].end_date)
+                if get_payroll_period_period:
+                    start_date = frappe.utils.getdate(get_payroll_period_period[0].start_date)
+                    end_date = frappe.utils.getdate(get_payroll_period_period[0].end_date)
 
                     loan_repayments = frappe.get_list(
                         "Loan Repayment Schedule",

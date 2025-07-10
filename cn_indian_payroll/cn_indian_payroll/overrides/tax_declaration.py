@@ -30,14 +30,9 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
     def before_update_after_submit(self):
 
-
-
-        # self.process_form_data()
-        # self.mediclaim_condition()
-
         # self.calculate_hra_breakup()
         # self.update_tax_declaration()
-        # self.validation_on_section10()
+        self.validation_on_section10()
         self.set_total_declared_amount()
         self.set_total_exemption_amount()
 
@@ -93,19 +88,6 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
                 entry["value"] = total_pt
 
         self.custom_declaration_form_data = json.dumps(form_data)
-
-
-
-
-
-
-    # def mediclaim_condition(self):
-    #     if self.declarations:
-    #         for declaration in self.declarations:
-    #             get_sub_category = frappe.get_doc("Employee Tax Exemption Sub Category", declaration.exemption_sub_category)
-    #             if get_sub_category.custom_section=="Section 80D":
-    #                 max_amount = get_sub_category.max_amount
-
 
 
 
@@ -167,94 +149,12 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
             self.custom_declaration_form_data = json.dumps(form_data)
 
 
-    def mediclaim_condition(self):
-        if self.custom_tax_regime == "Old Regime":
-            form_data = json.loads(self.custom_declaration_form_data or "{}")
-
-
-
-            name_value = form_data.get("nameValue")
-            address_one_value = form_data.get("addressoneValue")
-            pan_value = form_data.get("panValue")
-            address_two_value = form_data.get("addresstwoValue")
-            type_value = form_data.get("typeValue")
-            address_three_value = form_data.get("addressThreeValue")
-
-            missing_fields = []
-            if not name_value:
-                missing_fields.append("Name")
-            if not address_one_value:
-                missing_fields.append("Address One")
-            if not pan_value:
-                missing_fields.append("PAN")
-            if not address_two_value:
-                missing_fields.append("Address Two")
-            if not type_value:
-                missing_fields.append("Type")
-            if not address_three_value:
-                missing_fields.append("Address Three")
-
-
     # -----------validate section10 components on employee is eligible or not----------------
 
     def validation_on_section10(self):
         if self.custom_tax_regime != "Old Regime":
             return
 
-        form_data = json.loads(self.custom_declaration_form_data or "{}")
-
-        allowances = {
-
-            "twentysix": "Hostel Allowance",
-            "twentyseven": "Gratuity",
-            "twentyFour": "Uniform Allowance",
-            "thirteen": "Education Allowance",
-        }
-
-        selected_allowances = {
-            key: value for key, value in allowances.items() if form_data.get(key, 0)
-        }
-        valid_components = frappe.get_all(
-            "Salary Component",
-            filters={"component_type": "Tax Exemption", "disabled": 0},
-            fields=["name", "custom_sub_category"],
-        )
-        component_map = {
-            comp["custom_sub_category"]: comp["name"] for comp in valid_components
-        }
-
-        required_components = {
-            category: component_map.get(sub_category)
-            for category, sub_category in selected_allowances.items()
-        }
-
-        if (
-            "Hostel Allowance" in selected_allowances.values()
-            and required_components.get("twentysix") is None
-        ):
-            frappe.throw("You are not allow to define the Hostel Allowance")
-
-
-
-        if (
-            "Uniform Allowance" in selected_allowances.values()
-            and required_components.get("twentyFour") is None
-        ):
-            frappe.throw("You are not allow to define the Uniform Allowance")
-
-        if (
-            "Education Allowance" in selected_allowances.values()
-            and required_components.get("thirteen") is None
-        ):
-            frappe.throw("You are not allow to define the Education Allowance")
-
-        if (
-            "Gratuity" in selected_allowances.values()
-            and required_components.get("twentyseven") is None
-        ):
-            frappe.throw("You are not allow to define the Gratuity")
-
-        # Fetch latest Salary Structure Assignment
         ss_assignment = frappe.get_list(
             "Salary Structure Assignment",
             filters={
@@ -271,22 +171,22 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         if not ss_assignment:
             return
 
-        # Generate Salary Slip Preview
         salary_slip_preview = make_salary_slip(
             source_name=ss_assignment[0].salary_structure,
             employee=self.employee,
-            print_format="Salary Slip Standard for CTC",
+            print_format="Salary Slip Standard",
             posting_date=ss_assignment[0].from_date,
             for_preview=1,
         )
+        # if salary_slip_preview:
 
-        available_components = {
-            earning.salary_component for earning in salary_slip_preview.earnings
-        }
-
-        for key, component in required_components.items():
+        for component in salary_slip_preview.earnings:
             if component and component not in available_components:
                 frappe.throw(f"You are not eligible to declare {allowances[key]}")
+
+
+
+
 
     def set_total_exemption_amount(self):
 
@@ -710,223 +610,3 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
             self.custom_hra_breakup = []
             self.annual_hra_exemption = None
             self.monthly_hra_exemption = None
-
-    def process_form_data(self):
-        if self.custom_tax_regime == "Old Regime":
-            if self.custom_status in ["Approved", "Pending"]:
-                form_data = json.loads(self.custom_declaration_form_data or "{}")
-
-                # Extract numbers from the form data
-                numbers = [
-                    {
-                        "field": "amount",
-                        "name": "Mediclaim Self, Spouse & Children (Below 60 years)",
-                    },
-                    {
-                        "field": "amount3",
-                        "name": "Mediclaim Self (Senior Citizen - 60 years & above)",
-                    },
-                    {"field": "mpAmount3", "name": "Parents (Below 60 years)"},
-                    {
-                        "field": "mpAmount4",
-                        "name": "Parents (Senior Citizen - 60 years & above)",
-                    },
-                    {"field": "mp5", "name": "Preventive Checkup (Self + Family)"},
-                    {"field": "mpAmount6", "name": "Preventive Checkup (Parents)"},
-                    # ... (other fields not related to 80D)
-                    {"field": "hlAmount", "name": "Interest Paid On Home Loan"},
-                    {"field": "pfValue", "name": "Investments In PF(Auto)"},
-                    {"field": "aValue2", "name": "Pension Scheme Investments & ULIP"},
-                    {"field": "bValue1", "name": "Housing Loan Principal Repayment"},
-                    {"field": "amount4", "name": "PPF - Public Provident Fund"},
-                    {
-                        "field": "dValue1",
-                        "name": "Home Loan Account Of National Housing Bank",
-                    },
-                    {"field": "eValue1", "name": "LIC- Life Insurance Premium Directly Paid By Employee"},
-                    {"field": "fValue1", "name": "NSC - National Saving Certificate"},
-                    {
-                        "field": "gValue1",
-                        "name": "Mutual Funds - Notified Under Clause 23D Of Section 10",
-                    },
-                    {
-                        "field": "hValue1",
-                        "name": "ELSS - Equity Link Saving Scheme Of Mutual Funds",
-                    },
-                    {"field": "iValue1", "name": "Tuition Fees For Full Time Education"},
-                    {"field": "jValue1", "name": "Fixed Deposits In Banks (Period As Per Income Tax Guidelines)"},
-                    {
-                        "field": "kValue1",
-                        "name": "5 Years Term Deposit An Account Under Post Office Term Deposit Rules",
-                    },
-                    {"field": "kValue2", "name": "Others"},
-                    {
-                        "field": "fourValue",
-                        "name": "(Medical treatment / insurance of handicapped dependant)",
-                    },
-                    {
-                        "field": "fiveNumber",
-                        "name": "Medical treatment (specified diseases only)",
-                    },
-                    {"field": "sixNumber", "name": "Interest repayment of Loan for higher education"},
-                    {
-                        "field": "sevenNumber",
-                        "name": "Deduction for Physically Disabled",
-                    },
-                    {"field": "eightNumber", "name": "Donation U/S 80G"},
-                    {"field": "nineNumber", "name": "NPS Deduction U/S 80CCD(2)(Employer NPS deduction)"},
-                    {
-                        "field": "tenNumber",
-                        "name": "First HSG Loan Interest Ded.(80EE)",
-                    },
-                    {
-                        "field": "elevenNumber",
-                        "name": "Contribution in National Pension Scheme",
-                    },
-                    {
-                        "field": "twelveNumber1",
-                        "name": "Tax Incentive for Affordable Housing for Ded U/S 80EEA",
-                    },
-                    {
-                        "field": "fifteenNumber",
-                        "name": "Tax Incentives for Electric Vehicles for Ded U/S 80EEB",
-                    },
-                    {
-                        "field": "sixteenNumber",
-                        "name": "Donations/contribution made to a political party or an electoral trust",
-                    },
-                    {
-                        "field": "seventeenNumber",
-                        "name": "Interest on deposits in saving account for Ded U/S 80TTA",
-                    },
-                    {
-                        "field": "eighteenNumber",
-                        "name": "Interest on deposits in saving account for Ded U/S 80TTB",
-                    },
-                    {"field": "nineteenNumber", "name": "P.T. Paid by employee"},
-                    {"field": "twentyNumber", "name": "Deduction U/S 80GG"},
-                    {
-                        "field": "twentyoneNumber",
-                        "name": "Rajiv Gandhi Equity Saving Scheme 80CCG",
-                    },
-                    {"field": "twentyFour", "name": "Uniform Allowance"},
-                    {"field": "thirteen", "name": "Education Allowance"},
-                    {"field": "twentysix", "name": "Hostel Allowance"},
-                    {"field": "twentyseven", "name": "Gratuity"},
-                    {"field": "twentyeight", "name": "LTA U/s 10 (5)"},
-                ]
-
-                mediclaim_self_below = float(form_data.get("amount", 0))  # A
-                mediclaim_self_above = float(form_data.get("amount3", 0))  # B
-                mediclaim_parent_below = float(form_data.get("mpAmount3", 0))  # C
-                mediclaim_parent_above = float(form_data.get("mpAmount4", 0))  # D
-                heal_self = float(form_data.get("mp5", 0))  # E
-                heal_parent = float(form_data.get("mpAmount6", 0))  # F
-
-                limit_self_below = 25000
-                limit_self_above = 50000
-                limit_parent_below = 25000
-                limit_parent_above = 50000
-                limit_health_checkup_total = 5000
-
-                eligible_self_below = min(mediclaim_self_below, limit_self_below)  # A
-                eligible_self_above = min(mediclaim_self_above, limit_self_above)  # B
-                eligible_parent_below = min(
-                    mediclaim_parent_below, limit_parent_below
-                )  # C
-                eligible_parent_above = min(
-                    mediclaim_parent_above, limit_parent_above
-                )  # D
-
-                eligible_heal_self = min(
-                    heal_self,
-                    limit_self_below - eligible_self_below,
-                    limit_self_above - eligible_self_above,
-                )
-                eligible_heal_parent = min(
-                    heal_parent,
-                    limit_parent_below - eligible_parent_below,
-                    limit_parent_above - eligible_parent_above,
-                )
-
-                total_health_checkup = eligible_heal_self + eligible_heal_parent
-                if total_health_checkup > limit_health_checkup_total:
-                    if eligible_heal_self >= limit_health_checkup_total:
-                        eligible_heal_self = limit_health_checkup_total
-                        eligible_heal_parent = 0
-                    else:
-                        eligible_heal_parent = (
-                            limit_health_checkup_total - eligible_heal_self
-                        )
-
-                form_data["amount"] = eligible_self_below
-                form_data["amount3"] = eligible_self_above
-                form_data["mpAmount3"] = eligible_parent_below
-                form_data["mpAmount4"] = eligible_parent_above
-                form_data["mp5"] = eligible_heal_self
-                form_data["mpAmount6"] = eligible_heal_parent
-
-                declarations = []
-                for item in numbers:
-                    value = float(form_data.get(item["field"], 0))
-
-                    if value <= 0:
-                        continue
-
-                    get_doc1 = frappe.get_list(
-                        "Employee Tax Exemption Sub Category",
-                        filters={"is_active": 1, "name": item["name"]},
-                        fields=["name", "exemption_category", "max_amount"],
-                    )
-
-                    if get_doc1:
-                        declarations.append(
-                            {
-                                "exemption_sub_category": get_doc1[0].name,
-                                "exemption_category": get_doc1[0].exemption_category,
-                                "max_amount": get_doc1[0].max_amount,
-                                "amount": value,
-                            }
-                        )
-
-                self.declarations = []
-                for row in declarations:
-                    self.append("declarations", row)
-
-
-        if self.custom_tax_regime == "New Regime":
-            if self.custom_status in ["Approved", "Pending"]:
-                form_data = json.loads(self.custom_declaration_form_data or "{}")
-
-                numbers = [
-                    {"field": "nineNumber", "name": "NPS Deduction U/S 80CCD(2)(Employer NPS deduction)"},
-                ]
-
-                sub_category, category, max_amount, declared_amount = [], [], [], []
-
-                for item in numbers:
-                    value = form_data.get(item["field"], 0)
-                    if value > 0:
-                        get_doc1 = frappe.get_list(
-                            "Employee Tax Exemption Sub Category",
-                            filters={"is_active": 1, "name": item["name"]},
-                            fields=["name", "exemption_category", "max_amount"],
-                        )
-
-                        if get_doc1:
-                            sub_category.append(get_doc1[0].name)
-                            category.append(get_doc1[0].exemption_category)
-                            max_amount.append(get_doc1[0].max_amount)
-                            declared_amount.append(value)
-
-                self.declarations = []
-                for i in range(len(sub_category)):
-                    self.append(
-                        "declarations",
-                        {
-                            "exemption_sub_category": sub_category[i],
-                            "exemption_category": category[i],
-                            "max_amount": max_amount[i],
-                            "amount": declared_amount[i],
-                        },
-                    )

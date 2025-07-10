@@ -234,6 +234,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
     refresh(frm) {
         frm.trigger("change_tax_regime");
         frm.trigger("display_declaration_form");
+        frm.trigger("tds_projection_html");
     },
 
     change_tax_regime(frm) {
@@ -446,5 +447,21 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
             }
         });
 
+    },
+
+    tds_projection_html(frm) {
+        if (frm.doc.docstatus === 1) {
+            frappe.call({
+                method: "cn_indian_payroll.cn_indian_payroll.overrides.tds_projection_calculation.calculate_tds_projection",
+                args: {
+                    doc: frm.doc
+                },
+                callback: function (res) {
+                    console.log("TDS Projection Calculated");
+                }
+            });
+        }
     }
+
+
 });
