@@ -20,12 +20,12 @@ from datetime import date
 import json
 from frappe.utils import getdate
 from dateutil.relativedelta import relativedelta
+from frappe import _
 
 
 class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
     def before_save(self):
-
         self.update_json_data_in_declaration()
 
     def before_update_after_submit(self):
@@ -35,6 +35,9 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         self.validation_on_section10()
         self.set_total_declared_amount()
         self.set_total_exemption_amount()
+
+    def on_cancel(self):
+        self.cancel_declaration_history()
 
     def update_json_data_in_declaration(self):
         total_nps = 0
@@ -91,69 +94,28 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
 
 
-
-    def update_json_data(self):
-        if self.declarations:
-            form_data = json.loads(self.custom_declaration_form_data or "{}")
-
-            # Mapping: name → field
-            field_map = {
-                "Mediclaim Self, Spouse & Children (Below 60 years)": "amount",
-                "Mediclaim Self (Senior Citizen - 60 years & above)": "amount3",
-                "Parents (Below 60 years)": "mpAmount3",
-                "Parents (Senior Citizen - 60 years & above)": "mpAmount4",
-                "Preventive Checkup (Self + Family)": "mp5",
-                "Preventive Checkup (Parents)": "mpAmount6",
-                "Interest Paid On Home Loan": "hlAmount",
-                "Investments In PF(Auto)": "pfValue",
-                "Pension Scheme Investments & ULIP": "aValue2",
-                "Housing Loan Principal Repayment": "bValue1",
-                "PPF - Public Provident Fund": "amount4",
-                "Home Loan Account Of National Housing Bank": "dValue1",
-                "LIC- Life Insurance Premium Directly Paid By Employee": "eValue1",
-                "NSC - National Saving Certificate": "fValue1",
-                "Mutual Funds - Notified Under Clause 23D Of Section 10": "gValue1",
-                "ELSS - Equity Link Saving Scheme Of Mutual Funds": "hValue1",
-                "Tuition Fees For Full Time Education": "iValue1",
-                "Fixed Deposits In Banks (Period As Per Income Tax Guidelines)": "jValue1",
-                "5 Years Term Deposit An Account Under Post Office Term Deposit Rules": "kValue1",
-                "Others": "kValue2",
-                "(Medical treatment / insurance of handicapped dependant)": "fourValue",
-                "Medical treatment (specified diseases only)": "fiveNumber",
-                "Interest repayment of Loan for higher education": "sixNumber",
-                "Deduction for Physically Disabled": "sevenNumber",
-                "Donation U/S 80G": "eightNumber",
-                "NPS Deduction U/S 80CCD(2)(Employer NPS deduction)": "nineNumber",
-                "First HSG Loan Interest Ded.(80EE)": "tenNumber",
-                "Contribution in National Pension Scheme": "elevenNumber",
-                "Tax Incentive for Affordable Housing for Ded U/S 80EEA": "twelveNumber1",
-                "Tax Incentives for Electric Vehicles for Ded U/S 80EEB": "fifteenNumber",
-                "Donations/contribution made to a political party or an electoral trust": "sixteenNumber",
-                "Interest on deposits in saving account for Ded U/S 80TTA": "seventeenNumber",
-                "Interest on deposits in saving account for Ded U/S 80TTB": "eighteenNumber",
-                "P.T. Paid by employee": "nineteenNumber",
-                "Deduction U/S 80GG": "twentyNumber",
-                "Rajiv Gandhi Equity Saving Scheme 80CCG": "twentyoneNumber",
-                "Uniform Allowance": "twentyFour",
-                "Education Allowance": "thirteen",
-                "Hostel Allowance": "twentysix",
-                "Gratuity": "twentyseven",
-                "LTA U/s 10 (5)": "twentyeight",
-            }
-
-            for row in self.declarations:
-                key = field_map.get(row.exemption_sub_category)
-                if key:
-                    form_data[key] = round(row.amount)
-
-            self.custom_declaration_form_data = json.dumps(form_data)
-
-
     # -----------validate section10 components on employee is eligible or not----------------
 
     def validation_on_section10(self):
+        validation_sub_categories = []
+        component_sub_category = []
+
         if self.custom_tax_regime != "Old Regime":
             return
+
+        if self.declarations:
+            for declaration in self.declarations:
+                sub_category_doc = frappe.get_doc("Employee Tax Exemption Sub Category", declaration.exemption_sub_category)
+                component_type = sub_category_doc.custom_component_type
+
+                if component_type in [
+                    "Uniform Allowance",
+                    "Education Allowance",
+                    "Gratuity",
+                    "Hostel Allowance",
+                    "LTA Reimbursement"
+                ]:
+                    validation_sub_categories.append(component_type)
 
         ss_assignment = frappe.get_list(
             "Salary Structure Assignment",
@@ -178,11 +140,28 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
             posting_date=ss_assignment[0].from_date,
             for_preview=1,
         )
-        # if salary_slip_preview:
 
-        for component in salary_slip_preview.earnings:
-            if component and component not in available_components:
-                frappe.throw(f"You are not eligible to declare {allowances[key]}")
+        if salary_slip_preview:
+            for component in salary_slip_preview.earnings:
+                salary_component = frappe.get_doc("Salary Component", component.salary_component)
+                if salary_component.component_type=="Tax Exemption":
+                    sub_category = salary_component.custom_sub_category
+                    if sub_category:
+                        component_sub_category.append(sub_category.strip())
+
+        unmatched = []
+        for declared_sub in validation_sub_categories:
+            if declared_sub.strip() not in component_sub_category:
+                unmatched.append(declared_sub.strip())
+
+        if unmatched:
+            frappe.throw(
+                _("The following Section 10 components are not part of your salary (CTC), so you cannot claim exemption for them:<br><br>"
+                + "<br>".join(f"<b>{u}</b>" for u in unmatched))
+            )
+
+
+
 
 
 
@@ -201,8 +180,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
             )
 
 
-    def on_cancel(self):
-        self.cancel_declaration_history()
+
 
     def cancel_declaration_history(self):
         history_data = frappe.db.get_list(
