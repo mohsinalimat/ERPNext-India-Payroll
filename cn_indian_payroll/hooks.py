@@ -301,6 +301,9 @@ doc_events = {
     "Employee Tax Exemption Sub Category": {
         "validate": "cn_indian_payroll.cn_indian_payroll.overrides.exemption_sub_category.validate",
     },
+    "Employee Tax Exemption Category": {
+        "validate": "cn_indian_payroll.cn_indian_payroll.overrides.exemption_category.validate",
+    },
 
     # "Employee Promotion": {
     #     "on_cancel": "cn_indian_payroll.cn_indian_payroll.overrides.employee_promotion.on_cancel",

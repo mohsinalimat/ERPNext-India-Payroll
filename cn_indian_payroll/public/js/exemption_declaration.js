@@ -311,12 +311,10 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
                         const stored_value = stored_row ? stored_row.value || stored_row.amount || '' : '';
 
-                        // Determine readonly condition based on tax regime
                         let is_readonly = false;
                         if (frm.doc.custom_tax_regime === "New Regime") {
-                            is_readonly = true; // All fields disabled
+                            is_readonly = true;
                         } else if (frm.doc.custom_tax_regime === "Old Regime") {
-                            // Still disable only specific components
                             is_readonly = ["NPS", "Provident Fund", "Professional Tax"].includes(row.custom_component_type);
                         }
 
@@ -333,7 +331,6 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                         `;
                     });
 
-                    // Inline message if regime is New Regime
                     let info_message = '';
                     if (frm.doc.custom_tax_regime === "New Regime") {
                         info_message = `
@@ -451,17 +448,127 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
     tds_projection_html(frm) {
         if (frm.doc.docstatus === 1) {
-            frappe.call({
-                method: "cn_indian_payroll.cn_indian_payroll.overrides.tds_projection_calculation.calculate_tds_projection",
-                args: {
-                    doc: frm.doc
-                },
-                callback: function (res) {
-                    console.log("TDS Projection Calculated");
-                }
-            });
+                frappe.call({
+                    method: "cn_indian_payroll.cn_indian_payroll.overrides.tds_projection_calculation.calculate_tds_projection",
+                    args: {
+                        doc: frm.doc
+                    },
+                    callback: function (res) {
+                        if (res.message) {
+                            let data = res.message;
+
+                        const html = `
+                                    <table class="table table-bordered" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                                        <thead style="background-color: #f0f0f0;">
+                                            <tr style="background-color:rgba(3, 9, 15, 0.68); color: white;">
+                                                <th style="padding: 10px; border: 1px solid #ddd;">Title</th>
+                                                <th style="padding: 10px; border: 1px solid #ddd;">Old Regime</th>
+                                                <th style="padding: 10px; border: 1px solid #ddd;">New Regime</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Taxable Earnings (Current)</td>
+                                                <td><div style="text-align: right"> ₹ ${data.current_taxable_earnings_old_regime}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.current_taxable_earnings_new_regime}</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Taxable Earnings (Future)</td>
+                                                <td><div style="text-align: right"> ₹ ${data.future_taxable_earnings_old_regime}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.future_taxable_earnings_new_regime}</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Loan Perquisite</td>
+                                                <td><div style="text-align: right"> ₹ ${data.loan_perquisite_amount}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.loan_perquisite_amount}</div></td>
+                                            </tr>
+                                            <tr style="font-weight: bold; background-color: #e9ecef;">
+                                                <td>Total Taxable Earnings (Current+Future+Loan)</td>
+                                                <td><div style="text-align: right"> ₹ ${data.total_taxable_earnings_old_regime}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.total_taxable_earnings_new_regime}</div></td>
+                                            </tr>
+
+                                            <tr>
+                                                <!-- First column with nested table -->
+                                                <td>
+                                                    <b>Less: Allowances Exempted U/s 16</b>
+                                                    <table style="width: 100%; border-collapse: collapse; margin-top: 5px;" border="1">
+                                                        <thead style="background-color: #f0f0f0;">
+                                                            <tr>
+                                                                <th style="padding: 6px;">Title</th>
+                                                                <th style="padding: 6px; text-align: right;">Old Regime</th>
+                                                                <th style="padding: 6px; text-align: right;">New Regime</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="padding: 6px;">Standard Deduction</td>
+                                                                <td style="padding: 6px; text-align: right;">₹ ${data.old_regime_standard_value}</td>
+                                                                <td style="padding: 6px; text-align: right;">₹ ${data.new_regime_standard_value}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 6px;">Professional Tax</td>
+                                                                <td style="padding: 6px; text-align: right;">₹ ${data.pt_amount}</td>
+                                                                <td style="padding: 6px; text-align: right;">₹ 0</td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+
+                                                <!-- Second column: Old Regime Total -->
+                                                <td><div style="text-align: right;">₹ ${data.old_regime_standard_value+data.pt_amount}</div></td>
+
+                                                <!-- Third column: New Regime Total -->
+                                                <td><div style="text-align: right;">₹ ${data.new_regime_standard_value}</div></td>
+                                            </tr>
+
+                                             <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">HRA Exemptions</td>
+                                                <td><div style="text-align: right"> ₹ ${data.hra_exemptions}</div></td>
+                                                <td><div style="text-align: right"> ₹ 0</div></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Total Exemption/Deductions</td>
+                                                <td><div style="text-align: right"> ₹ ${data.total_old_regime_deductions}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.total_new_regime_deductions}</div></td>
+                                            </tr>
+
+                                             <tr style="font-weight: bold; background-color: #e9ecef;">
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Annual Taxable Income</td>
+                                                <td><div style="text-align: right"> ₹ ${data.old_regime_annual_taxable_income}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.new_regime_annual_taxable_income}</div></td>
+                                            </tr>
+
+
+
+
+
+
+
+
+
+
+                                        </tbody>
+                                    </table>
+                                `;
+
+                            frm.set_df_property("custom_employee_tax_projection", "options", html);
+                            frm.refresh_field("custom_employee_tax_projection");
+
+
+
+
+                        }
+                    }
+                });
+            }
         }
-    }
+
+
+
+
 
 
 });

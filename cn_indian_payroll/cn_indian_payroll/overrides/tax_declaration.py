@@ -30,8 +30,8 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
     def before_update_after_submit(self):
 
-        # self.calculate_hra_breakup()
-        # self.update_tax_declaration()
+        self.calculate_hra_breakup()
+        self.update_tax_declaration()
         self.validation_on_section10()
         self.set_total_declared_amount()
         self.set_total_exemption_amount()

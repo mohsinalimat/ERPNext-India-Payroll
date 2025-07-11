@@ -813,7 +813,7 @@ class CustomSalarySlip(SalarySlip):
                 )
                 if earning_component_data.component_type == "NPS":
                     current_nps_value += earning.amount or 0
-                    if earning_component_data.custom_is_arrear == 0:
+                    if earning_component_data.custom_is_arrear == 0 and earning_component_data.custom_component_sub_type=="Fixed":
                         future_nps_value = (
                             earning.custom_actual_amount or 0
                         ) * self.custom_month_count
@@ -821,13 +821,13 @@ class CustomSalarySlip(SalarySlip):
 
                 if earning.salary_component == current_basic:
                     current_basic_value += earning.amount
-                    if earning_component_data.custom_is_arrear == 0:
+                    if earning_component_data.custom_is_arrear == 0 and earning_component_data.custom_component_sub_type=="Fixed":
                         future_basic_value = (earning.custom_actual_amount) * (
                             self.custom_month_count
                         )
                 if earning.salary_component == current_hra:
                     current_hra_value += earning.amount
-                    if earning_component_data.custom_is_arrear == 0:
+                    if earning_component_data.custom_is_arrear == 0 and earning_component_data.custom_component_sub_type=="Fixed":
                         future_hra_value = (earning.custom_actual_amount) * (
                             self.custom_month_count
                         )
@@ -841,14 +841,14 @@ class CustomSalarySlip(SalarySlip):
                 )
                 if deduction_component_data.component_type == "Provident Fund":
                     current_epf_value += deduction.amount
-                    if deduction_component_data.custom_is_arrear == 0:
+                    if deduction_component_data.custom_is_arrear == 0 and deduction_component_data.custom_component_sub_type=="Fixed":
                         future_epf_value = (deduction.custom_actual_amount) * (
                             self.custom_month_count
                         )
                 if deduction_component_data.component_type == "Professional Tax":
                     current_pt_value += deduction.amount
 
-                    if deduction_component_data.custom_is_arrear == 0:
+                    if deduction_component_data.custom_is_arrear == 0 and deduction_component_data.custom_component_sub_type=="Fixed":
                         future_pt_value = (deduction.custom_actual_amount) * (
                             self.custom_month_count
                         )

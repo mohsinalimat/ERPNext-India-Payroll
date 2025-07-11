@@ -60,14 +60,14 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                 new_salary_slip = make_salary_slip(
                     source_name=salary_structure,
                     employee=employee,
-                    print_format='Salary Slip Standard for CTC',
+                    print_format='Salary Slip Standard',
                     posting_date=latest_salary_structure[0].from_date,
                     for_preview=1,
                     )
 
                 for new_earning in new_salary_slip.earnings:
                     nps_component = frappe.get_doc("Salary Component", new_earning.salary_component)
-                    if nps_component.component_type=="NPS":
+                    if nps_component.component_type=="NPS" and nps_component.custom_component_sub_type=="Fixed":
                         start_date=effective_from
                         end_date=payroll_period_end_date
                         if isinstance(start_date, str):
@@ -134,14 +134,14 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                 new_salary_slip = make_salary_slip(
                     source_name=salary_structure,
                     employee=employee,
-                    print_format='Salary Slip Standard for CTC',
+                    print_format='Salary Slip Standard',
                     posting_date=latest_salary_structure[0].from_date,
                     for_preview=1,
                     )
 
                 for new_earning in new_salary_slip.earnings:
                     nps_component = frappe.get_doc("Salary Component", new_earning.salary_component)
-                    if nps_component.component_type=="NPS":
+                    if nps_component.component_type=="NPS" and nps_component.custom_component_sub_type=="Fixed":
                         future_nps_amount+=new_earning.amount*new_regime_month_count
 
                 get_declaration = frappe.get_doc("Employee Tax Exemption Declaration", doc_id)
@@ -218,7 +218,7 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                 new_salary_slip = make_salary_slip(
                     source_name=salary_structure,
                     employee=employee,
-                    print_format='Salary Slip Standard for CTC',
+                    print_format='Salary Slip Standard',
                     posting_date=latest_salary_structure[0].from_date,
                     for_preview=1,
                     )
@@ -228,14 +228,14 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
 
                 for new_earning in new_salary_slip.earnings:
                     component = frappe.get_doc("Salary Component", new_earning.salary_component)
-                    if component.component_type == "NPS":
+                    if component.component_type == "NPS" and component.custom_component_sub_type=="Fixed":
                         nps_component += new_earning.amount
 
                 for deduction in new_salary_slip.deductions:
                     component = frappe.get_doc("Salary Component", deduction.salary_component)
-                    if component.component_type == "Provident Fund":
+                    if component.component_type == "Provident Fund" and component.custom_component_sub_type=="Fixed":
                         epf_amount += deduction.amount
-                    if component.component_type == "Professional Tax":
+                    if component.component_type == "Professional Tax" and component.custom_component_sub_type=="Fixed":
                         pt_amount += deduction.amount
 
                 start_date=effective_from
@@ -375,22 +375,22 @@ def choose_regime(doc_id, employee,payroll_period,company,regime):
                 new_salary_slip = make_salary_slip(
                     source_name=salary_structure,
                     employee=employee,
-                    print_format='Salary Slip Standard for CTC',
+                    print_format='Salary Slip Standard',
                     posting_date=latest_salary_structure[0].from_date,
                     for_preview=1,
                 )
 
                 for new_earning in new_salary_slip.earnings:
                     new_earning_component = frappe.get_doc("Salary Component", new_earning.salary_component)
-                    if new_earning_component.component_type == "NPS":
+                    if new_earning_component.component_type == "NPS" and new_earning_component.custom_component_sub_type=="Fixed":
                         future_nps_amount+=new_earning.amount*old_regime_month_count
 
                 for old_deduction in new_salary_slip.deductions:
                     new_deduction_component = frappe.get_doc("Salary Component", old_deduction.salary_component)
-                    if new_deduction_component.component_type == "Provident Fund":
+                    if new_deduction_component.component_type == "Provident Fund" and new_deduction_component.custom_component_sub_type=="Fixed":
                         future_epf_amount += old_deduction.amount*old_regime_month_count
 
-                    if new_deduction_component.component_type == "Professional Tax":
+                    if new_deduction_component.component_type == "Professional Tax" and new_deduction_component.custom_component_sub_type=="Fixed":
                         future_pt_amount+= old_deduction.amount*old_regime_month_count
 
 

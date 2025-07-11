@@ -65,7 +65,7 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
             source_name=self.salary_structure,
             employee=self.employee,
             print_format='Salary Slip Standard',
-            # posting_date=self.from_date,
+            posting_date=self.from_date,
             for_preview=1,
         )
 
@@ -87,13 +87,13 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
         if self.custom_tax_regime == "New Regime" or self.custom_tax_regime == "Old Regime":
             for earning in salary_slip.earnings:
                 comp_doc = frappe.get_doc("Salary Component", earning.salary_component)
-                if comp_doc.component_type == "NPS":
+                if comp_doc.component_type == "NPS" and comp_doc.custom_component_sub_type == "Fixed":
                     add_exemption("NPS", earning.amount)
 
             if self.custom_tax_regime == "Old Regime":
                 for deduction in salary_slip.deductions:
                     comp_doc = frappe.get_doc("Salary Component", deduction.salary_component)
-                    if comp_doc.component_type in ["Provident Fund", "Professional Tax"]:
+                    if comp_doc.component_type in ["Provident Fund", "Professional Tax"] and comp_doc.custom_component_sub_type == "Fixed":
                         add_exemption(comp_doc.component_type, deduction.amount)
 
         existing_declaration = frappe.get_list(
