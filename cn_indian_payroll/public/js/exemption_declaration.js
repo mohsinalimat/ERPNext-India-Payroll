@@ -365,6 +365,24 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                             }
                         </style>
 
+                        <table class="styled-declaration-table" id="summary-table">
+                            <thead>
+
+                                <tr>
+                                    <th>The Selected Tax Regime</th>
+                                    <td><b>${frm.doc.custom_tax_regime}</b></td>
+                                </tr>
+                                <tr>
+                                    <th>Annual HRA Exemption</th>
+                                    <td><b>${frm.doc.annual_hra_exemption || 0}</b></td>
+                                </tr>
+                                <tr>
+                                    <th>Total Exemption Eligible Amount</th>
+                                    <td><b>${Math.round(frm.doc.total_exemption_amount || 0)}</b></td>
+                                </tr>
+                            </thead>
+                        </table>
+
                         <table class="styled-declaration-table" id="declaration-table">
                             <thead>
                                 <tr>
@@ -380,18 +398,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                             </tbody>
                         </table>
 
-                        <table class="styled-declaration-table" id="summary-table">
-                            <thead>
-                                <tr>
-                                    <th>Annual HRA Exemption</th>
-                                    <td>${frm.doc.annual_hra_exemption || 0}</td>
-                                </tr>
-                                <tr>
-                                    <th>Total Exemption Eligible Amount</th>
-                                    <td>${frm.doc.total_exemption_amount || 0}</td>
-                                </tr>
-                            </thead>
-                        </table>
+
                     `;
 
                     frm.fields_dict.custom_declaration_form.$wrapper.html(html);
@@ -456,6 +463,33 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                     callback: function (res) {
                         if (res.message) {
                             let data = res.message;
+
+                            console.log(data);
+
+                            let oldSlabRows = "";
+                                for (let i = 0; i < data.old_regime_from_amounts.length; i++) {
+                                    oldSlabRows += `
+                                        <tr>
+                                            <td style="padding: 6px;">₹ ${data.old_regime_from_amounts[i]}</td>
+                                            <td style="padding: 6px; text-align: right;">₹ ${data.old_regime_to_amounts[i]}</td>
+                                            <td style="padding: 6px; text-align: right;">${data.old_regime_percentages[i]}%</td>
+                                            <td style="padding: 6px; text-align: right;">₹ ${data.old_regime_tax_per_slab[i]}</td>
+                                        </tr>
+                                    `;
+                                }
+
+                                // Build HTML rows for New Regime Slab
+                                let newSlabRows = "";
+                                for (let i = 0; i < data.new_regime_from_amounts.length; i++) {
+                                    newSlabRows += `
+                                        <tr>
+                                            <td style="padding: 6px;">₹ ${data.new_regime_from_amounts[i]}</td>
+                                            <td style="padding: 6px; text-align: right;">₹ ${data.new_regime_to_amounts[i]}</td>
+                                            <td style="padding: 6px; text-align: right;">${data.new_regime_percentages[i]}%</td>
+                                            <td style="padding: 6px; text-align: right;">₹ ${data.new_regime_tax_per_slab[i]}</td>
+                                        </tr>
+                                    `;
+                                }
 
                         const html = `
                                     <table class="table table-bordered" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
@@ -539,6 +573,131 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                                                 <td style="padding: 10px; border: 1px solid #ddd;">Annual Taxable Income</td>
                                                 <td><div style="text-align: right"> ₹ ${data.old_regime_annual_taxable_income}</div></td>
                                                 <td><div style="text-align: right"> ₹ ${data.new_regime_annual_taxable_income}</div></td>
+                                            </tr>
+
+
+
+                                            <tr>
+                                                <!-- First column with nested table -->
+                                                <td>
+                                                    <b>Old Regime Tax Slab</b>
+                                                            <table style="width: 100%; border-collapse: collapse; margin-top: 5px;" border="1">
+                                                                <thead style="background-color: #f0f0f0;">
+                                                                    <tr>
+                                                                        <th style="padding: 6px;">From Amount</th>
+                                                                        <th style="padding: 6px; text-align: right;">To Amount</th>
+                                                                        <th style="padding: 6px; text-align: right;">Percentage</th>
+                                                                        <th style="padding: 6px; text-align: right;">Amount</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    ${oldSlabRows}
+                                                                </tbody>
+                                                            </table>
+
+                                                            <br>
+
+                                                            <b>New Regime Tax Slab</b>
+                                                            <table style="width: 100%; border-collapse: collapse; margin-top: 5px;" border="1">
+                                                                <thead style="background-color: #f0f0f0;">
+                                                                    <tr>
+                                                                        <th style="padding: 6px;">From Amount</th>
+                                                                        <th style="padding: 6px; text-align: right;">To Amount</th>
+                                                                        <th style="padding: 6px; text-align: right;">Percentage</th>
+                                                                        <th style="padding: 6px; text-align: right;">Amount</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    ${newSlabRows}
+                                                                </tbody>
+                                                            </table>
+
+                                                </td>
+
+                                                <!-- Second column: Old Regime Total -->
+                                                <td><div style="text-align: right;">₹ ${data.old_regime_total_tax}</div></td>
+
+                                                <!-- Third column: New Regime Total -->
+                                                <td><div style="text-align: right;">₹ ${data.new_regime_total_tax}</div></td>
+                                            </tr>
+
+
+
+                                             <tr>
+                                                <td>
+                                                    <b>Rebate</b>
+                                                            <table style="width: 100%; border-collapse: collapse; margin-top: 5px;" border="1">
+                                                                <thead style="background-color: #f0f0f0;">
+                                                                    <tr>
+                                                                        <th style="padding: 6px;">Regime</th>
+                                                                        <th style="padding: 6px; text-align: right;">Annual Taxable Lessthan</th>
+                                                                        <th style="padding: 6px; text-align: right;">Max Amount</th>
+                                                                        <th style="padding: 6px; text-align: right;">Marginal Relief</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+
+                                                                    <tr>
+                                                                        <th style="padding: 6px;">Old Regime</th>
+                                                                        <th style="padding: 6px; text-align: right;">${data.old_regime_rebate_limit}</th>
+                                                                        <th style="padding: 6px; text-align: right;">${data.old_regime_max_amount}</th>
+                                                                        <th style="padding: 6px; text-align: right;">${data.old_regime_marginal_relief_min}-${data.old_regime_marginal_relief_max}</th>
+                                                                    </tr>
+
+                                                                     <tr>
+                                                                        <th style="padding: 6px;">New Regime</th>
+                                                                        <th style="padding: 6px; text-align: right;">${data.new_regime_rebate_limit}</th>
+                                                                        <th style="padding: 6px; text-align: right;">${data.new_regime_max_amount}</th>
+                                                                        <th style="padding: 6px; text-align: right;">${data.new_regime_marginal_relief_min}-${data.new_regime_marginal_relief_max}</th>
+                                                                    </tr>
+
+                                                                </tbody>
+                                                            </table>
+
+
+                                                </td>
+
+                                                <td><div style="text-align: right;">₹ ${data.old_regime_rebate_amount}</div></td>
+
+                                                <td><div style="text-align: right;">₹ ${data.new_regime_rebate_amount}</div></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Total Tax on Income</td>
+                                                 <td><div style="text-align: right"> ₹ ${data.old_regime_total_tax-data.old_regime_rebate_amount}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.new_regime_total_tax-data.new_regime_rebate_amount}</div></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Surcharge</td>
+                                                 <td><div style="text-align: right"> ₹ ${data.old_regime_surcharge}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.new_regime_surcharge}</div></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Education Cess</td>
+                                                 <td><div style="text-align: right"> ₹ ${data.old_regime_education_cess}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.new_regime_education_cess}</div></td>
+                                            </tr>
+
+                                            <tr style="font-weight: bold; background-color: #e9ecef;">
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Tax Payable</td>
+                                                 <td><div style="text-align: right"> ₹ ${data.old_regime_education_cess+data.old_regime_surcharge+(data.old_regime_total_tax-data.old_regime_rebate_amount)}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.new_regime_education_cess+data.new_regime_surcharge+(data.new_regime_total_tax-data.new_regime_rebate_amount)}</div></td>
+                                            </tr>
+
+                                            <tr style="font-weight: bold; background-color: #e9ecef;">
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Tax Paid</td>
+                                                 <td><div style="text-align: right"> ₹ ${data.total_tax_already_paid}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${data.total_tax_already_paid}</div></td>
+                                            </tr>
+
+                                            <tr style="font-weight: bold; background-color: #e9ecef;">
+                                                <td style="padding: 10px; border: 1px solid #ddd;">Current Tax</td>
+                                                <td><div style="text-align: right"> ₹ 0</div></td>
+                                                <td><div style="text-align: right"> ₹ 0</div></td>
                                             </tr>
 
 
