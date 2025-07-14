@@ -95,7 +95,7 @@ class CustomFullAndFinalStatement(FullandFinalStatement):
                                 "amount": amount,
                                 "salary_component": component,
                                 "company": self.company,
-                                "payroll_date": self.transaction_date,
+                                "payroll_date": self.relieving_date,
                                 "ref_doctype": "Full and Final Statement",
                                 "ref_docname": self.name,
                             }

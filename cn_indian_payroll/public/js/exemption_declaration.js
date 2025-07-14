@@ -491,6 +491,24 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                                     `;
                                 }
 
+                                let old_tax = (
+                                    (data.old_regime_education_cess + data.old_regime_surcharge +
+                                    (data.old_regime_total_tax - data.old_regime_rebate_amount)) -
+                                    data.total_tax_already_paid
+                                );
+
+                                let new_tax = (
+                                    (data.new_regime_education_cess+data.new_regime_surcharge+
+                                    (data.new_regime_total_tax-data.new_regime_rebate_amount)) -
+                                    data.total_tax_already_paid
+                                );
+
+                                let monthBase = data.month_count === 0 ? data.num_months : data.month_count+1;
+
+                                let currentTax_old_regime = old_tax / monthBase;
+                                let currentTax_new_regime = new_tax / monthBase;
+
+
                         const html = `
                                     <table class="table table-bordered" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
                                         <thead style="background-color: #f0f0f0;">
@@ -694,10 +712,12 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                                                 <td><div style="text-align: right"> ₹ ${data.total_tax_already_paid}</div></td>
                                             </tr>
 
+
+
                                             <tr style="font-weight: bold; background-color: #e9ecef;">
                                                 <td style="padding: 10px; border: 1px solid #ddd;">Current Tax</td>
-                                                <td><div style="text-align: right"> ₹ 0</div></td>
-                                                <td><div style="text-align: right"> ₹ 0</div></td>
+                                                <td><div style="text-align: right"> ₹ ${Math.round(currentTax_old_regime)}</div></td>
+                                                <td><div style="text-align: right"> ₹ ${Math.round(currentTax_new_regime)}</div></td>
                                             </tr>
 
 

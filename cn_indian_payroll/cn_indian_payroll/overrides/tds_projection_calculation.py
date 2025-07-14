@@ -33,6 +33,9 @@ def calculate_tds_projection(doc):
     old_regime_annual_taxable_income=0
     new_regime_annual_taxable_income=0
 
+    month_count=0
+    num_months=0
+
     if doc.get('employee'):
         latest_salary_structure = frappe.get_list(
             "Salary Structure Assignment",
@@ -455,6 +458,8 @@ def calculate_tds_projection(doc):
         )
 
         return {
+                "num_months": num_months if num_months else 0,
+                "month_count": month_count if month_count else 0,
                 "current_taxable_earnings_old_regime":round(current_taxable_earnings_old_regime),
                 "current_taxable_earnings_new_regime":round(current_taxable_earnings_new_regime),
                 "future_taxable_earnings_new_regime":round(future_taxable_earnings_new_regime),
@@ -500,6 +505,7 @@ def calculate_tds_projection(doc):
                 "new_regime_surcharge": slab_result.get("new_surcharge_m"),
                 "new_regime_education_cess": slab_result.get("new_education_cess"),
                 "total_tax_already_paid": slab_result.get("tax_already_paid")
+
 
                 }
 
@@ -878,7 +884,7 @@ def slab_calculation(
     )
 
 
-    tax_already_paid = sum(slip.current_month_income_tax for slip in get_all_salary_slip)
+    tax_already_paid = round(sum(slip.current_month_income_tax for slip in get_all_salary_slip))
 
     return {
         "from_amount": from_amount,
