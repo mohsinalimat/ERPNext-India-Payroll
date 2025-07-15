@@ -1,6 +1,12 @@
+
+
+
 import frappe
+from datetime import datetime
 
 def get_salary_slips(filters=None):
+    basic_component=None
+    da_component=None
     if filters is None:
         filters = {}
 
@@ -41,7 +47,6 @@ def get_salary_slips(filters=None):
         each_salary_slip = frappe.get_doc('Salary Slip', slip["name"])
         each_employee = frappe.get_doc("Employee", each_salary_slip.employee)
 
-        # Get salary structure assignment to check EPF eligibility
         pf_account = frappe.get_value(
             "Salary Structure Assignment",
             {"employee": each_salary_slip.employee},
@@ -52,30 +57,46 @@ def get_salary_slips(filters=None):
         if not pf_account or not pf_account.custom_is_epf:
             continue  # Skip if not EPF eligible
 
-        # Initialize basic and DA
         basic = 0
         da = 0
         epf_amount_employee = 0
-        epf_amount_employer=0
-        eps_amount=0
+        epf_amount_employer = 0
+        eps_amount = 0
 
         for earning in each_salary_slip.earnings:
             if earning.salary_component == basic_component:
-                basic = earning.amount
+                basic += earning.amount
+            get_doc = frappe.get_doc("Salary Component", earning.salary_component)
+            if get_doc.custom_is_arrear == 1 and get_doc.custom_component == basic_component:
+                basic += earning.amount
             if earning.salary_component == da_component:
-                da = earning.amount
+                da += earning.amount
+            if get_doc.custom_is_arrear == 1 and get_doc.custom_component == da_component:
+                da += earning.amount
 
         for deduction in each_salary_slip.deductions:
-            get_epf_component=frappe.get_doc("Salary Component", deduction.salary_component)
-            if get_epf_component.component_type=="Provident Fund":
-                epf_amount_employee= deduction.amount
+            get_epf_component = frappe.get_doc("Salary Component", deduction.salary_component)
+            if get_epf_component.component_type == "Provident Fund":
+                epf_amount_employee += deduction.amount
 
+        epf_edli_eligible_wage = round(float(basic or 0) + float(da or 0))
 
+        # EPS eligibility check
+        joining_date = getattr(each_employee, "date_of_joining", None)
+        is_eps_applicable = True
 
+        if joining_date and epf_edli_eligible_wage > 15000:
+            if joining_date > datetime(2014, 9, 1).date():
+                is_eps_applicable = False
 
-        eligible_wage = min(round(float(basic or 0) + float(da or 0)), 15000)
-        epf_amount_employer = eligible_wage * 8.33 / 100
-        eps_amount = eligible_wage * 3.67 / 100
+        if is_eps_applicable:
+            eps_eligible_wage = min(epf_edli_eligible_wage, 15000)
+            epf_amount_employer = eps_eligible_wage * 8.33 / 100
+            eps_amount = epf_edli_eligible_wage * 3.67 / 100
+        else:
+            eps_eligible_wage = 0
+            epf_amount_employer = 0
+            eps_amount = epf_edli_eligible_wage * 12 / 100  # Full to EPF
 
         detailed_salary_slips.append({
             "employee": each_salary_slip.employee,
@@ -84,19 +105,19 @@ def get_salary_slips(filters=None):
             "custom_payroll_period": each_salary_slip.custom_payroll_period,
             "company": each_salary_slip.company,
             "uan": getattr(each_employee, "custom_uan", None),
-            "gross_pay": each_salary_slip.gross_pay,
-            "epf_wages": eligible_wage,
-            "eps_wages": eligible_wage,
-            "edli_wages": eligible_wage,
+            "gross_pay": round(each_salary_slip.gross_pay),
+            "epf_wages": epf_edli_eligible_wage,
+            "eps_wages": eps_eligible_wage,
+            "edli_wages": epf_edli_eligible_wage,
             "ncp_days": each_salary_slip.custom_total_leave_without_pay or 0,
             "refund": 0,
-            "epf_amount_employee": epf_amount_employee,
-            "epf_amount_employer": epf_amount_employer,
-            "eps_amount": eps_amount,
-
+            "epf_amount_employee": round(epf_amount_employee),
+            "epf_amount_employer": round(epf_amount_employer),
+            "eps_amount": round(eps_amount),
         })
 
     return detailed_salary_slips
+
 
 def execute(filters=None):
     columns = [
@@ -136,9 +157,9 @@ def download_ecr_txt(filters=None):
         return str(round(value or 0))
 
     for row in salary_data:
-        line = "\t".join([
-            str(row.get("uan", "")),
-            row.get("employee_name", ""),
+        line = "#~#".join([
+            str(row.get("uan") or "0"),
+            row.get("employee_name") or "",
             r(row.get("gross_pay")),
             r(row.get("epf_wages")),
             r(row.get("eps_wages")),
