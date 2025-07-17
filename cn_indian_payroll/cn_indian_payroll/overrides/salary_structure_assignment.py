@@ -4,6 +4,7 @@ from hrms.payroll.doctype.salary_structure_assignment.salary_structure_assignmen
 from hrms.payroll.doctype.salary_structure.salary_structure import make_salary_slip
 from frappe.utils import getdate
 from datetime import datetime
+from frappe import _
 
 class CustomSalaryStructureAssignment(SalaryStructureAssignment):
 
@@ -13,6 +14,43 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
 
     def on_cancel(self):
         self.cancel_declaration()
+
+    def validate(self):
+        super().validate()
+        self.update_min_wages()
+
+    def before_update_after_submit(self):
+        self.update_min_wages()
+
+    def update_min_wages(self):
+        if self.custom_minimum_wages_applicable:
+            employee = frappe.get_doc("Employee", self.employee)
+
+            if not employee.custom_zone or not employee.custom_skill_level:
+                frappe.throw(
+                    _("Minimum wages cannot be applied because 'Skill Level' or 'Zone' is not selected in Employee master.")
+                )
+
+            state = frappe.get_doc("State", self.custom_minimum_wages_state)
+            if not state:
+                frappe.throw(_("Selected state does not exist."))
+
+            match_found = False
+            for wages in state.min_wages:
+                if (
+                    wages.zone == employee.custom_zone
+                    and wages.skill_level == employee.custom_skill_level
+                ):
+                    self.custom_basic_value = wages.basic_daily_wage
+                    self.custom_hra_value = wages.vda_daily_wages
+                    match_found = True
+                    break  # Stop once a match is found
+
+            if not match_found:
+                self.custom_basic_value = 0
+                self.custom_hra_value = 0
+
+
 
     def cancel_declaration(self):
         declarations = frappe.db.get_list(
