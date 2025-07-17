@@ -18,9 +18,47 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
     def validate(self):
         super().validate()
         self.update_min_wages()
+        self.update_perquisite()
 
     def before_update_after_submit(self):
         self.update_min_wages()
+        self.update_perquisite()
+
+    def update_perquisite(self):
+        if not self.custom_other_perquisite_components:
+            return
+
+        employee = frappe.get_doc("Employee", self.employee)
+
+        # Step 1: Build dicts for quick lookup
+        self_components = {row.component: row.amount for row in self.custom_other_perquisite_components}
+        employee_components = {row.salary_component: row for row in employee.custom_other_perquisite}
+
+        # Step 2: Update existing components or add new ones
+        for component, amount in self_components.items():
+            if component in employee_components:
+                # Update amount if it's different
+                if employee_components[component].amount != amount:
+                    employee_components[component].amount = amount
+            else:
+                # Add new component
+                employee.append("custom_other_perquisite", {
+                    "salary_component": component,
+                    "amount": amount
+                })
+
+        # Step 3: Remove components from employee not in self
+        to_remove = [
+            row for row in employee.custom_other_perquisite
+            if row.salary_component not in self_components
+        ]
+        for row in to_remove:
+            employee.remove(row)
+
+        employee.save()
+
+
+
 
     def update_min_wages(self):
         if self.custom_minimum_wages_applicable:
