@@ -67,6 +67,36 @@ frappe.ui.form.on('Salary Structure Assignment', {
 
 
 
+        if (frm.doc.custom_lwf_state) {
+            frappe.call({
+                method: "frappe.client.get",
+                args: {
+                    doctype: "State",
+                    name: frm.doc.custom_lwf_state
+                },
+                callback: function(res) {
+                    if (res.message && res.message.frequency) {
+
+
+                        let frequency_array = res.message.frequency.map(row => row.frequency);
+
+
+                        frm.set_value("custom_frequency", frequency_array[0]);
+
+                        frm.set_query("custom_frequency", function() {
+                            return {
+                                filters: {
+                                    name: ["in", frequency_array]
+                                }
+                            };
+                        });
+                    }
+                }
+            });
+        }
+
+
+
 
 
     },

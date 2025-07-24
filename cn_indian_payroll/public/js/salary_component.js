@@ -30,7 +30,19 @@ frappe.ui.form.on('Salary Component', {
 	},
 
 	custom_is_reimbursement: function(frm) {
+
 		frm.trigger('toggle_appraisal_visibility');
+		if(frm.doc.custom_is_reimbursement)
+		{
+
+			frm.set_value("is_flexible_benefit",1)
+			frm.set_value("pay_against_benefit_claim",1)
+		}
+		else{
+			frm.set_value("is_flexible_benefit",0)
+			frm.set_value("pay_against_benefit_claim",0)
+
+		}
 	},
 
 	custom_is_accrual: function(frm) {
