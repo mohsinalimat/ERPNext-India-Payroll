@@ -233,6 +233,8 @@ fixtures = [
     # {"dt":"Employee Tax Exemption Sub Category"},
     # {"dt":"Employee Tax Exemption Category"},
     {"dt":"Salary Component Library Item"},
+    {"dt":"State"},
+    {"dt":"Frequency"}
 
 
 ]
