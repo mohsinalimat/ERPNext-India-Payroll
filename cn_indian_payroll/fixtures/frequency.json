@@ -2,20 +2,6 @@
  {
   "docstatus": 0,
   "doctype": "Frequency",
-  "frequency_name": "Monthly",
-  "modified": "2025-07-24 14:37:08.773662",
-  "name": "Monthly"
- },
- {
-  "docstatus": 0,
-  "doctype": "Frequency",
-  "frequency_name": "Half-Yearly",
-  "modified": "2025-07-24 14:42:05.265925",
-  "name": "Half-Yearly"
- },
- {
-  "docstatus": 0,
-  "doctype": "Frequency",
   "frequency_name": "Quarterly",
   "modified": "2025-07-24 14:42:14.024577",
   "name": "Quarterly"
@@ -26,5 +12,19 @@
   "frequency_name": "Yearly",
   "modified": "2025-07-24 14:43:02.219807",
   "name": "Yearly"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Frequency",
+  "frequency_name": "Monthly",
+  "modified": "2025-07-24 14:37:08.773662",
+  "name": "Monthly"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Frequency",
+  "frequency_name": "Half-Yearly",
+  "modified": "2025-07-24 14:42:05.265925",
+  "name": "Half-Yearly"
  }
 ]

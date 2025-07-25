@@ -93,22 +93,6 @@
  {
   "docstatus": 0,
   "doctype": "State",
-  "frequency": [
-   {
-    "frequency": "Monthly",
-    "parent": "Haryana",
-    "parentfield": "frequency",
-    "parenttype": "State"
-   }
-  ],
-  "min_wages": [],
-  "modified": "2025-07-24 14:45:08.359488",
-  "name": "Haryana",
-  "state_name": "Haryana"
- },
- {
-  "docstatus": 0,
-  "doctype": "State",
   "frequency": [],
   "min_wages": [],
   "modified": "2025-07-17 11:56:59.332793",
@@ -207,22 +191,6 @@
   "modified": "2025-07-17 11:56:59.368288",
   "name": "Nagaland",
   "state_name": "Nagaland"
- },
- {
-  "docstatus": 0,
-  "doctype": "State",
-  "frequency": [
-   {
-    "frequency": "Half-Yearly",
-    "parent": "Odisha",
-    "parentfield": "frequency",
-    "parenttype": "State"
-   }
-  ],
-  "min_wages": [],
-  "modified": "2025-07-24 14:46:18.354808",
-  "name": "Odisha",
-  "state_name": "Odisha"
  },
  {
   "docstatus": 0,
@@ -341,6 +309,54 @@
   "modified": "2025-07-24 14:44:15.681921",
   "name": "Chandigarh",
   "state_name": "Chandigarh"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "State",
+  "frequency": [
+   {
+    "frequency": "Half-Yearly",
+    "parent": "Chattisgarh",
+    "parentfield": "frequency",
+    "parenttype": "State"
+   }
+  ],
+  "min_wages": [],
+  "modified": "2025-07-24 19:13:44.208717",
+  "name": "Chattisgarh",
+  "state_name": "Chattisgarh"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "State",
+  "frequency": [
+   {
+    "frequency": "Monthly",
+    "parent": "Haryana",
+    "parentfield": "frequency",
+    "parenttype": "State"
+   }
+  ],
+  "min_wages": [],
+  "modified": "2025-07-24 14:45:08.359488",
+  "name": "Haryana",
+  "state_name": "Haryana"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "State",
+  "frequency": [
+   {
+    "frequency": "Half-Yearly",
+    "parent": "Odisha",
+    "parentfield": "frequency",
+    "parenttype": "State"
+   }
+  ],
+  "min_wages": [],
+  "modified": "2025-07-24 14:46:18.354808",
+  "name": "Odisha",
+  "state_name": "Odisha"
  },
  {
   "docstatus": 0,
