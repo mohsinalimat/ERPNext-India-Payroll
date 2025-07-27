@@ -1446,20 +1446,37 @@ class CustomSalarySlip(SalarySlip):
         if self.custom_salary_structure_assignment:
             child_doc = frappe.get_doc('Salary Structure Assignment',self.custom_salary_structure_assignment)
             if child_doc.custom_employee_reimbursements:
-                for i in child_doc.custom_employee_reimbursements:
-                    accrual_insert = frappe.get_doc({
-                        'doctype': 'Employee Benefit Accrual',
-                        'employee': self.employee,
-                        'payroll_entry': self.payroll_entry,
-                        'amount': round((i.monthly_total_amount/self.total_working_days)*self.payment_days),
-                        'salary_component': i.reimbursements,
-                        'benefit_accrual_date': self.posting_date,
-                        'salary_slip':self.name,
-                        'payroll_period':child_doc.custom_payroll_period
+                for reimbursement in child_doc.custom_employee_reimbursements:
+                    reimbursement_component=frappe.get_doc("Salary Component",reimbursement.reimbursements)
+                    if reimbursement_component.depends_on_payment_days==1:
+                        accrual_insert = frappe.get_doc({
+                            'doctype': 'Employee Benefit Accrual',
+                            'employee': self.employee,
+                            'payroll_entry': self.payroll_entry,
+                            'amount': round((reimbursement.monthly_total_amount/self.total_working_days)*self.payment_days),
+                            'salary_component': reimbursement.reimbursements,
+                            'benefit_accrual_date': self.posting_date,
+                            'salary_slip':self.name,
+                            'payroll_period':child_doc.custom_payroll_period
 
-                        })
-                    accrual_insert.insert()
-                    accrual_insert.submit()
+                            })
+                        accrual_insert.insert()
+                        accrual_insert.submit()
+                    else:
+                        accrual_insert = frappe.get_doc({
+                            'doctype': 'Employee Benefit Accrual',
+                            'employee': self.employee,
+                            'payroll_entry': self.payroll_entry,
+                            'amount': round(reimbursement.monthly_total_amount),
+                            'salary_component': reimbursement.reimbursements,
+                            'benefit_accrual_date': self.posting_date,
+                            'salary_slip':self.name,
+                            'payroll_period':child_doc.custom_payroll_period
+
+                            })
+                        accrual_insert.insert()
+                        accrual_insert.submit()
+
 
 
     def calculate_grosspay(self):
