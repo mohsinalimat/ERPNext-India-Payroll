@@ -1474,7 +1474,404 @@ def execute():
         "statistical_component": 0,
         "type": "Deduction",
         "variable_based_on_taxable_salary": 0
+        },
+
+
+
+
+        {
+        "accounts": [],
+        "amount": 0.0,
+        "amount_based_on_formula": 1,
+        "component_type": "Professional Tax",
+
+        "create_separate_payment_entry_against_benefit_claim": 0,
+
+        "custom_component_sub_type": "Fixed",
+        "custom_included_in_f_and_f": 0,
+        "custom_is_accrual": 0,
+        "custom_is_arrear": 0,
+        "custom_is_part_of_appraisal": 0,
+        "custom_is_part_of_ctc": 0,
+        "custom_is_part_of_gross_pay": 0,
+        "custom_is_reimbursement": 0,
+
+
+
+        "custom_perquisite": 0,
+
+        "custom_sequence": "1",
+        "custom_sub_category": "",
+        "custom_tax_exemption_applicable_based_on_regime": 0,
+        "deduct_full_tax_on_selected_payroll_date": 0,
+        "depends_on_payment_days": 0,
+
+        "disabled": 0,
+        "do_not_include_in_total": 0,
+        "docstatus": 0,
+        "doctype": "Salary Component",
+        "exempted_from_income_tax": 0,
+        "formula": "0 if gross_pay <= 25000 and custom_state == \"Gujarat\" else\r\n200 if custom_state == \"Gujarat\" else\r\n0",
+        "is_flexible_benefit": 0,
+        "is_income_tax_component": 0,
+        "is_tax_applicable": 0,
+        "max_benefit_amount": 0.0,
+        "modified": "2025-07-26 10:48:11.567976",
+        "name": "Professional Tax (Gujarat)",
+        "only_tax_impact": 0,
+        "pay_against_benefit_claim": 0,
+        "remove_if_zero_valued": 1,
+        "round_to_the_nearest_integer": 0,
+        "salary_component": "Professional Tax (Gujarat)",
+        "salary_component_abbr": "PTG",
+        "statistical_component": 0,
+        "type": "Deduction",
+        "variable_based_on_taxable_salary": 0
+        },
+        {
+        "accounts": [],
+        "amount": 0.0,
+        "amount_based_on_formula": 1,
+        "component_type": "Professional Tax",
+
+        "create_separate_payment_entry_against_benefit_claim": 0,
+
+        "custom_component_sub_type": "Fixed",
+        "custom_included_in_f_and_f": 0,
+        "custom_is_accrual": 0,
+        "custom_is_arrear": 0,
+        "custom_is_part_of_appraisal": 0,
+        "custom_is_part_of_ctc": 0,
+        "custom_is_part_of_gross_pay": 0,
+        "custom_is_reimbursement": 0,
+
+
+
+        "custom_perquisite": 0,
+
+        "custom_sequence": "1",
+        "custom_sub_category": "",
+        "custom_tax_exemption_applicable_based_on_regime": 0,
+        "deduct_full_tax_on_selected_payroll_date": 0,
+        "depends_on_payment_days": 0,
+
+        "disabled": 0,
+        "do_not_include_in_total": 0,
+        "docstatus": 0,
+        "doctype": "Salary Component",
+        "exempted_from_income_tax": 0,
+        "formula": " 0 if gross_pay <= 15000 and custom_state == \"Andhra Pradesh\" else\r\n    150 if 15000 < gross_pay <= 20000 and custom_state == \"Andhra Pradesh\" else\r\n    200 if gross_pay > 20000 and custom_state == \"Andhra Pradesh\" else 0",
+        "is_flexible_benefit": 0,
+        "is_income_tax_component": 0,
+        "is_tax_applicable": 0,
+        "max_benefit_amount": 0.0,
+        "modified": "2025-07-26 10:48:11.547092",
+        "name": "Professional Tax (Andhra Pradesh)",
+        "only_tax_impact": 0,
+        "pay_against_benefit_claim": 0,
+        "remove_if_zero_valued": 1,
+        "round_to_the_nearest_integer": 0,
+        "salary_component": "Professional Tax (Andhra Pradesh)",
+        "salary_component_abbr": "PTAN",
+        "statistical_component": 0,
+        "type": "Deduction",
+        "variable_based_on_taxable_salary": 0
+        },
+        {
+        "accounts": [],
+        "amount": 0.0,
+        "amount_based_on_formula": 1,
+        "component_type": "Professional Tax",
+
+        "create_separate_payment_entry_against_benefit_claim": 0,
+
+        "custom_component_sub_type": "Fixed",
+        "custom_included_in_f_and_f": 0,
+        "custom_is_accrual": 0,
+        "custom_is_arrear": 0,
+        "custom_is_part_of_appraisal": 0,
+        "custom_is_part_of_ctc": 0,
+        "custom_is_part_of_gross_pay": 0,
+        "custom_is_reimbursement": 0,
+
+
+
+        "custom_perquisite": 0,
+
+        "custom_sequence": "1",
+        "custom_sub_category": "",
+        "custom_tax_exemption_applicable_based_on_regime": 0,
+        "deduct_full_tax_on_selected_payroll_date": 0,
+        "depends_on_payment_days": 0,
+
+        "disabled": 0,
+        "do_not_include_in_total": 0,
+        "docstatus": 0,
+        "doctype": "Salary Component",
+        "exempted_from_income_tax": 0,
+        "formula": "(0 if gross_pay <= 10000 and custom_state == \"West Bengal\" else \n110 if 10001 <= gross_pay <= 15000 and custom_state == \"West Bengal\" else \n130 if 15001 <= gross_pay <= 25000 and custom_state == \"West Bengal\" else \n150 if 25001 <= gross_pay <= 40000 and custom_state == \"West Bengal\" else \n200 if custom_state == \"West Bengal\" and designation!=\"Apprentice\" else 0)",
+        "is_flexible_benefit": 0,
+        "is_income_tax_component": 0,
+        "is_tax_applicable": 0,
+        "max_benefit_amount": 0.0,
+        "modified": "2025-07-26 10:48:11.530554",
+        "name": "Professional Tax (West Bengal)",
+        "only_tax_impact": 0,
+        "pay_against_benefit_claim": 0,
+        "remove_if_zero_valued": 1,
+        "round_to_the_nearest_integer": 0,
+        "salary_component": "Professional Tax (West Bengal)",
+        "salary_component_abbr": "PTAN_1",
+        "statistical_component": 0,
+        "type": "Deduction",
+        "variable_based_on_taxable_salary": 0
+        },
+        {
+        "accounts": [],
+        "amount": 0.0,
+        "amount_based_on_formula": 1,
+        "component_type": "Professional Tax",
+
+        "create_separate_payment_entry_against_benefit_claim": 0,
+
+        "custom_component_sub_type": "Fixed",
+        "custom_included_in_f_and_f": 0,
+        "custom_is_accrual": 0,
+        "custom_is_arrear": 0,
+        "custom_is_part_of_appraisal": 0,
+        "custom_is_part_of_ctc": 0,
+        "custom_is_part_of_gross_pay": 0,
+        "custom_is_reimbursement": 0,
+
+
+
+        "custom_perquisite": 0,
+
+        "custom_sequence": "1",
+        "custom_sub_category": "",
+        "custom_tax_exemption_applicable_based_on_regime": 0,
+        "deduct_full_tax_on_selected_payroll_date": 0,
+        "depends_on_payment_days": 0,
+
+        "disabled": 0,
+        "do_not_include_in_total": 0,
+        "docstatus": 0,
+        "doctype": "Salary Component",
+        "exempted_from_income_tax": 0,
+        "formula": "0 if custom_state==\"Delhi\" else 0",
+        "is_flexible_benefit": 0,
+        "is_income_tax_component": 0,
+        "is_tax_applicable": 0,
+        "max_benefit_amount": 0.0,
+        "modified": "2025-07-26 10:48:11.515557",
+        "name": "Professional Tax (Delhi)",
+        "only_tax_impact": 0,
+        "pay_against_benefit_claim": 0,
+        "remove_if_zero_valued": 1,
+        "round_to_the_nearest_integer": 0,
+        "salary_component": "Professional Tax (Delhi)",
+        "salary_component_abbr": "PTD",
+        "statistical_component": 0,
+        "type": "Deduction",
+        "variable_based_on_taxable_salary": 0
+        },
+        {
+        "accounts": [],
+        "amount": 0.0,
+        "amount_based_on_formula": 1,
+        "component_type": "Professional Tax",
+
+        "create_separate_payment_entry_against_benefit_claim": 0,
+
+        "custom_component_sub_type": "Fixed",
+        "custom_included_in_f_and_f": 0,
+        "custom_is_accrual": 0,
+        "custom_is_arrear": 0,
+        "custom_is_part_of_appraisal": 0,
+        "custom_is_part_of_ctc": 0,
+        "custom_is_part_of_gross_pay": 0,
+        "custom_is_reimbursement": 0,
+
+
+
+        "custom_perquisite": 0,
+
+        "custom_sequence": "1",
+        "custom_sub_category": "",
+        "custom_tax_exemption_applicable_based_on_regime": 0,
+        "deduct_full_tax_on_selected_payroll_date": 0,
+        "depends_on_payment_days": 0,
+
+        "disabled": 0,
+        "do_not_include_in_total": 0,
+        "docstatus": 0,
+        "doctype": "Salary Component",
+        "exempted_from_income_tax": 0,
+        "formula": "0 if custom_state==\"Uttarakhand\" else 0",
+        "is_flexible_benefit": 0,
+        "is_income_tax_component": 0,
+        "is_tax_applicable": 0,
+        "max_benefit_amount": 0.0,
+        "modified": "2025-07-26 10:48:11.494158",
+        "name": "Professional Tax (Uttarakhand)",
+        "only_tax_impact": 0,
+        "pay_against_benefit_claim": 0,
+        "remove_if_zero_valued": 1,
+        "round_to_the_nearest_integer": 0,
+        "salary_component": "Professional Tax (Uttarakhand)",
+        "salary_component_abbr": "PTU",
+        "statistical_component": 0,
+        "type": "Deduction",
+        "variable_based_on_taxable_salary": 0
+        },
+        {
+        "accounts": [],
+        "amount": 0.0,
+        "amount_based_on_formula": 1,
+        "component_type": "Professional Tax",
+
+        "create_separate_payment_entry_against_benefit_claim": 0,
+
+        "custom_component_sub_type": "Fixed",
+        "custom_included_in_f_and_f": 0,
+        "custom_is_accrual": 0,
+        "custom_is_arrear": 0,
+        "custom_is_part_of_appraisal": 0,
+        "custom_is_part_of_ctc": 0,
+        "custom_is_part_of_gross_pay": 0,
+        "custom_is_reimbursement": 0,
+
+
+
+        "custom_perquisite": 0,
+
+        "custom_sequence": "1",
+        "custom_sub_category": "",
+        "custom_tax_exemption_applicable_based_on_regime": 0,
+        "deduct_full_tax_on_selected_payroll_date": 0,
+        "depends_on_payment_days": 0,
+
+        "disabled": 0,
+        "do_not_include_in_total": 0,
+        "docstatus": 0,
+        "doctype": "Salary Component",
+        "exempted_from_income_tax": 0,
+        "formula": "(0 if ((gender == 'Male' and gross_pay <= 7500) or (gender == 'Female' and gross_pay <= 25000)) else \n175 if (gender == 'Male' and 7500 < gross_pay  <= 10000) else \n200 if ((gender == 'Male' and gross_pay > 10000) or (gender == 'Female' and gross_pay  > 25000)) else \n300 if (getdate(start_date).month == 2 and ((gender == 'Male' and gross_pay > 10000) or (gender == 'Female' and gross_pay > 25000))) else 0\n)if custom_state == \"Maharashtra\" else 0",
+        "is_flexible_benefit": 0,
+        "is_income_tax_component": 0,
+        "is_tax_applicable": 0,
+        "max_benefit_amount": 0.0,
+        "modified": "2025-07-26 10:48:11.472856",
+        "name": "Professional Tax (Maharashtra)",
+        "only_tax_impact": 0,
+        "pay_against_benefit_claim": 0,
+        "remove_if_zero_valued": 1,
+        "round_to_the_nearest_integer": 0,
+        "salary_component": "Professional Tax (Maharashtra)",
+        "salary_component_abbr": "PTUM",
+        "statistical_component": 0,
+        "type": "Deduction",
+        "variable_based_on_taxable_salary": 0
+        },
+        {
+        "accounts": [],
+        "amount": 0.0,
+        "amount_based_on_formula": 1,
+        "component_type": "Professional Tax",
+
+        "create_separate_payment_entry_against_benefit_claim": 0,
+
+        "custom_component_sub_type": "Fixed",
+        "custom_included_in_f_and_f": 0,
+        "custom_is_accrual": 0,
+        "custom_is_arrear": 0,
+        "custom_is_part_of_appraisal": 0,
+        "custom_is_part_of_ctc": 0,
+        "custom_is_part_of_gross_pay": 0,
+        "custom_is_reimbursement": 0,
+
+
+
+        "custom_perquisite": 0,
+
+        "custom_sequence": "1",
+        "custom_sub_category": "",
+        "custom_tax_exemption_applicable_based_on_regime": 0,
+        "deduct_full_tax_on_selected_payroll_date": 0,
+        "depends_on_payment_days": 0,
+
+        "disabled": 0,
+        "do_not_include_in_total": 0,
+        "docstatus": 0,
+        "doctype": "Salary Component",
+        "exempted_from_income_tax": 0,
+        "formula": "1250/6 if custom_state == \"Tamil Nadu\" else 0",
+        "is_flexible_benefit": 0,
+        "is_income_tax_component": 0,
+        "is_tax_applicable": 0,
+        "max_benefit_amount": 0.0,
+        "modified": "2025-07-26 10:48:11.455167",
+        "name": "Professional Tax (Tamil Nadu)",
+        "only_tax_impact": 0,
+        "pay_against_benefit_claim": 0,
+        "remove_if_zero_valued": 1,
+        "round_to_the_nearest_integer": 0,
+        "salary_component": "Professional Tax (Tamil Nadu)",
+        "salary_component_abbr": "PTUM_1",
+        "statistical_component": 0,
+        "type": "Deduction",
+        "variable_based_on_taxable_salary": 0
+        },
+        {
+        "accounts": [],
+        "amount": 0.0,
+        "amount_based_on_formula": 1,
+        "component_type": "Professional Tax",
+
+        "create_separate_payment_entry_against_benefit_claim": 0,
+
+        "custom_component_sub_type": "Fixed",
+        "custom_included_in_f_and_f": 0,
+        "custom_is_accrual": 0,
+        "custom_is_arrear": 0,
+        "custom_is_part_of_appraisal": 0,
+        "custom_is_part_of_ctc": 0,
+        "custom_is_part_of_gross_pay": 0,
+        "custom_is_reimbursement": 0,
+
+
+
+        "custom_perquisite": 0,
+
+        "custom_sequence": "1",
+        "custom_sub_category": "",
+        "custom_tax_exemption_applicable_based_on_regime": 0,
+        "deduct_full_tax_on_selected_payroll_date": 0,
+        "depends_on_payment_days": 0,
+
+        "disabled": 0,
+        "do_not_include_in_total": 0,
+        "docstatus": 0,
+        "doctype": "Salary Component",
+        "exempted_from_income_tax": 0,
+        "formula": "0 if custom_state==\"Uttar Pradesh\" else 0",
+        "is_flexible_benefit": 0,
+        "is_income_tax_component": 0,
+        "is_tax_applicable": 0,
+        "max_benefit_amount": 0.0,
+        "modified": "2025-07-26 10:48:11.402035",
+        "name": "Professional Tax (Uttar Pradesh)",
+        "only_tax_impact": 0,
+        "pay_against_benefit_claim": 0,
+        "remove_if_zero_valued": 1,
+        "round_to_the_nearest_integer": 0,
+        "salary_component": "Professional Tax (Uttar Pradesh)",
+        "salary_component_abbr": "PTUM_1_1",
+        "statistical_component": 0,
+        "type": "Deduction",
+        "variable_based_on_taxable_salary": 0
         }
+
 
     ]
 
