@@ -10,6 +10,7 @@
   "minimum_wages_section",
   "min_wages",
   "lwf_frequency_section",
+  "lwf_frequency",
   "frequency"
  ],
  "fields": [
@@ -36,16 +37,24 @@
    "label": "LWF Frequency"
   },
   {
+   "depends_on": "lwf_frequency",
    "fieldname": "frequency",
    "fieldtype": "Table MultiSelect",
    "label": "Frequency",
+   "mandatory_depends_on": "lwf_frequency",
    "options": "LWF Frequency"
+  },
+  {
+   "default": "0",
+   "fieldname": "lwf_frequency",
+   "fieldtype": "Check",
+   "label": "LWF Frequency"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-24 14:38:37.895425",
+ "modified": "2025-10-09 20:33:05.471238",
  "modified_by": "Administrator",
  "module": "cn-indian-payroll",
  "name": "State",

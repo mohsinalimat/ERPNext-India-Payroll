@@ -10,8 +10,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:43:09.534728",
+  "modified": "2025-10-09 20:33:32.654961",
   "name": "Andhra Pradesh",
   "state_name": "Andhra Pradesh"
  },
@@ -19,8 +20,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.301963",
+  "modified": "2025-10-09 20:33:32.777316",
   "name": "Arunachal Pradesh",
   "state_name": "Arunachal Pradesh"
  },
@@ -28,8 +30,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.305843",
+  "modified": "2025-10-09 20:33:32.766097",
   "name": "Assam",
   "state_name": "Assam"
  },
@@ -37,8 +40,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.310073",
+  "modified": "2025-10-09 20:33:32.758322",
   "name": "Bihar",
   "state_name": "Bihar"
  },
@@ -53,8 +57,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:43:49.789298",
+  "modified": "2025-10-09 20:33:32.642718",
   "name": "Chhattisgarh",
   "state_name": "Chhattisgarh"
  },
@@ -69,8 +74,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:44:31.144093",
+  "modified": "2025-10-09 20:33:32.623591",
   "name": "Delhi",
   "state_name": "Delhi"
  },
@@ -85,8 +91,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:44:39.622883",
+  "modified": "2025-10-09 20:33:32.616972",
   "name": "Goa",
   "state_name": "Goa"
  },
@@ -94,8 +101,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.332793",
+  "modified": "2025-10-09 20:33:32.748214",
   "name": "Himachal Pradesh",
   "state_name": "Himachal Pradesh"
  },
@@ -103,8 +111,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.337130",
+  "modified": "2025-10-09 20:33:32.736948",
   "name": "Jharkhand",
   "state_name": "Jharkhand"
  },
@@ -119,8 +128,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:45:22.341181",
+  "modified": "2025-10-09 20:33:32.588100",
   "name": "Karnataka",
   "state_name": "Karnataka"
  },
@@ -135,8 +145,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:45:55.178865",
+  "modified": "2025-10-09 20:33:32.573818",
   "name": "Madhya Pradesh",
   "state_name": "Madhya Pradesh"
  },
@@ -151,8 +162,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:46:02.219671",
+  "modified": "2025-10-09 20:33:32.563589",
   "name": "Maharashtra",
   "state_name": "Maharashtra"
  },
@@ -160,8 +172,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.357942",
+  "modified": "2025-10-09 20:33:32.727757",
   "name": "Manipur",
   "state_name": "Manipur"
  },
@@ -169,8 +182,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.361772",
+  "modified": "2025-10-09 20:33:32.718654",
   "name": "Meghalaya",
   "state_name": "Meghalaya"
  },
@@ -178,8 +192,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.365072",
+  "modified": "2025-10-09 20:33:32.710323",
   "name": "Mizoram",
   "state_name": "Mizoram"
  },
@@ -187,8 +202,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.368288",
+  "modified": "2025-10-09 20:33:32.704004",
   "name": "Nagaland",
   "state_name": "Nagaland"
  },
@@ -203,8 +219,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:46:40.094150",
+  "modified": "2025-10-09 20:33:32.535472",
   "name": "Punjab",
   "state_name": "Punjab"
  },
@@ -212,8 +229,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.382419",
+  "modified": "2025-10-09 20:33:32.691068",
   "name": "Sikkim",
   "state_name": "Sikkim"
  },
@@ -228,8 +246,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:47:25.795194",
+  "modified": "2025-10-09 20:33:32.527882",
   "name": "Tamil Nadu",
   "state_name": "Tamil Nadu"
  },
@@ -244,8 +263,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:47:39.984614",
+  "modified": "2025-10-09 20:33:32.516771",
   "name": "Telangana",
   "state_name": "Telangana"
  },
@@ -253,8 +273,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.400328",
+  "modified": "2025-10-09 20:33:32.683996",
   "name": "Tripura",
   "state_name": "Tripura"
  },
@@ -262,8 +283,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.413434",
+  "modified": "2025-10-09 20:33:32.668900",
   "name": "Uttarakhand",
   "state_name": "Uttarakhand"
  },
@@ -278,6 +300,7 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [
    {
     "basic_daily_wage": 0.0,
@@ -290,7 +313,7 @@
     "zone": "Zone 1"
    }
   ],
-  "modified": "2025-07-24 14:46:25.770701",
+  "modified": "2025-10-09 20:33:32.546729",
   "name": "West Bengal",
   "state_name": "West Bengal"
  },
@@ -305,8 +328,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:44:15.681921",
+  "modified": "2025-10-09 20:33:32.631981",
   "name": "Chandigarh",
   "state_name": "Chandigarh"
  },
@@ -321,8 +345,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 19:13:44.208717",
+  "modified": "2025-10-09 20:33:32.441434",
   "name": "Chattisgarh",
   "state_name": "Chattisgarh"
  },
@@ -337,8 +362,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:45:08.359488",
+  "modified": "2025-10-09 20:33:32.595051",
   "name": "Haryana",
   "state_name": "Haryana"
  },
@@ -353,8 +379,9 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-24 14:46:18.354808",
+  "modified": "2025-10-09 20:33:32.556930",
   "name": "Odisha",
   "state_name": "Odisha"
  },
@@ -362,8 +389,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.379143",
+  "modified": "2025-10-09 20:33:32.696829",
   "name": "Rajasthan",
   "state_name": "Rajasthan"
  },
@@ -371,8 +399,9 @@
   "docstatus": 0,
   "doctype": "State",
   "frequency": [],
+  "lwf_frequency": 1,
   "min_wages": [],
-  "modified": "2025-07-17 11:56:59.408232",
+  "modified": "2025-10-09 20:33:32.676570",
   "name": "Uttar Pradesh",
   "state_name": "Uttar Pradesh"
  },
@@ -393,6 +422,7 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 0,
   "min_wages": [
    {
     "basic_daily_wage": 0.0,
@@ -420,6 +450,7 @@
     "parenttype": "State"
    }
   ],
+  "lwf_frequency": 1,
   "min_wages": [
    {
     "basic_daily_wage": 452.0,
@@ -482,7 +513,7 @@
     "zone": "Zone 2"
    }
   ],
-  "modified": "2025-07-24 14:44:57.678397",
+  "modified": "2025-10-09 20:33:32.604765",
   "name": "Gujarat",
   "state_name": "Gujarat"
  }

@@ -17,14 +17,9 @@ def create_lta_component(name, salary_component, abbr, component_type, is_tax_ap
     component.is_tax_applicable = is_tax_applicable
     component.do_not_include_in_total = data.get("do_not_include_in_total")
     component.remove_if_zero_valued = data.get("remove_if_zero_valued")
-    component.custom_is_part_of_gross_pay = data.get("is_part_of_gross_pay")
     component.disabled = data.get("disabled")
     component.custom_is_part_of_ctc = data.get("is_part_of_ctc")
-    component.custom_perquisite = data.get("perquisite")
-    component.custom_is_accrual = data.get("is_accrual")
-    component.custom_is_reimbursement = is_reimbursement
 
-    component.custom_is_part_of_appraisal = data.get("is_part_of_appraisal")
     component.custom_tax_exemption_applicable_based_on_regime = data.get("tax_applicable_based_on_regime")
     component.custom_regime = data.get("regime")
 
@@ -63,13 +58,8 @@ def get_salary_component(data=None, component=None):
                 get_each_doc.is_tax_applicable = data.get("is_tax_applicable")
                 get_each_doc.do_not_include_in_total = data.get("do_not_include_in_total")
                 get_each_doc.remove_if_zero_valued = data.get("remove_if_zero_valued")
-                get_each_doc.custom_is_part_of_gross_pay = data.get("is_part_of_gross_pay")
                 get_each_doc.disabled = data.get("disabled")
                 get_each_doc.custom_is_part_of_ctc = data.get("is_part_of_ctc")
-                get_each_doc.custom_perquisite = data.get("perquisite")
-                get_each_doc.custom_is_accrual = data.get("is_accrual")
-                get_each_doc.custom_is_reimbursement = data.get("reimbursement")
-                get_each_doc.custom_is_part_of_appraisal = data.get("is_part_of_appraisal")
                 get_each_doc.custom_tax_exemption_applicable_based_on_regime = data.get("tax_applicable_based_on_regime")
                 get_each_doc.custom_regime = data.get("regime")
                 get_each_doc.condition = data.get("condition")
@@ -99,12 +89,9 @@ def get_salary_component(data=None, component=None):
                         insert_doc.depends_on_payment_days = 0
                         insert_doc.round_to_the_nearest_integer = 1
                         insert_doc.do_not_include_in_total = 0
-                        insert_doc.custom_is_part_of_gross_pay = 1
                         insert_doc.custom_is_part_of_ctc = 0
-                        insert_doc.custom_is_arrear = 1
                         insert_doc.custom_tax_exemption_applicable_based_on_regime = 1
                         insert_doc.custom_regime = "All"
-                        insert_doc.custom_component = data.get("salary_component")
                         insert_doc.insert()
 
 
@@ -149,14 +136,9 @@ def get_salary_component(data=None, component=None):
                     get_each_doc.is_tax_applicable=data.get("is_tax_applicable")
                     get_each_doc.do_not_include_in_total=data.get("do_not_include_in_total")
                     get_each_doc.remove_if_zero_valued=data.get("remove_if_zero_valued")
-                    get_each_doc.custom_is_part_of_gross_pay=data.get("is_part_of_gross_pay")
                     get_each_doc.disabled=data.get("disabled")
                     get_each_doc.custom_is_part_of_ctc=data.get("is_part_of_ctc")
-                    get_each_doc.custom_perquisite=data.get("perquisite")
-                    get_each_doc.custom_is_accrual=data.get("is_accrual")
-                    get_each_doc.custom_is_reimbursement=data.get("reimbursement")
 
-                    get_each_doc.custom_is_part_of_appraisal=data.get("is_part_of_appraisal")
                     get_each_doc.custom_tax_exemption_applicable_based_on_regime=data.get("tax_applicable_based_on_regime")
                     get_each_doc.custom_regime=data.get("regime")
 
@@ -172,12 +154,9 @@ def get_salary_component(data=None, component=None):
                         insert_doc.depends_on_payment_days = 0
                         insert_doc.round_to_the_nearest_integer = 1
                         insert_doc.do_not_include_in_total = 0
-                        insert_doc.custom_is_part_of_gross_pay = 1
                         insert_doc.custom_is_part_of_ctc = 0
-                        insert_doc.custom_is_arrear = 1
                         insert_doc.custom_tax_exemption_applicable_based_on_regime = 1
                         insert_doc.custom_regime = data.get("regime")
-                        insert_doc.custom_component = data.get("salary_component")
                         insert_doc.insert()
 
 
@@ -209,14 +188,9 @@ def get_salary_component(data=None, component=None):
             get_each_doc.is_tax_applicable=data.get("is_tax_applicable")
             get_each_doc.do_not_include_in_total=data.get("do_not_include_in_total")
             get_each_doc.remove_if_zero_valued=data.get("remove_if_zero_valued")
-            get_each_doc.custom_is_part_of_gross_pay=data.get("is_part_of_gross_pay")
             get_each_doc.disabled=data.get("disabled")
             get_each_doc.custom_is_part_of_ctc=data.get("is_part_of_ctc")
-            get_each_doc.custom_perquisite=data.get("perquisite")
-            get_each_doc.custom_is_accrual=data.get("is_accrual")
-            get_each_doc.custom_is_reimbursement=data.get("reimbursement")
 
-            get_each_doc.custom_is_part_of_appraisal=data.get("is_part_of_appraisal")
             get_each_doc.custom_tax_exemption_applicable_based_on_regime=data.get("tax_applicable_based_on_regime")
             get_each_doc.custom_regime=data.get("regime")
 

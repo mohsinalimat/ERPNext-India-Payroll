@@ -258,16 +258,15 @@ doctype_js = {
     "Employee Tax Exemption Declaration": "public/js/exemption_declaration.js",
 
 
-    "LOP Reversal": "public/js/lop_reversal.js",
+    # "LOP Reversal": "public/js/lop_reversal.js",
     "Loan": "public/js/loan.js",
     "Loan Product": "public/js/loan_product.js",
     "Salary Slip": "public/js/salary_slip.js",
-    "LTA Claim": "public/js/lta_claim.js",
-    "Employee Promotion": "public/js/employee_promotion.js",
-    "Company": "public/js/company.js",
+    # "LTA Claim": "public/js/lta_claim.js",/
+    # "Employee Promotion": "public/js/employee_promotion.js",
     "Structure Setting": "public/js/structure_setting.js",
     "Salary Component": "public/js/salary_component.js",
-    "Full and Final Statement": "public/js/f_and_f.js",
+    # "Full and Final Statement": "public/js/f_and_f.js",
     "Leave Encashment": "public/js/leave_encashment.js",
 
 
@@ -275,39 +274,36 @@ doctype_js = {
 }
 
 override_doctype_class = {
-    "Employee Benefit Claim": "cn_indian_payroll.cn_indian_payroll.overrides.benefit_claim.CustomEmployeeBenefitClaim",
+    # "Employee Benefit Claim": "cn_indian_payroll.cn_indian_payroll.overrides.benefit_claim.CustomEmployeeBenefitClaim",
     "Salary Slip": "cn_indian_payroll.cn_indian_payroll.overrides.salary_slip.CustomSalarySlip",
     "Salary Structure Assignment": "cn_indian_payroll.cn_indian_payroll.overrides.salary_structure_assignment.CustomSalaryStructureAssignment",
     "Employee Tax Exemption Declaration": "cn_indian_payroll.cn_indian_payroll.overrides.tax_declaration.CustomEmployeeTaxExemptionDeclaration",
     "Additional Salary": "cn_indian_payroll.cn_indian_payroll.overrides.employee_additional_salary.CustomAdditionalSalary",
-    "Leave Encashment": "cn_indian_payroll.cn_indian_payroll.overrides.leave_encashment.CustomLeaveEncashment",
-    "Full and Final Statement": "cn_indian_payroll.cn_indian_payroll.overrides.full_and_final_settlement.CustomFullAndFinalStatement",
+    # "Leave Encashment": "cn_indian_payroll.cn_indian_payroll.overrides.leave_encashment.CustomLeaveEncashment",
+    # "Full and Final Statement": "cn_indian_payroll.cn_indian_payroll.overrides.full_and_final_settlement.CustomFullAndFinalStatement",
 
 }
 
 doc_events = {
 
-    "LOP Reversal": {
-        "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.lop_reversal.on_submit",
-        "on_cancel": "cn_indian_payroll.cn_indian_payroll.overrides.lop_reversal.on_cancel",
-        "validate": "cn_indian_payroll.cn_indian_payroll.overrides.lop_reversal.validate",
+    # "LOP Reversal": {
+    #     "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.lop_reversal.on_submit",
+    #     "on_cancel": "cn_indian_payroll.cn_indian_payroll.overrides.lop_reversal.on_cancel",
+    #     "validate": "cn_indian_payroll.cn_indian_payroll.overrides.lop_reversal.validate",
 
-    },
+    # },
 
     "Loan Repayment Schedule": {
         "before_save": "cn_indian_payroll.cn_indian_payroll.overrides.loan_repayment.before_save",
 
     },
-    "LTA Claim": {
-        "validate": "cn_indian_payroll.cn_indian_payroll.overrides.lta_claim.validate",
-        "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.lta_claim.on_submit",
-        "before_submit": "cn_indian_payroll.cn_indian_payroll.overrides.lta_claim.before_submit",
-    },
+    # "LTA Claim": {
+    #     "validate": "cn_indian_payroll.cn_indian_payroll.overrides.lta_claim.validate",
+    #     "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.lta_claim.on_submit",
+    #     "before_submit": "cn_indian_payroll.cn_indian_payroll.overrides.lta_claim.before_submit",
+    # },
 
-    "Salary Appraisal Calculation": {
-        "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.salary_appraisal.on_submit",
-        "on_cancel": "cn_indian_payroll.cn_indian_payroll.overrides.salary_appraisal.on_cancel"
-    },
+
 
     "Employee Tax Exemption Sub Category": {
         "validate": "cn_indian_payroll.cn_indian_payroll.overrides.exemption_sub_category.validate",
@@ -316,10 +312,7 @@ doc_events = {
         "validate": "cn_indian_payroll.cn_indian_payroll.overrides.exemption_category.validate",
     },
 
-    # "Employee Promotion": {
-    #     "on_cancel": "cn_indian_payroll.cn_indian_payroll.overrides.employee_promotion.on_cancel",
-    #     # "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.employee_promotion.on_submit",
-    # },
+
 
 
 
