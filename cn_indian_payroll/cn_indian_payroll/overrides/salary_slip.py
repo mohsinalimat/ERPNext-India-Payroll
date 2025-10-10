@@ -52,10 +52,10 @@ class CustomSalarySlip(SalarySlip):
         self.update_total_lop()
         self.set_taxale_regime()
 
-    def on_cancel(self):
-        super().on_cancel()
-        self.delete_bonus_accruals()
-        self.delete_benefit_accruals()
+    # def on_cancel(self):
+    #     super().on_cancel()
+    #     self.delete_bonus_accruals()
+    #     self.delete_benefit_accruals()
 
 
     def calculate_variable_tax(self, tax_component):
