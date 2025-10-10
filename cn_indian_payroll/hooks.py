@@ -230,11 +230,12 @@ app_license = "mit"
 fixtures = [
     {"dt": "Print Format", "filters": {"module": "cn-indian-payroll"}},
     {"dt":"Income Tax Regime"},
-    # {"dt":"Employee Tax Exemption Sub Category"},
-    # {"dt":"Employee Tax Exemption Category"},
+    {"dt":"Custom Field","filters":{"dt":"Payroll Settings"}},
     {"dt":"Salary Component Library Item"},
     {"dt":"State"},
     {"dt":"Frequency"},
+    {"dt":"Zone"},
+    {"dt":"Skill Level"},
     # {"dt": "Salary Component", "filters": {"component_type": "Professional Tax"}},
 
 
