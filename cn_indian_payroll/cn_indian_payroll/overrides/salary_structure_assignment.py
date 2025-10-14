@@ -6,13 +6,13 @@ from frappe.utils import getdate
 from datetime import datetime
 from frappe import _
 from frappe.utils.pdf import get_pdf
+import json
 
 class CustomSalaryStructureAssignment(SalaryStructureAssignment):
 
 
     def on_submit(self):
         self.insert_tax_declaration_list()
-        self.update_employee_promotion()
 
     def on_cancel(self):
         self.cancel_declaration()
@@ -27,32 +27,12 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
 
 
 
-
-
-
-
-
-
     def update_min_wages(self):
-            if self.custom_minimum_wages_applicable:
-                state = frappe.get_doc("State", self.custom_minimum_wages_state)
-                if not state:
-                    frappe.throw(_("Selected state does not exist."))
+        if self.custom_minimum_wages_applicable:
 
-                match_found = False
-                for wages in state.min_wages:
-                    if (
-                        wages.zone == self.custom_zone
-                        and wages.skill_level == self.custom_skill_level
-                    ):
-                        self.custom_basic_value = wages.basic_daily_wage
-                        self.custom_hra_value = wages.vda_daily_wages
-                        match_found = True
-                        break
-
-                if not match_found:
-                    self.custom_basic_value = 0
-                    self.custom_hra_value = 0
+            employee=frappe.get_doc("Employee",self.employee)
+            if not employee.custom_skill_level and not employee.custom_zone:
+                frappe.throw(_("Please set Zone and Skill Level in Employee Minimum Wages calculation."))
 
 
 
@@ -80,11 +60,6 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
                 frappe.delete_doc('Employee Tax Exemption Declaration', declaration_doc.name)
 
 
-    def update_employee_promotion(self):
-        if self.custom_promotion_id:
-            get_promotion_doc=frappe.get_doc("Employee Promotion",self.custom_promotion_id)
-            get_promotion_doc.custom_status="Payroll Configured"
-            get_promotion_doc.save()
 
 
     def insert_tax_declaration_list(self):
@@ -175,156 +150,8 @@ class CustomSalaryStructureAssignment(SalaryStructureAssignment):
 
 
 
-# @frappe.whitelist()
-# def generate_ctc_pdf(employee, salary_structure, print_format=None,  posting_date=None):
-
-#     # Generate salary slip preview with required arguments
-#     new_salary_slip = make_salary_slip(
-#         source_name=salary_structure,
-#         employee=employee,
-#         print_format='Salary Slip Standard',
-#         posting_date=posting_date,
-#         for_preview=1
-#     )
 
 
-
-#     if not new_salary_slip:
-#         frappe.throw("Unable to generate salary breakup. Check Salary Structure or Employee.")
-
-#     earnings_list = []
-#     reimbursement_list = []
-#     deduction_list = []
-
-#     for e in new_salary_slip.get("earnings", []):
-#         comp = frappe.get_doc("Salary Component", e.salary_component)
-#         if comp.custom_is_reimbursement:
-#             reimbursement_list.append(e)
-#         else:
-#             earnings_list.append(e)
-
-#     for d in new_salary_slip.get("deductions", []):
-#         deduction_list.append(d)
-
-#     context = {
-#         "employee": employee,
-#         "employee_name": new_salary_slip.get("employee_name"),
-#         "department": new_salary_slip.get("department"),
-#         "designation": new_salary_slip.get("designation"),
-#         "company": new_salary_slip.get("company"),
-#         "posting_date": new_salary_slip.get("posting_date"),
-#         "salary_structure": new_salary_slip.get("salary_structure"),
-#         "earnings": earnings_list,
-#         "reimbursements": reimbursement_list,
-#         "deductions": deduction_list,
-#     }
-
-#     frappe.msgprint(str(context))
-
-# import frappe
-# from hrms.payroll.doctype.salary_structure.salary_structure import make_salary_slip
-# from frappe.utils.pdf import get_pdf
-
-# @frappe.whitelist()
-# def generate_ctc_pdf(employee, salary_structure, posting_date=None, employee_benefits=None):
-#     """
-#     Generate CTC PDF for a given employee and salary structure.
-#     """
-#     if employee_benefits is None:
-#         employee_benefits = []
-
-#     # Generate Salary Slip preview
-#     new_salary_slip = make_salary_slip(
-#         source_name=salary_structure,
-#         employee=employee,
-#         print_format='Salary Slip Standard',
-#         posting_date=posting_date,
-#         for_preview=1
-#     )
-
-#     if not new_salary_slip:
-#         frappe.throw("Unable to generate salary breakup. Check Salary Structure or Employee.")
-
-#     # Prepare earnings list
-#     normal_earnings = []
-#     for e in new_salary_slip.get("earnings", []):
-#         e_doc = frappe.get_doc("Salary Component", e.salary_component)
-#         if e_doc.custom_is_part_of_ctc:
-#             normal_earnings.append({
-#                 "salary_component": e.salary_component,
-#                 "monthly_amount": e.amount,
-#                 "annual_amount": e.amount * 12
-#             })
-
-
-
-#     # Prepare deductions list
-#     deduction_list = []
-#     for d in new_salary_slip.get("deductions", []):
-#         d_doc = frappe.get_doc("Salary Component", d.salary_component)
-#         if d_doc.custom_is_part_of_ctc:
-#             deduction_list.append({
-#                 "salary_component": d.salary_component,
-#                 "monthly_amount": d.amount,
-#                 "annual_amount": d.amount * 12
-#             })
-
-#     # Prepare reimbursements list
-#     reimbursement_list = []
-#     for b in employee_benefits:
-#         component_name = b if isinstance(b, str) else b.get("salary_component")
-#         if frappe.db.exists("Salary Component", component_name):
-#             b_doc = frappe.get_doc("Salary Component", component_name)
-#             amount = b.get("amount", 0) if isinstance(b, dict) else getattr(b_doc, "amount", 0)
-#             reimbursement_list.append({
-#                 "salary_component": component_name,
-#                 "monthly_amount": amount,
-#                 "annual_amount": amount * 12
-#             })
-#         else:
-#             frappe.log_error(f"Salary Component '{component_name}' not found", "CTC PDF Generation")
-
-
-#     # Context for HTML
-#     context = {
-#         "employee": employee,
-#         "employee_name": new_salary_slip.get("employee_name"),
-#         "department": new_salary_slip.get("department"),
-#         "designation": new_salary_slip.get("designation"),
-#         "company": new_salary_slip.get("company"),
-#         "posting_date": new_salary_slip.get("posting_date"),
-#         "salary_structure": new_salary_slip.get("salary_structure"),
-#         "earnings": normal_earnings,
-#         "reimbursements": reimbursement_list,
-#         "deductions": deduction_list,
-#     }
-
-#     # Render HTML using template
-#     html = frappe.render_template(
-#         "cn_indian_payroll/templates/ctc_breakup_pdf.html",
-#         context
-#     )
-
-#     # Generate PDF bytes
-#     pdf_bytes = get_pdf(html)
-
-#     # Save PDF as File document
-#     file_doc = frappe.get_doc({
-#         "doctype": "File",
-#         "file_name": f"CTC_Breakup_{employee}.pdf",
-#         "attached_to_doctype": "Employee",
-#         "attached_to_name": employee,
-#         "content": pdf_bytes,
-#         "is_private": 0
-#     })
-#     file_doc.insert(ignore_permissions=True)
-
-#     return {"pdf_url": file_doc.file_url}
-
-import frappe
-from hrms.payroll.doctype.salary_structure.salary_structure import make_salary_slip
-from frappe.utils.pdf import get_pdf
-import json
 
 @frappe.whitelist()
 def generate_ctc_pdf(employee, salary_structure, posting_date=None, employee_benefits=None):
@@ -332,7 +159,6 @@ def generate_ctc_pdf(employee, salary_structure, posting_date=None, employee_ben
     Generate CTC PDF for a given employee and salary structure.
     """
 
-    # Generate Salary Slip preview
     slip = make_salary_slip(
         source_name=salary_structure,
         employee=employee,
@@ -344,7 +170,6 @@ def generate_ctc_pdf(employee, salary_structure, posting_date=None, employee_ben
     if not slip:
         frappe.throw("Unable to generate salary breakup. Check Salary Structure or Employee.")
 
-    # --- Prepare earnings list and totals ---
     earnings_list = []
     total_monthly_earnings = 0
     total_annual_earnings = 0
@@ -360,7 +185,6 @@ def generate_ctc_pdf(employee, salary_structure, posting_date=None, employee_ben
             total_monthly_earnings += amount
             total_annual_earnings += amount * 12
 
-    # --- Prepare deductions list and totals ---
     deduction_list = []
     total_monthly_ded = 0
     total_annual_ded = 0
@@ -376,7 +200,6 @@ def generate_ctc_pdf(employee, salary_structure, posting_date=None, employee_ben
             total_monthly_ded += amount
             total_annual_ded += amount * 12
 
-    # --- Prepare reimbursements list and totals ---
 
 
     if employee_benefits:
@@ -391,7 +214,6 @@ def generate_ctc_pdf(employee, salary_structure, posting_date=None, employee_ben
     total_annual_reim = 0
 
     for r in employee_benefits:
-        # Each r is now a dict (from JSON)
         comp_name = r.get("salary_component")
         amount = r.get("amount", 0)
         if comp_name:
@@ -405,11 +227,9 @@ def generate_ctc_pdf(employee, salary_structure, posting_date=None, employee_ben
 
 
 
-    # --- Calculate final CTC ---
     total_monthly_ctc = total_monthly_earnings + total_monthly_reim + total_monthly_ded
     total_annual_ctc = total_annual_earnings + total_annual_reim + total_annual_ded
 
-    # --- Context for HTML ---
     context = {
         "employee": employee,
         "employee_name": slip.get("employee_name") or "",
@@ -431,16 +251,13 @@ def generate_ctc_pdf(employee, salary_structure, posting_date=None, employee_ben
         "total_annual_ctc": total_annual_ctc
     }
 
-    # Render HTML template
     html = frappe.render_template(
         "cn_indian_payroll/templates/ctc_breakup_pdf.html",
         context
     )
 
-    # Generate PDF
     pdf_bytes = get_pdf(html)
 
-    # Save PDF
     file_doc = frappe.get_doc({
         "doctype": "File",
         "file_name": f"CTC_Breakup_{employee}.pdf",
