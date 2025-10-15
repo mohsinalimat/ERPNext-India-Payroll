@@ -11,6 +11,18 @@ class PayrollEntryOverride(PayrollEntry):
         super().on_submit()
         self.submit_new_joinee_arrear()
 
+    def on_cancel(self):
+        super().on_cancel()
+        self.cancel_new_joinee_arrear()
+
+    def cancel_new_joinee_arrear(self):
+        joinee_arrear=frappe.get_all("New Joining Arrear",filters={"payroll_entry":self.name,"docstatus":1},pluck="name")
+        if joinee_arrear:
+            for doc in joinee_arrear:
+                doc=frappe.get_doc("New Joining Arrear",doc)
+                doc.cancel()
+                frappe.db.commit()
+
 
     def submit_new_joinee_arrear(self):
         joinee_arrear=frappe.get_all("New Joining Arrear",filters={"payroll_entry":self.name,"docstatus":0},pluck="name")
