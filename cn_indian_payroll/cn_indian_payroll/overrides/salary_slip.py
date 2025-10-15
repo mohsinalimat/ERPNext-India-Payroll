@@ -32,11 +32,9 @@ class CustomSalarySlip(SalarySlip):
 
     def before_save(self):
 
-        self.actual_amount_ctc()
+        self.esic_amount_roundup()
         self.update_declaration_component()
-        # self.arrear_ytd()
-        self.food_coupon_tax()
-        self.tax_calculation()
+        # self.tax_calculation()
 
 
 
@@ -350,14 +348,6 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-
-
-
-
-
-
-
-
     def update_total_lop(self):
         self.custom_total_leave_without_pay = (self.absent_days or 0) + self.leave_without_pay
 
@@ -603,63 +593,10 @@ class CustomSalarySlip(SalarySlip):
 
         return flt(result[0][0]) if result else 0.0
 
-    def food_coupon_tax(self):
-        past_salary_slips = frappe.db.get_list(
-            "Salary Slip",
-            filters={
-                "employee": self.employee,
-                "custom_payroll_period": self.custom_payroll_period,
-                "docstatus": 1,
-            },
-            fields=["name"],
-        )
-
-        food_coupon_array = []
-        for slip in past_salary_slips:
-            slip_doc = frappe.get_doc("Salary Slip", slip.name)
-            for earning in slip_doc.earnings:
-                if earning.is_tax_applicable == 0 and earning.custom_regime == "New Regime":
-                    food_coupon_array.append(earning.amount)
-
-        total_food_coupon_ytd = sum(food_coupon_array)
-        for earning in self.earnings:
-            if earning.is_tax_applicable == 1 and earning.custom_regime == "New Regime":
-                earning.custom_total_ytd = total_food_coupon_ytd
 
 
 
-    # def arrear_ytd(self):
-    #     arrear_slips = frappe.db.get_list(
-    #         "Salary Slip",
-    #         filters={
-    #             "employee": self.employee,
-    #             "custom_payroll_period": self.custom_payroll_period,
-    #             "docstatus": 1,
-    #             "name": ("!=", self.name),
-    #         },
-    #         fields=["name"],
-    #     )
 
-    #     if not arrear_slips:
-    #         return
-    #     arrear_ytd_sum = defaultdict(float)
-    #     for slip in arrear_slips:
-    #         doc = frappe.get_doc("Salary Slip", slip.name)
-
-    #         for section in ["earnings", "deductions"]:
-    #             for row in doc.get(section):
-    #                 component_doc = frappe.get_doc("Salary Component", row.salary_component)
-
-    #                 if component_doc.custom_component:
-    #                     arrear_ytd_sum[component_doc.custom_component] += row.amount
-
-    #     for row in self.earnings:
-    #         if row.salary_component in arrear_ytd_sum:
-    #             row.custom_arrear_ytd = arrear_ytd_sum[row.salary_component]
-
-    #     for row in self.deductions:
-    #         if row.salary_component in arrear_ytd_sum:
-    #             row.custom_arrear_ytd = arrear_ytd_sum[row.salary_component]
 
 
 
@@ -998,34 +935,11 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-    def actual_amount_ctc(self):
-        if self.earnings:
-            for earning in self.earnings:
-                if earning.depends_on_payment_days == 1:
-                    if self.payment_days and self.payment_days > 0:
-                        earning.custom_actual_amount = (earning.amount * self.total_working_days) / self.payment_days
-                    else:
-                        earning.custom_actual_amount = 0
-                else:
-                    earning.custom_actual_amount = earning.amount
-
-
+    def esic_amount_roundup(self):
         if self.deductions:
             for deduction in self.deductions:
                 component_doc = frappe.get_doc("Salary Component", deduction.salary_component)
                 original_amount = float(deduction.amount or 0)
-
-                if deduction.depends_on_payment_days == 1:
-                    if self.payment_days and self.payment_days > 0:
-                        deduction.custom_actual_amount = (original_amount * self.total_working_days) / self.payment_days
-                    else:
-                        deduction.custom_actual_amount = 0
-
-                    if component_doc.component_type == "ESIC":
-                        deduction.amount = math.ceil(original_amount)
-                else:
-                    deduction.custom_actual_amount = original_amount
-
 
         if self.total_deduction or self.total_loan_repayment:
             self.custom_total_deduction_amount = (self.total_deduction or 0) + (self.total_loan_repayment or 0)
@@ -1054,52 +968,6 @@ class CustomSalarySlip(SalarySlip):
 
 
 
-
-
-
-
-    def loan_perquisite(self):
-        loan_perquisite_component = frappe.get_value(
-            'Salary Component',
-            filters={'component_type': 'Loan Perquisite'},
-            fieldname='name'
-        )
-
-        if not loan_perquisite_component:
-            return
-
-        loan_repayments = frappe.get_list(
-            'Loan Repayment Schedule',
-            filters={
-                'custom_employee': self.employee,
-                'status': 'Active',
-                'docstatus':1
-            },
-            fields=['name']
-        )
-
-        if not loan_repayments:
-            return
-
-        self.start_date = frappe.utils.getdate(self.start_date)
-        self.end_date = frappe.utils.getdate(self.end_date)
-
-        perquisite_amount_array = []
-        for repayment in loan_repayments:
-            loan_repayment_doc = frappe.get_doc('Loan Repayment Schedule', repayment.name)
-            for perquisite in loan_repayment_doc.custom_loan_perquisite:
-                payment_date = frappe.utils.getdate(perquisite.payment_date)
-                if self.start_date <= payment_date <= self.end_date:
-                    perquisite_amount_array.append(perquisite.perquisite_amount)
-
-        if perquisite_amount_array:
-            existing_components = {earning.salary_component for earning in self.earnings}
-
-            if loan_perquisite_component not in existing_components:
-                self.append("earnings", {
-                    "salary_component": loan_perquisite_component,
-                    "amount": sum(perquisite_amount_array)
-                })
 
 
 

@@ -255,7 +255,6 @@ doctype_js = {
 
     "Loan": "public/js/loan.js",
     "Loan Product": "public/js/loan_product.js",
-    "LTA Claim": "public/js/lta_claim.js",
     "Structure Setting": "public/js/structure_setting.js",
     "Salary Component": "public/js/salary_component.js",
     # "Full and Final Statement": "public/js/f_and_f.js",
@@ -266,6 +265,7 @@ doctype_js = {
 }
 
 override_doctype_class = {
+    "Payroll Entry": "cn_indian_payroll.cn_indian_payroll.overrides.payroll_entry.PayrollEntryOverride",
     "Salary Slip": "cn_indian_payroll.cn_indian_payroll.overrides.salary_slip.CustomSalarySlip",
     "Salary Structure Assignment": "cn_indian_payroll.cn_indian_payroll.overrides.salary_structure_assignment.CustomSalaryStructureAssignment",
     "Employee Tax Exemption Declaration": "cn_indian_payroll.cn_indian_payroll.overrides.tax_declaration.CustomEmployeeTaxExemptionDeclaration",
@@ -281,11 +281,6 @@ doc_events = {
     "Loan Repayment Schedule": {
         "before_save": "cn_indian_payroll.cn_indian_payroll.overrides.loan_repayment.before_save",
 
-    },
-    "LTA Claim": {
-        "validate": "cn_indian_payroll.cn_indian_payroll.overrides.lta_claim.validate",
-        "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.lta_claim.on_submit",
-        "before_submit": "cn_indian_payroll.cn_indian_payroll.overrides.lta_claim.before_submit",
     },
 
 

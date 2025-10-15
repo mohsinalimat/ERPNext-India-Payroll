@@ -18,12 +18,14 @@
   "company",
   "posting_date",
   "payout_date",
+  "payroll_entry",
   "earning_arrear_component_section",
   "earning_component",
   "deduction_arrear_component_section",
   "deduction_component",
   "reimbursement_arrear_component_section",
-  "reimbursement_component"
+  "reimbursement_component",
+  "amended_from"
  ],
  "fields": [
   {
@@ -136,6 +138,23 @@
    "fieldtype": "Table",
    "label": "Reimbursement Component",
    "options": "Payroll Correction Child"
+  },
+  {
+   "fieldname": "payroll_entry",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Payroll Entry",
+   "options": "Payroll Entry"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "New Joining Arrear",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
@@ -147,7 +166,7 @@
    "link_fieldname": "ref_docname"
   }
  ],
- "modified": "2025-10-10 00:14:02.718826",
+ "modified": "2025-10-15 14:42:52.333885",
  "modified_by": "Administrator",
  "module": "cn-indian-payroll",
  "name": "New Joining Arrear",

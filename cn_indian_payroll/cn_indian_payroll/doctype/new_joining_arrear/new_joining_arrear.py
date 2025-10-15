@@ -94,12 +94,6 @@ class NewJoiningArrear(Document):
 			for reimbursement in ssa.employee_benefits:
 				salary_component = frappe.get_doc("Salary Component", reimbursement.salary_component)
 				if salary_component.arrear_component == 1:
-					# Find the corresponding earning in the new_salary_slip if needed
-					actual_amount = 0
-					for new_earning in new_salary_slip.get("earnings", []):
-						if new_earning.salary_component == reimbursement.salary_component:
-							actual_amount = new_earning.amount
-							break
 
 					reimbursement_component.append({
 						"salary_component": salary_component.name,
@@ -107,7 +101,7 @@ class NewJoiningArrear(Document):
 							((reimbursement.amount / 12) / new_salary_slip.total_working_days)
 							* self.number_of_present_days
 						),
-						"actual_amount": round(actual_amount)
+
 					})
 
 
@@ -133,12 +127,10 @@ class NewJoiningArrear(Document):
 							(new_earning.amount / new_salary_slip.total_working_days)
 							* self.number_of_present_days
 						),
-						"actual_amount":round(new_earning.amount)
 					}
 				)
 				processed_components.append(component_doc.name)
 
-		# Process deductions
 		for new_deduction in new_salary_slip.deductions:
 			component_doc = frappe.get_value(
 				"Salary Component",
@@ -161,12 +153,10 @@ class NewJoiningArrear(Document):
 							(new_deduction.amount / new_salary_slip.total_working_days)
 							* self.number_of_present_days
 						),
-						"actual_amount":round(new_deduction.amount)
 					}
 				)
 				processed_components.append(component_doc.name)
 
-		# Assign results to document child tables
 		self.set("earning_component", [])
 		self.set("deduction_component", [])
 		self.set("reimbursement_component",[])
