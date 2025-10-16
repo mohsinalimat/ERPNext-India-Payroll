@@ -17,6 +17,7 @@
   "column_break_txim",
   "company",
   "posting_date",
+  "payroll_period",
   "payout_date",
   "payroll_entry",
   "earning_arrear_component_section",
@@ -115,7 +116,7 @@
    "fieldname": "earning_component",
    "fieldtype": "Table",
    "label": "Earning Component",
-   "options": "LOP Reversal Child"
+   "options": "Payroll Correction Child"
   },
   {
    "fieldname": "deduction_arrear_component_section",
@@ -126,7 +127,7 @@
    "fieldname": "deduction_component",
    "fieldtype": "Table",
    "label": "Deduction Component",
-   "options": "LOP Reversal Deduction Child"
+   "options": "Payroll Correction Child"
   },
   {
    "fieldname": "reimbursement_arrear_component_section",
@@ -155,6 +156,12 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "payroll_period",
+   "fieldtype": "Link",
+   "label": "Payroll Period",
+   "options": "Payroll Period"
   }
  ],
  "grid_page_length": 50,
@@ -166,7 +173,7 @@
    "link_fieldname": "ref_docname"
   }
  ],
- "modified": "2025-10-15 14:42:52.333885",
+ "modified": "2025-10-16 16:36:57.806262",
  "modified_by": "Administrator",
  "module": "cn-indian-payroll",
  "name": "New Joining Arrear",

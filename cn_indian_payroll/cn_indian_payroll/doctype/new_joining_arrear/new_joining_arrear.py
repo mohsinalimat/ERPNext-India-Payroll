@@ -15,6 +15,45 @@ class NewJoiningArrear(Document):
 
 	def on_submit(self):
 		self.insert_additional_salary()
+		self.insert_benefit_ledger()
+
+
+	def insert_benefit_ledger(self):
+		if self.reimbursement_component:
+			for row in self.reimbursement_component:
+				component=frappe.get_doc("Salary Component",row.salary_component)
+				if component.is_flexible_benefit==1:
+					benefit_ledger = frappe.new_doc("Employee Benefit Ledger")
+					benefit_ledger.posting_date = self.posting_date
+					benefit_ledger.employee = self.employee
+					benefit_ledger.salary_component = row.salary_component
+					benefit_ledger.amount = row.amount
+					benefit_ledger.company = self.company
+					benefit_ledger.payroll_period=self.payroll_period
+
+					benefit_ledger.transaction_type = "Accrual"
+					benefit_ledger.yearly_benefit = row.custom_actual_amount*12
+					benefit_ledger.remarks = "Pro rata flexible benefit accrual"
+					benefit_ledger.flexible_benefit = 1
+
+					benefit_ledger.insert()
+					benefit_ledger.submit()
+				else:
+					benefit_ledger = frappe.new_doc("Employee Benefit Ledger")
+					benefit_ledger.posting_date = self.posting_date
+					benefit_ledger.employee = self.employee
+					benefit_ledger.salary_component = row.salary_component
+					benefit_ledger.amount = row.amount
+					benefit_ledger.company = self.company
+					benefit_ledger.payroll_period=self.payroll_period
+
+					benefit_ledger.transaction_type = "Accrual"
+					benefit_ledger.yearly_benefit = 0
+					benefit_ledger.remarks = "Accrual Component assigned via salary structure"
+					benefit_ledger.flexible_benefit = 0
+
+					benefit_ledger.insert()
+					benefit_ledger.submit()
 
 
 	def insert_additional_salary(self):
@@ -70,6 +109,7 @@ class NewJoiningArrear(Document):
 
 		salary_structure = salary_structure_assignment[0].salary_structure
 		from_date = salary_structure_assignment[0].from_date
+		self.payroll_period=salary_structure_assignment[0].custom_payroll_period
 
 
 		ssa=frappe.get_doc("Salary Structure Assignment",salary_structure_assignment[0].name)
@@ -84,25 +124,33 @@ class NewJoiningArrear(Document):
 		)
 
 		processed_components = []
-		earning_component = []
-		deduction_component = []
-		reimbursement_component=[]
+		earning_components = []
+		deduction_components = []
+		reimbursement_components = []
+
+		for accrued_benefit in new_salary_slip.accrued_benefits:
+			salary_component_doc = frappe.get_doc("Salary Component", accrued_benefit.salary_component)
+
+			if salary_component_doc.arrear_component == 1 and not salary_component_doc.is_flexible_benefit == 1:
+				reimbursement_components.append({
+					"salary_component": accrued_benefit.salary_component,
+					"amount": round(
+						(accrued_benefit.amount / new_salary_slip.total_working_days) * self.number_of_present_days
+					),
+					"custom_actual_amount":round(accrued_benefit.amount)
+				})
+
+			if salary_component_doc.arrear_component == 1 and salary_component_doc.is_flexible_benefit == 1:
+				reimbursement_components.append({
+					"salary_component": accrued_benefit.salary_component,
+					"amount": round(
+						((accrued_benefit.amount / 12) / new_salary_slip.total_working_days) * self.number_of_present_days
+					),
+					"custom_actual_amount":round(accrued_benefit.amount)
+				})
 
 
 
-		if ssa.employee_benefits:
-			for reimbursement in ssa.employee_benefits:
-				salary_component = frappe.get_doc("Salary Component", reimbursement.salary_component)
-				if salary_component.arrear_component == 1:
-
-					reimbursement_component.append({
-						"salary_component": salary_component.name,
-						"amount": round(
-							((reimbursement.amount / 12) / new_salary_slip.total_working_days)
-							* self.number_of_present_days
-						),
-
-					})
 
 
 		for new_earning in new_salary_slip.earnings:
@@ -120,13 +168,14 @@ class NewJoiningArrear(Document):
 				continue
 
 			if component_doc.arrear_component == 1:
-				earning_component.append(
+				earning_components.append(
 					{
 						"salary_component": component_doc.name,
 						"amount": round(
 							(new_earning.amount / new_salary_slip.total_working_days)
 							* self.number_of_present_days
 						),
+						"custom_actual_amount":round(accrued_benefit.amount)
 					}
 				)
 				processed_components.append(component_doc.name)
@@ -146,13 +195,14 @@ class NewJoiningArrear(Document):
 				continue
 
 			if component_doc.arrear_component == 1:
-				deduction_component.append(
+				deduction_components.append(
 					{
 						"salary_component": component_doc.name,
 						"amount": round(
 							(new_deduction.amount / new_salary_slip.total_working_days)
 							* self.number_of_present_days
 						),
+						"custom_actual_amount":round(accrued_benefit.amount)
 					}
 				)
 				processed_components.append(component_doc.name)
@@ -161,11 +211,11 @@ class NewJoiningArrear(Document):
 		self.set("deduction_component", [])
 		self.set("reimbursement_component",[])
 
-		for row in earning_component:
+		for row in earning_components:
 			self.append("earning_component", row)
 
-		for row in deduction_component:
+		for row in deduction_components:
 			self.append("deduction_component", row)
 
-		for row in reimbursement_component:
+		for row in reimbursement_components:
 			self.append("reimbursement_component", row)
