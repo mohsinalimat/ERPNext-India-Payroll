@@ -39,3 +39,9 @@ def before_save(self, method):
                         "perquisite_amount": perquisite_amount,
                         "payroll_date": payroll_date
                     })
+
+
+
+def before_update_after_submit(self,method):
+    if self.repayment_schedule:
+        self.repayment_periods=len(self.repayment_schedule)

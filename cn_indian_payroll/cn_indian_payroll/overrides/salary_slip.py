@@ -151,7 +151,7 @@ class CustomSalarySlip(SalarySlip):
                 actual_lwp, absent = self.calculate_lwp_ppl_and_absent_days_based_on_attendance_cycle(
                     holidays, daily_wages_fraction_for_half_day, consider_marked_attendance_on_holidays
                 )
-                self.absent_days = absent                
+                self.absent_days = absent
             else:
                 actual_lwp, absent = self.calculate_lwp_ppl_and_absent_days_based_on_attendance(
                     holidays, daily_wages_fraction_for_half_day, consider_marked_attendance_on_holidays
@@ -165,7 +165,7 @@ class CustomSalarySlip(SalarySlip):
                 actual_lwp = self.calculate_lwp_or_ppl_based_on_leave_application(
                     holidays, working_days_list, daily_wages_fraction_for_half_day
                 )
-            
+
 
         if not lwp:
             lwp = actual_lwp
@@ -229,7 +229,7 @@ class CustomSalarySlip(SalarySlip):
             attendance_details = self.get_employee_attendance(
                 start_date=attendance_start_date, end_date=attendance_end_date
             )
-            
+
 
 
             for d in attendance_details:
@@ -276,7 +276,7 @@ class CustomSalarySlip(SalarySlip):
 
         return lwp, absent
 
-    
+
     def eval_condition_and_formula(self, struct_row, data):
         try:
             condition, formula, amount = struct_row.condition, struct_row.formula, struct_row.amount
