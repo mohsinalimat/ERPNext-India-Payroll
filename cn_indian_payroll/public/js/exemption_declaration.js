@@ -188,11 +188,11 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                                     const exemption_category = row.getAttribute("data-category");
                                     let value = parseFloat(row.querySelector("input").value || 0);
 
-                                    if (max > 0 && value > max) {
-                                        frappe.msgprint(`Amount for "${id}" exceeds the max (${max}). Resetting to 0.`);
-                                        value = 0;
-                                        row.querySelector("input").value = 0;
-                                    }
+                                    // if (max > 0 && value > max) {
+                                    //     frappe.msgprint(`Amount for "${id}" exceeds the max (${max}). Resetting to 0.`);
+                                    //     value = 0;
+                                    //     row.querySelector("input").value = 0;
+                                    // }
 
                                     if (value > 0) {
                                         formData.push({
@@ -296,8 +296,9 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                                 let currentTax_old_regime = old_tax / monthBase;
                                 let currentTax_new_regime = new_tax / monthBase;
 
-                                let currentTax_old_regime_tax = old_tax_balance / monthBase;
-                                let currentTax_new_regime_tax = new_tax_balance / monthBase;
+                                let currentTax_old_regime_tax = (old_tax_balance / monthBase) || 0;
+                                let currentTax_new_regime_tax = (new_tax_balance / monthBase) || 0;
+                                    
 
 
                         const html = `
@@ -497,17 +498,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                                                 <td><div style="text-align: right"> ₹ ${data.new_regime_education_cess+data.new_regime_surcharge+(data.new_regime_total_tax-data.new_regime_rebate_amount)}</div></td>
                                             </tr>
 
-                                            <tr style="font-weight: bold; background-color: #e9ecef;">
-                                                <td style="padding: 10px; border: 1px solid #ddd;">Advance Tax Deducted Amount</td>
-                                                 <td><div style="text-align: right"> ₹ ${data.advance_tax}</div></td>
-                                                <td><div style="text-align: right"> ₹ ${data.advance_tax}</div></td>
-                                            </tr>
-
-                                            <tr style="font-weight: bold; background-color: #e9ecef;">
-                                                <td style="padding: 10px; border: 1px solid #ddd;">Balance Tax Payable</td>
-                                                 <td><div style="text-align: right"> ₹ ${(data.old_regime_education_cess+data.old_regime_surcharge+(data.old_regime_total_tax-data.old_regime_rebate_amount))-(data.advance_tax)}</div></td>
-                                                <td><div style="text-align: right"> ₹ ${(data.new_regime_education_cess+data.new_regime_surcharge+(data.new_regime_total_tax-data.new_regime_rebate_amount))-(data.advance_tax)}</div></td>
-                                            </tr>
+                                            
 
                                             <tr style="font-weight: bold; background-color: #e9ecef;">
                                                 <td style="padding: 10px; border: 1px solid #ddd;">Tax Paid</td>

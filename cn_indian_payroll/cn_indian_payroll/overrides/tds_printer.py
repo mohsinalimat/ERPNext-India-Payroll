@@ -4,7 +4,6 @@ from frappe.utils import getdate, add_months, flt
 @frappe.whitelist()
 def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regime,id,income_tax_slab):
 
-
     end_date = getdate(end_date)
 
     period = frappe.db.get_value(
@@ -63,13 +62,14 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
             "name",
             "custom_sequence",
             "custom_component_sub_type",
-            "component_type",  # Earning / Deduction
+            "component_type",  
             "variable_based_on_taxable_salary",
             "type",
             "is_tax_applicable",
             "custom_tax_exemption_applicable_based_on_regime",
-            "custom_is_reimbursement",
-            "custom_is_offcycle_component"
+            "is_flexible_benefit",  
+            
+            
 
         ],
         filters={"name": ["in", component_names]},
@@ -82,17 +82,17 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
     last_slip_components = frappe.get_all(
         "Salary Detail",
         filters={"parent": last_slip.name},
-        fields=["salary_component", "amount", "custom_actual_amount"]
+        fields=["salary_component", "amount", "default_amount"]
     )
     last_slip_map = {
-        d.salary_component: flt(d.custom_actual_amount or d.amount, 0)
+        d.salary_component: flt(d.default_amount or d.amount, 0)
         for d in last_slip_components
     }
+
 
     earnings = []
     deductions = []
     reimbursements=[]
-    offcycle_earnings=[]
     tds_amounts=[]
 
     for m in months:
@@ -112,28 +112,27 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
             slip_name = month_slip_map.get(m)
 
             if slip_name:
-                amount = frappe.db.get_value(
+                details = frappe.get_all(
                     "Salary Detail",
-                    {"parent": slip_name, "salary_component": comp.name},
-                    "amount"
-                ) or 0
+                    filters={"parent": slip_name, "salary_component": comp.name},
+                    fields=["salary_component", "amount"]
+                )
 
-
-
+                total_amount = sum(flt(d.amount or 0) for d in details)
+                values.append(total_amount)
             else:
                 if month_date_map[m] > end_date:
                     if comp.custom_component_sub_type == "Fixed" or comp.type == "Deduction":
                         amount = round(last_slip_map.get(comp.name, 0))
                     else:
                         amount = 0
-
-
                 else:
                     amount = 0
 
-            values.append(amount)
+                values.append(amount)
 
-        if comp.type == "Earning" and comp.is_tax_applicable and comp.custom_tax_exemption_applicable_based_on_regime and not comp.custom_is_offcycle_component and not comp.custom_is_reimbursement:
+
+        if comp.type == "Earning" and comp.is_tax_applicable and comp.custom_tax_exemption_applicable_based_on_regime and not comp.is_flexible_benefit:
             earnings.append({
                 "name": comp.name,
                 "values": [flt(v, 0) for v in values],
@@ -143,17 +142,11 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
                 "type": comp.type
             })
 
-        if comp.type == "Earning" and comp.is_tax_applicable and comp.custom_tax_exemption_applicable_based_on_regime and comp.custom_is_offcycle_component and not comp.custom_is_reimbursement:
-            offcycle_earnings.append({
-                "name": comp.name,
-                "values": [flt(v, 0) for v in values],
-                "total": flt(sum(values), 0),
-                "sub_type": comp.custom_component_sub_type,
-                "component_type": comp.component_type,
-                "type": comp.type
-            })
 
-        if comp.type == "Earning" and comp.is_tax_applicable and comp.custom_tax_exemption_applicable_based_on_regime and comp.custom_is_reimbursement:
+
+        
+
+        if comp.type == "Earning" and comp.is_tax_applicable and comp.custom_tax_exemption_applicable_based_on_regime and comp.is_flexible_benefit:
             reimbursements.append({
                 "name": comp.name,
                 "values": [flt(v, 0) for v in values],
@@ -188,7 +181,7 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
     total_earnings_sum = sum(row["total"] for row in earnings)
     total_deduction_sum = sum(row["total"] for row in deductions)
     total_reimbursement_sum = sum(row["total"] for row in reimbursements)
-    total_offcycle_earning_sum = sum(row["total"] for row in offcycle_earnings)
+    
 
     tds_amounts_sum = sum(tds_amounts)
 
@@ -196,11 +189,7 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
 
     offcycle_net_pay = []
 
-    if offcycle_earnings:
-        earning_values = offcycle_earnings[0].get("values", [])
-        for i, earning in enumerate(earning_values):
-            tds = tds_amounts[i] if i < len(tds_amounts) else 0
-            offcycle_net_pay.append(earning - tds)
+
 
     tds_net_sum = sum(offcycle_net_pay)
 
@@ -286,7 +275,7 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
 
     total_declaration_amount=round(total_declaration-lta_sum-hra_exemption)
 
-    final_gross=(total_reimbursement_sum+total_earnings_sum+total_offcycle_earning_sum)
+    final_gross=(total_reimbursement_sum+total_earnings_sum)
 
     final_after_hra_exemption=(final_gross-lta_sum-hra_exemption)
 
@@ -316,6 +305,8 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
         custom_month_count=slip.custom_month_count
 
         tds=slip.current_month_income_tax
+    
+
 
 
 
@@ -332,9 +323,6 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
 
         "reimbursements":reimbursements,
         "total_reimbursement_sum":total_reimbursement_sum,
-
-        "offcycle_earnings":offcycle_earnings,
-        "total_offcycle_earning_sum":total_offcycle_earning_sum,
 
         "tds_amounts":tds_amounts,
         "tds_amounts_sum":tds_amounts_sum,
@@ -398,74 +386,6 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
 
 
 
-# @frappe.whitelist(allow_guest=True)
-# def get_payslip_tds_pdf_html(id):
-#     slip = frappe.get_doc("Salary Slip", id)
-#     context = {"doc": slip}
-#     html = frappe.render_template(
-#         "cn_indian_payroll/templates/includes/annual_statement.html", context
-#     )
-#     frappe.local.response["content_type"] = "text/html"
-#     frappe.local.response["response"] = html
-
-
-
-
-@frappe.whitelist(allow_guest=True)
-def get_payslip_tds_pdf_html(id):
-    from cn_indian_payroll.cn_indian_payroll.overrides.tds_printer import get_annual_statement_pdf
-
-    slip = frappe.get_doc("Salary Slip", id)
-    employee = slip.employee
-    payroll_period = slip.payroll_period
-    end_date = slip.end_date
-    month = slip.custom_month or slip.month
-    tax_regime = slip.custom_tax_regime
-    income_tax_slab = slip.custom_income_tax_slab
-
-    # Call the existing function to generate context
-    result = get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regime, id, income_tax_slab)
-
-    html = result.get("html")
-
-    frappe.local.response["content_type"] = "text/html"
-    frappe.local.response["response"] = html
-
-
-
-
-# @frappe.whitelist()
-# def get_payslip_pdf_json(id):
-#     slip = frappe.get_doc("Salary Slip", id)
-#     context = {"doc": slip}
-#     html = frappe.render_template("cn_indian_payroll/templates/includes/regular_payslip.html", context)
-#     return {"html": html}
-
-
-@frappe.whitelist(allow_guest=True)
-def get_payslip_pdf_html(id):
-    slip = frappe.get_doc("Salary Slip", id)
-    context = {"doc": slip}
-    html = frappe.render_template(
-        "cn_indian_payroll/templates/includes/regular_payslip.html", context
-    )
-    frappe.local.response["content_type"] = "text/html"
-    frappe.local.response["response"] = html
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @frappe.whitelist()
 def get_payslip_pdf(id):
     # Fetch Salary Slip by name (id)
@@ -482,204 +402,7 @@ def get_payslip_pdf(id):
 
 
     html = frappe.render_template(
-        "cn_indian_payroll/templates/includes/regular_payslip.html",
+        "cn_indian_payroll/templates/includes/salary_slip.html",
         context
     )
     return {"html": html}
-
-
-@frappe.whitelist()
-def get_benefit_payslip_pdf(id):
-    try:
-        slip = frappe.get_doc("Salary Slip", id)
-
-        find = False
-
-        if slip.earnings:
-            for earning in slip.earnings:
-                get_component = frappe.get_doc("Salary Component", earning.salary_component)
-                if get_component.custom_is_reimbursement:
-                    find = True
-                    break
-
-    except frappe.DoesNotExistError:
-        return {"html": "<p>No salary slip found.</p>"}
-
-    context = {"doc": slip}
-
-    if find:
-        html = frappe.render_template(
-            "cn_indian_payroll/templates/includes/benefit_payslip.html",
-            context
-        )
-        return {"html": html}
-    else:
-        return {
-            "html": """
-                <div style="
-                    padding: 12px;
-                    margin: 10px 0;
-                    border: 1px solid #f5c2c7;
-                    background-color: #f8d7da;
-                    color: #842029;
-                    border-radius: 6px;
-                    font-size: 14px;
-                    font-family: Arial, sans-serif;
-                ">
-                    ⚠️ No Reimbursement component found in salary slip.
-                </div>
-            """
-        }
-
-
-
-
-@frappe.whitelist(allow_guest=True)
-def get_benefit_payslip_pdf_html(id):
-    slip = frappe.get_doc("Salary Slip", id)
-
-    # Check if any earning component is a reimbursement
-    find = False
-    if slip.earnings:
-        for earning in slip.earnings:
-            component = frappe.get_cached_doc("Salary Component", earning.salary_component)
-            if component.custom_is_reimbursement:
-                find = True
-                break
-
-    context = {"doc": slip}
-
-    if find:
-        # Render Benefit Payslip
-        html = frappe.render_template(
-            "cn_indian_payroll/templates/includes/benefit_payslip.html",
-            context
-        )
-    else:
-        # Render Warning Message inside HTML
-        html = """
-            <div style="
-                padding: 12px;
-                margin: 10px 0;
-                border: 1px solid #f5c2c7;
-                background-color: #f8d7da;
-                color: #842029;
-                border-radius: 6px;
-                font-size: 14px;
-                font-family: Arial, sans-serif;
-            ">
-                ⚠️ No Reimbursement component found in this salary slip.
-            </div>
-        """
-
-    # Set HTTP Response
-    frappe.local.response["content_type"] = "text/html"
-    frappe.local.response["response"] = html
-
-
-
-
-
-
-
-
-
-
-
-
-@frappe.whitelist()
-def get_offcycle_payslip_pdf(id):
-    try:
-        slip = frappe.get_doc("Salary Slip", id)
-
-        find = False
-
-        if slip.earnings:
-            for earning in slip.earnings:
-                get_component = frappe.get_doc("Salary Component", earning.salary_component)
-                if get_component.custom_is_part_of_gross_pay==0 and get_component.do_not_include_in_total==1 and get_component.custom_component_sub_type=="Variable":
-                    find = True
-                    break
-
-    except frappe.DoesNotExistError:
-        return {"html": "<p>No salary slip found.</p>"}
-
-    context = {"doc": slip}
-
-    if find:
-        html = frappe.render_template(
-            "cn_indian_payroll/templates/includes/off_cycle_payslip.html",
-            context
-        )
-        return {"html": html}
-    else:
-        return {
-            "html": """
-                <div style="
-                    padding: 12px;
-                    margin: 10px 0;
-                    border: 1px solid #f5c2c7;
-                    background-color: #f8d7da;
-                    color: #842029;
-                    border-radius: 6px;
-                    font-size: 14px;
-                    font-family: Arial, sans-serif;
-                ">
-                    ⚠️ No Offcycle component found in salary slip.
-                </div>
-            """
-        }
-
-
-
-
-@frappe.whitelist(allow_guest=True)
-def get_offcycle_payslip_pdf_html(id):
-    try:
-        slip = frappe.get_doc("Salary Slip", id)
-
-        # Flag to check Offcycle eligibility
-        find = False
-        if slip.earnings:
-            for earning in slip.earnings:
-                component = frappe.get_cached_doc("Salary Component", earning.salary_component)
-                if (
-                    getattr(component, "custom_is_part_of_gross_pay", 0) == 0
-                    and getattr(component, "do_not_include_in_total", 0) == 1
-                    and getattr(component, "custom_component_sub_type", "") == "Variable"
-                ):
-                    find = True
-                    break
-
-    except frappe.DoesNotExistError:
-        html = "<p>No salary slip found.</p>"
-    except Exception as e:
-        frappe.log_error(frappe.get_traceback(), "get_offcycle_payslip_pdf_html Error")
-        html = f"<p style='color:red;'>Error: {str(e)}</p>"
-    else:
-        context = {"doc": slip}
-
-        if find:
-            html = frappe.render_template(
-                "cn_indian_payroll/templates/includes/off_cycle_payslip.html",
-                context
-            )
-        else:
-            html = """
-                <div style="
-                    padding: 12px;
-                    margin: 10px 0;
-                    border: 1px solid #f5c2c7;
-                    background-color: #f8d7da;
-                    color: #842029;
-                    border-radius: 6px;
-                    font-size: 14px;
-                    font-family: Arial, sans-serif;
-                ">
-                    ⚠️ No Offcycle component found in this salary slip.
-                </div>
-            """
-
-    # Final Frappe HTTP Response
-    frappe.local.response["content_type"] = "text/html"
-    frappe.local.response["response"] = html

@@ -420,14 +420,6 @@ def calculate_tds_projection(doc):
 
 
 
-
-
-        # frappe.msgprint(str(pf_max_amount))
-        # frappe.msgprint(str(pt_amount))
-        # frappe.msgprint(str(nps_amount))
-        # frappe.msgprint(str(total_old_regime_deductions))
-
-        # frappe.msgprint(str(new_regime_standard_value))
         old_regime_annual_taxable_income = max(
             round(current_taxable_earnings_old_regime + future_taxable_earnings_old_regime + loan_perquisite_amount)
             - round(pt_amount)
@@ -457,7 +449,7 @@ def calculate_tds_projection(doc):
             new_annual_slab=new_annual_slab
         )
 
-        advance_tax=doc.get("custom_tds_already_deducted_amount")
+        
 
         return {
                 "num_months": num_months if num_months else 0,
@@ -480,7 +472,7 @@ def calculate_tds_projection(doc):
 
                 "old_regime_annual_taxable_income": round(old_regime_annual_taxable_income),
                 "new_regime_annual_taxable_income": round(new_regime_annual_taxable_income),
-                "advance_tax":advance_tax,
+
 
                 "old_regime_from_amounts": slab_result.get("from_amount"),
                 "old_regime_to_amounts": slab_result.get("to_amount"),

@@ -252,7 +252,8 @@ doctype_js = {
     "Employee": "public/js/employee.js",
     "Salary Structure Assignment": "public/js/salary_structure_assignment.js",
     "Employee Tax Exemption Declaration": "public/js/exemption_declaration.js",
-
+    "Salary Slip": "public/js/salary_slip.js",
+    "Employee Tax Exemption Proof Submission": "public/js/proof_submission.js",
 
     "Loan": "public/js/loan.js",
     "Loan Product": "public/js/loan_product.js",
@@ -297,6 +298,9 @@ doc_events = {
     "Employee": {
         "validate": "cn_indian_payroll.cn_indian_payroll.overrides.employee.validate",
     },
+    "Employee Tax Exemption Proof Submission": {
+        "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.exemption_proof.on_submit",
+    },  
 
 
 

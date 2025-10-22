@@ -32,12 +32,32 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
 
         self.calculate_hra_breakup()
         self.update_tax_declaration()
-        self.validation_on_section10()
+        # self.validation_on_section10()
         self.set_total_declared_amount()
         self.set_total_exemption_amount()
+        self.set_max_amount_of_sub_category()
 
     def on_cancel(self):
         self.cancel_declaration_history()
+
+
+    def set_max_amount_of_sub_category(self):
+        if not self.declarations:
+            return
+
+        for subcategory in self.declarations:
+            if not subcategory.exemption_sub_category:
+                continue
+
+            check_component = frappe.get_doc(
+                "Employee Tax Exemption Sub Category", subcategory.exemption_sub_category
+            )
+
+
+            if check_component.max_amount > 0:
+                subcategory.max_amount = check_component.max_amount
+            if check_component.max_amount == 0:
+                subcategory.max_amount = subcategory.amount
 
     def update_json_data_in_declaration(self):
         total_nps = 0

@@ -35,7 +35,7 @@ class CustomSalarySlip(SalarySlip):
 
         self.esic_amount_roundup()
         self.update_declaration_component()
-        # self.tax_calculation()
+        self.tax_calculation()
 
 
 
@@ -46,6 +46,27 @@ class CustomSalarySlip(SalarySlip):
         self.set_sub_period()
         self.update_total_lop()
         self.set_taxale_regime()
+        self.insert_lopreversal_days()
+
+
+    def insert_lopreversal_days(self):
+        total_lop_days=0
+        arrear_days = frappe.get_list(
+            'Payroll Correction',
+            filters={
+                'employee': self.employee,
+                'payroll_date': ['between', [self.start_date, self.end_date]],
+                'docstatus': 1
+            },
+            fields=['days_to_reverse']
+        )
+
+        if arrear_days:
+            
+            total_lop_days = sum(days['days_to_reverse'] for days in arrear_days)
+            self.custom_lop_reversal_days = total_lop_days
+        else:
+            self.custom_lop_reversal_days = 0
 
 
 
@@ -800,20 +821,20 @@ class CustomSalarySlip(SalarySlip):
                     current_nps_value += earning.amount or 0
                     if earning_component_data.custom_component_sub_type=="Fixed":
                         future_nps_value = (
-                            earning.custom_actual_amount or 0
+                            earning.default_amount or 0
                         ) * self.custom_month_count
 
 
                 if earning.salary_component == current_basic:
                     current_basic_value += earning.amount
                     if  earning_component_data.custom_component_sub_type=="Fixed":
-                        future_basic_value = (earning.custom_actual_amount) * (
+                        future_basic_value = (earning.default_amount) * (
                             self.custom_month_count
                         )
                 if earning.salary_component == current_hra:
                     current_hra_value += earning.amount
                     if earning_component_data.custom_component_sub_type=="Fixed":
-                        future_hra_value = (earning.custom_actual_amount) * (
+                        future_hra_value = (earning.default_amount) * (
                             self.custom_month_count
                         )
 
@@ -827,14 +848,14 @@ class CustomSalarySlip(SalarySlip):
                 if deduction_component_data.component_type == "Provident Fund":
                     current_epf_value += deduction.amount
                     if deduction_component_data.custom_component_sub_type=="Fixed":
-                        future_epf_value = (deduction.custom_actual_amount) * (
+                        future_epf_value = (deduction.default_amount) * (
                             self.custom_month_count
                         )
                 if deduction_component_data.component_type == "Professional Tax":
                     current_pt_value += deduction.amount
 
                     if deduction_component_data.custom_component_sub_type=="Fixed":
-                        future_pt_value = (deduction.custom_actual_amount) * (
+                        future_pt_value = (deduction.default_amount) * (
                             self.custom_month_count
                         )
 
