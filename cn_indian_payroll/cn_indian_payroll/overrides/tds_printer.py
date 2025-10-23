@@ -60,7 +60,7 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
         "Salary Component",
         fields=[
             "name",
-            "custom_sequence",
+            "custom_component_sequence",
             "custom_component_sub_type",
             "component_type",  
             "variable_based_on_taxable_salary",
@@ -73,7 +73,7 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
 
         ],
         filters={"name": ["in", component_names]},
-        order_by="custom_sequence asc"
+        order_by="custom_component_sequence asc"
     )
 
     last_slip = slips[-1]
