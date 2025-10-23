@@ -145,7 +145,6 @@
    "label": "Tax Exemption"
   },
   {
-   "depends_on": "eval:doc.income_tax==\"Old Regime\"",
    "fieldname": "section_break_hfwe",
    "fieldtype": "Section Break"
   },
@@ -185,7 +184,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-22 13:09:38.423913",
+ "modified": "2025-10-23 20:06:26.261553",
  "modified_by": "Administrator",
  "module": "cn-indian-payroll",
  "name": "Tax Declaration History",
