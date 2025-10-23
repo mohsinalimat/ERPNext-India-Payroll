@@ -1379,9 +1379,8 @@ def override_calculate_tax_by_tax_slab(
     base_tax = 0
     rebate = 0
     other_taxes_and_charges = 0
-    custom_tds_already_deducted_amount = 0
 
-    # Step 1: Calculate base tax from slabs
+
     for slab in tax_slab.slabs:
         cond = cstr(slab.condition).strip()
         if cond and not eval_tax_slab_condition(cond, eval_globals, eval_locals):
@@ -1395,7 +1394,6 @@ def override_calculate_tax_by_tax_slab(
             taxable_range = min(annual_taxable_earning, to_amt) - from_amt
             base_tax += taxable_range * rate
 
-    # Step 2: Marginal Relief (Rebate Logic)
 
     if (
         tax_slab.custom_marginal_relief_applicable
@@ -1412,7 +1410,6 @@ def override_calculate_tax_by_tax_slab(
                 rebate = base_tax - excess_income
                 base_tax -= rebate
 
-    # Step 3: Cess and Other Charges AFTER Rebate
     for d in tax_slab.other_taxes_and_charges:
         if (
             flt(d.min_taxable_income)
@@ -1429,24 +1426,10 @@ def override_calculate_tax_by_tax_slab(
         charge = base_tax * charge_percent / 100.0
         other_taxes_and_charges += charge
 
-    declaration = frappe.db.get_value(
-        "Employee Tax Exemption Declaration",
-        {
-            "employee": self.employee,
-            "payroll_period": self.payroll_period.name,
-            "docstatus": 1,
-        },
-        "custom_tds_already_deducted_amount",
-        as_dict=True,
-        cache=True,
-    )
-    if declaration:
-        custom_tds_already_deducted_amount = (
-            declaration.custom_tds_already_deducted_amount or 0.0
-        )
+    
 
     final_tax = (
         base_tax + other_taxes_and_charges
-    ) - custom_tds_already_deducted_amount
+    )
 
     return round(final_tax, 2), round(other_taxes_and_charges, 2)
