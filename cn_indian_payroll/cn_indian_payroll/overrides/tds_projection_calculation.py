@@ -66,33 +66,33 @@ def calculate_tds_projection(doc):
 
             # frappe.msgprint(str(num_months))
 
-            loan_repayments = frappe.get_list(
-                "Loan Repayment Schedule",
-                filters={
-                    "custom_employee": employee,
-                    "status": "Active",
-                    "docstatus": 1,
-                },
-                fields=["*"],
-            )
+            # loan_repayments = frappe.get_list(
+            #     "Loan Repayment Schedule",
+            #     filters={
+            #         "custom_employee": employee,
+            #         "status": "Active",
+            #         "docstatus": 1,
+            #     },
+            #     fields=["*"],
+            # )
 
-            if loan_repayments:
-                loan_perquisite_component="Loan Perquisite"
-                for repayment in loan_repayments:
-                    get_each_perquisite = frappe.get_doc(
-                        "Loan Repayment Schedule", repayment.name
-                    )
-                    if len(get_each_perquisite.custom_loan_perquisite) > 0:
-                        for date in get_each_perquisite.custom_loan_perquisite:
-                            payment_date = frappe.utils.getdate(
-                                date.payment_date
-                            )
-                            if payroll_start_date <= payment_date <= payroll_end_date:
-                                loan_perquisite_amount += date.perquisite_amount
+            # if loan_repayments:
+            #     loan_perquisite_component="Loan Perquisite"
+            #     for repayment in loan_repayments:
+            #         get_each_perquisite = frappe.get_doc(
+            #             "Loan Repayment Schedule", repayment.name
+            #         )
+            #         if len(get_each_perquisite.custom_loan_perquisite) > 0:
+            #             for date in get_each_perquisite.custom_loan_perquisite:
+            #                 payment_date = frappe.utils.getdate(
+            #                     date.payment_date
+            #                 )
+            #                 if payroll_start_date <= payment_date <= payroll_end_date:
+            #                     loan_perquisite_amount += date.perquisite_amount
 
-            else:
-                loan_perquisite_component="Loan Perquisite"
-                loan_perquisite_amount=0
+            # else:
+            #     loan_perquisite_component="Loan Perquisite"
+            #     loan_perquisite_amount=0
 
         get_exemption_category = frappe.get_list(
             "Employee Tax Exemption Category",

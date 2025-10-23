@@ -4,7 +4,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
     refresh(frm) {
         frm.trigger("change_tax_regime");
         frm.trigger("display_declaration_form");
-        frm.trigger("tds_projection_html");
+        // frm.trigger("tds_projection_html");
     },
 
     change_tax_regime(frm) {
