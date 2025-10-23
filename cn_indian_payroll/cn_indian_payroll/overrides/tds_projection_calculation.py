@@ -68,7 +68,7 @@ def calculate_tds_projection(doc):
             loan_repayments = frappe.db.get_list(
                 "Loan Repayment Schedule",
                 filters={
-                    "custom_employee": employee,
+                    "custom_employee": doc.get('employee'),
                     "status": "Active",
                     "docstatus": 1,
                 },
