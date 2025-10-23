@@ -56,7 +56,6 @@ def hold_installments(employee, payment_date, company, type, number_of_months, d
         skip_date = getdate(payment_date)
         skipped_rows = []
 
-        # collect rows to skip (current month + following months till number_of_months)
         for i in range(number_of_months):
             current_date = add_months(skip_date, i)
             for repayment in repayment_doc.repayment_schedule:
@@ -67,7 +66,6 @@ def hold_installments(employee, payment_date, company, type, number_of_months, d
         if not skipped_rows:
             frappe.throw(f"No repayment found for date {payment_date} and subsequent {number_of_months} months")
 
-        # target date = skip_date + number_of_months
         target_date = add_months(skip_date, number_of_months)
         target_row = None
         for repayment in repayment_doc.repayment_schedule:
@@ -78,17 +76,14 @@ def hold_installments(employee, payment_date, company, type, number_of_months, d
         if not target_row:
             frappe.throw(f"No repayment found for target date {target_date}")
 
-        # aggregate skipped rows amounts
         total_principal = sum(r.principal_amount or 0 for r in skipped_rows)
         total_interest = sum(r.interest_amount or 0 for r in skipped_rows)
         total_payment = sum(r.total_payment or 0 for r in skipped_rows)
 
-        # add to target row
         target_row.principal_amount = (target_row.principal_amount or 0) + total_principal
         target_row.interest_amount = (target_row.interest_amount or 0) + total_interest
         target_row.total_payment = (target_row.total_payment or 0) + total_payment
 
-        # remove skipped rows
         for r in skipped_rows:
             repayment_doc.remove(r)
 
@@ -106,7 +101,6 @@ def hold_installments(employee, payment_date, company, type, number_of_months, d
         skip_date = getdate(payment_date)
         skipped_rows = []
 
-        # Collect all rows to skip based on number_of_months
         for i in range(number_of_months):
             current_skip_date = add_months(skip_date, i)
             for repayment in repayment_doc.repayment_schedule:
@@ -117,23 +111,19 @@ def hold_installments(employee, payment_date, company, type, number_of_months, d
         if not skipped_rows:
             frappe.throw(f"No repayment found for date {payment_date} and subsequent {number_of_months} month(s)")
 
-        # Remove all skipped rows
         for r in skipped_rows:
             repayment_doc.remove(r)
 
-        # Collect all future rows after the last skipped row
         last_skip_date = add_months(skip_date, number_of_months - 1)
         future_rows = [r for r in repayment_doc.repayment_schedule if getdate(r.payment_date) > last_skip_date]
 
         if not future_rows:
             frappe.throw("No future rows to distribute amounts")
 
-        # Sum amounts of skipped rows
         total_principal = sum(flt(r.principal_amount) for r in skipped_rows)
         total_interest = sum(flt(r.interest_amount) for r in skipped_rows)
         total_payment = sum(flt(r.total_payment) for r in skipped_rows)
 
-        # Distribute evenly across future rows
         n = len(future_rows)
         principal_share = total_principal / n
         interest_share = total_interest / n
@@ -144,7 +134,6 @@ def hold_installments(employee, payment_date, company, type, number_of_months, d
             r.interest_amount = flt(r.interest_amount) + interest_share
             r.total_payment = flt(r.total_payment) + total_share
 
-        # Recalculate balance_loan_amount sequentially
         prev_balance = flt(repayment_doc.loan_amount)
         for repayment in repayment_doc.repayment_schedule:
             repayment.balance_loan_amount = prev_balance - flt(repayment.principal_amount)
@@ -191,7 +180,6 @@ def edit_installment(employee, payment_date, company, hold_option, number_of_mon
     number_of_months = int(number_of_months)
 
     if hold_option == "Distribute Across Future Months" and number_of_months > 0:
-        # Process selected months
         total_remaining = 0
         for i in range(number_of_months):
             idx_curr = payment_idx + i
@@ -201,7 +189,6 @@ def edit_installment(employee, payment_date, company, hold_option, number_of_mon
             row = schedule[idx_curr]
             total_payment = flt(row.total_payment) or (flt(row.principal_amount) + flt(row.interest_amount))
 
-            # Apply partial payment
             partial_payment = min(repayment_amount, total_payment)
             principal = partial_payment - flt(row.interest_amount)
             if principal < 0:
@@ -210,7 +197,6 @@ def edit_installment(employee, payment_date, company, hold_option, number_of_mon
             row.principal_amount = round(principal, 2)
             row.total_payment = round(partial_payment, 2)
 
-            # Remaining amount for redistribution
             total_remaining += total_payment - partial_payment
 
         future_idx_start = payment_idx + number_of_months
@@ -233,11 +219,9 @@ def edit_installment(employee, payment_date, company, hold_option, number_of_mon
         return "success"
 
     elif hold_option == "Recover Pending in Next Month":
-        # Find the current installment row
         row = schedule[payment_idx]
         total_payment = flt(row.total_payment) or (flt(row.principal_amount) + flt(row.interest_amount))
 
-        # Apply partial payment to current month
         partial_payment = min(repayment_amount, total_payment)
         principal = partial_payment - flt(row.interest_amount)
         if principal < 0:
@@ -246,7 +230,6 @@ def edit_installment(employee, payment_date, company, hold_option, number_of_mon
         row.principal_amount = round(principal, 2)
         row.total_payment = round(partial_payment, 2)
 
-        # Pending amount to carry to the next month
         pending_amount = total_payment - partial_payment
 
         next_idx = payment_idx + 1
@@ -255,7 +238,6 @@ def edit_installment(employee, payment_date, company, hold_option, number_of_mon
             next_row.principal_amount = round(flt(next_row.principal_amount) + pending_amount, 2)
             next_row.total_payment = round(next_row.principal_amount + flt(next_row.interest_amount), 2)
 
-        # Recalculate balances
         prev_balance = flt(loan.loan_amount)
         for row in schedule:
             row.balance_loan_amount = round(prev_balance - flt(row.principal_amount), 2)

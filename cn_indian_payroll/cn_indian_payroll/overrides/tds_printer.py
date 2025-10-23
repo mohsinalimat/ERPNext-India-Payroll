@@ -181,20 +181,11 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
     total_earnings_sum = sum(row["total"] for row in earnings)
     total_deduction_sum = sum(row["total"] for row in deductions)
     total_reimbursement_sum = sum(row["total"] for row in reimbursements)
-    
-
     tds_amounts_sum = sum(tds_amounts)
-
     offcycle_net_pay = []
-
     offcycle_net_pay = []
-
-
-
     tds_net_sum = sum(offcycle_net_pay)
-
     salary_slip_doc = frappe.get_doc("Salary Slip", id)
-
     sub_category = frappe.get_list(
         "Employee Tax Exemption Sub Category",
         filters={"custom_component_type": "LTA Reimbursement"},
@@ -211,7 +202,6 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
     basic_as_per_salary_structure_10=0
     hra_exemption=0
     hra_percentage=0
-
     total_declaration=0
     net_taxable_income=0
     total_declaration_amount=0
@@ -242,7 +232,6 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
                         "amount": i.maximum_exempted_amount
                     })
 
-
                 else:
                     eligible_amount = min(i.maximum_exempted_amount, i.declared_amount or 0)
 
@@ -251,9 +240,6 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
                         "eligible_amount": eligible_amount,
                         "declared_amount": i.declared_amount or 0,
                     })
-
-
-
             hra_received=section.hra_as_per_salary_structure if section.hra_as_per_salary_structure  else 0
             basic_as_per_salary_structure_10=section.basic_as_per_salary_structure_10 if section.basic_as_per_salary_structure_10 else 0
             hra_exemption=section.annual_hra_exemption if section.annual_hra_exemption else 0
@@ -267,20 +253,11 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
 
             total_declaration=section.total_exemption_amount
 
-
-
-
-
     lta_sum = sum(item["amount"] for item in lta_array)
-
     total_declaration_amount=round(total_declaration-lta_sum-hra_exemption)
-
     final_gross=(total_reimbursement_sum+total_earnings_sum)
-
     final_after_hra_exemption=(final_gross-lta_sum-hra_exemption)
-
     net_taxable_income=round(final_gross-lta_sum-hra_exemption-standard_amount-total_declaration_amount)
-
     rebate=0
     total_tax_on_income=0
     surcharge=0
@@ -291,7 +268,6 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
     custom_month_count=0
     tds=0
 
-
     if id:
         slip=frappe.get_doc("Salary Slip",id)
         rebate=slip.custom_rebate_under_section_87a
@@ -301,14 +277,8 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
         total_income_taxable_amount=slip.custom_total_income_with_taxable_component
         taxable_amount=slip.custom_taxable_amount
         tax_on_total_income=slip.custom_tax_on_total_income
-
         custom_month_count=slip.custom_month_count
-
         tds=slip.current_month_income_tax
-    
-
-
-
 
     context = {
         "doc": salary_slip_doc,
@@ -317,21 +287,14 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
         "months": months,
         "earnings": earnings,
         "total_earnings_sum":total_earnings_sum,
-
         "deductions": deductions,
         "total_deduction_sum":total_deduction_sum,
-
         "reimbursements":reimbursements,
         "total_reimbursement_sum":total_reimbursement_sum,
-
         "tds_amounts":tds_amounts,
         "tds_amounts_sum":tds_amounts_sum,
-
-
         "offcycle_net_pay":offcycle_net_pay,
         "tds_net_sum":tds_net_sum,
-
-
         "monthly_totals": monthly_totals,
         "grand_total": grand_total,
         "month": month,
@@ -346,26 +309,17 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
         "branch": employee_doc.branch,
         "tds_already_deducted":tds_already_deducted,
         "final_gross":final_gross,
-
         "lta_array":lta_array,
         "lta_sum":lta_sum,
-
         "hra_received":hra_received,
         "basic_as_per_salary_structure_10":basic_as_per_salary_structure_10,
         "hra_exemption":hra_exemption,
         "hra_percentage":hra_percentage,
         "final_after_hra_exemption":final_after_hra_exemption,
         "standard_amount":standard_amount,
-
         "declaration":declaration,
-
         "total_declaration":total_declaration_amount,
         "net_taxable_income":net_taxable_income,
-
-
-
-
-
         "rebate":rebate,
         "total_tax_on_income":total_tax_on_income,
         "surcharge":surcharge,
@@ -373,7 +327,6 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
         "total_income_taxable_amount":total_income_taxable_amount,
         "taxable_amount":taxable_amount,
         "tax_on_total_income":tax_on_total_income,
-
         "custom_month_count":custom_month_count,
         "tds":tds
 

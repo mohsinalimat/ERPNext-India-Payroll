@@ -85,7 +85,6 @@ def print_loan_dashboard_erp(employee,id,loan_product):
         "total_paid_amount": total_paid,
         "remaining_amount": total_unpaid,
         "repayment_schedule": repayment_schedule,
-
         "total_payment":round(loan_docs.total_payment,2),
         "total_interest_payable":round(loan_docs.total_interest_payable,2),
         "total_principal_paid":round(loan_docs.total_principal_paid,2),

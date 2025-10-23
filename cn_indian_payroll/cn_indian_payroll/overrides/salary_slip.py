@@ -38,8 +38,6 @@ class CustomSalarySlip(SalarySlip):
         self.tax_calculation()
 
 
-
-
     def validate(self):
         super().validate()
         self.set_month()
@@ -261,7 +259,7 @@ class CustomSalarySlip(SalarySlip):
                 ):
                     continue
 
-                # skip counting absent on holidays
+                
                 if not consider_marked_attendance_on_holidays and getdate(d.attendance_date) in holidays:
                     if d.status in ["Absent", "Half Day"] or (
                         d.leave_type
@@ -1191,14 +1189,14 @@ class CustomSalarySlip(SalarySlip):
             limit=1
         )
 
-        # Set taxable amount and total income with taxable components
+        
         if self.annual_taxable_amount:
             self.custom_taxable_amount = round(self.annual_taxable_amount)
 
         if self.ctc and self.non_taxable_earnings:
             self.custom_total_income_with_taxable_component = round(self.ctc - self.non_taxable_earnings)
 
-        # Proceed only if Income Tax Slab is defined
+        
         if latest_salary_structure and latest_salary_structure[0].income_tax_slab:
             income_doc = frappe.get_doc('Income Tax Slab', latest_salary_structure[0].income_tax_slab)
             total_array = []
@@ -1207,7 +1205,7 @@ class CustomSalarySlip(SalarySlip):
             rebate = income_doc.custom_taxable_income_is_less_than
             max_amount = income_doc.custom_maximum_amount
 
-            # Prepare slab ranges
+            
             for i in income_doc.slabs:
                 total_array.append({
                     'from': i.from_amount,
@@ -1215,19 +1213,19 @@ class CustomSalarySlip(SalarySlip):
                     'percent': i.percent_deduction
                 })
 
-            self.custom_tax_slab = []  # Clear any existing entries
+            self.custom_tax_slab = []  
 
             for slab in total_array:
                 taxable = round(self.annual_taxable_amount)
 
                 if slab['to'] == 0.0:
-                    # For open-ended upper slab
+                    
                     if taxable >= slab['from']:
                         taxable_diff = taxable - slab['from']
                         tax_percent = slab['percent']
                         tax_amount = round((taxable_diff * tax_percent) / 100)
 
-                        # Add previous slabs
+                        
                         remaining_slabs = [s for s in total_array if s['from'] < slab['from']]
                         for s in remaining_slabs:
                             from_amount.append(s['from'])
@@ -1236,22 +1234,22 @@ class CustomSalarySlip(SalarySlip):
                             difference.append(s['to'] - s['from'])
                             total_value.append((s['to'] - s['from']) * s["percent"] / 100)
 
-                        # Current slab
+                        
                         from_amount.append(slab['from'])
                         to_amount.append(slab['to'])
                         percentage.append(tax_percent)
                         difference.append(taxable_diff)
                         total_value.append(tax_amount)
-                        break  # Since it covers the remaining amount
+                        break  
 
                 else:
-                    # Slab with upper limit
+                   
                     if slab['from'] <= taxable <= slab['to']:
                         taxable_diff = taxable - slab['from']
                         tax_percent = slab['percent']
                         tax_amount = (taxable_diff * tax_percent) / 100
 
-                        # Add previous slabs
+                        
                         remaining_slabs = [s for s in total_array if s['from'] < slab['from']]
                         for s in remaining_slabs:
                             from_amount.append(s['from'])
@@ -1260,7 +1258,7 @@ class CustomSalarySlip(SalarySlip):
                             difference.append(s['to'] - s['from'])
                             total_value.append((s['to'] - s['from']) * s["percent"] / 100)
 
-                        # Current slab
+                       
                         from_amount.append(slab['from'])
                         to_amount.append(slab['to'])
                         percentage.append(tax_percent)
@@ -1268,7 +1266,7 @@ class CustomSalarySlip(SalarySlip):
                         total_value.append(tax_amount)
                         break
 
-            # Populate tax slab child table
+           
             for i in range(len(from_amount)):
                 self.append("custom_tax_slab", {
                     "from_amount": from_amount[i],
@@ -1278,10 +1276,10 @@ class CustomSalarySlip(SalarySlip):
                     "amount": difference[i]
                 })
 
-            # Total tax amount
+            
             total_sum = sum(total_value)
 
-            # Section 87A rebate logic
+            
             if self.custom_taxable_amount < rebate:
                 self.custom_tax_on_total_income = total_sum
                 self.custom_rebate_under_section_87a = total_sum
@@ -1291,7 +1289,7 @@ class CustomSalarySlip(SalarySlip):
                 self.custom_tax_on_total_income = total_sum
                 self.custom_total_tax_on_income = total_sum
 
-            # Surcharge and cess logic
+            
             if self.custom_taxable_amount > 5000000:
                 surcharge = (self.custom_total_tax_on_income * 10) / 100
                 self.custom_surcharge = round(surcharge)
@@ -1300,7 +1298,7 @@ class CustomSalarySlip(SalarySlip):
 
             self.custom_education_cess = round((self.custom_total_tax_on_income + self.custom_surcharge) * 4 / 100)
 
-            # Final total tax payable
+           
             self.custom_total_amount = round(
                 self.custom_total_tax_on_income + self.custom_surcharge + self.custom_education_cess
             )
