@@ -282,8 +282,6 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
                     }
                 )
             
-            frappe.msgprint(str(tax_component))
-
             hra_component = []
             for hra in self.custom_hra_breakup:
                 hra_component.append(
