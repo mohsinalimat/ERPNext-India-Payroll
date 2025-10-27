@@ -33,10 +33,10 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
         self.calculate_hra_breakup()
         self.set_max_amount_of_sub_category()
         self.update_tax_declaration()
-        
+
         self.set_total_declared_amount()
         self.set_total_exemption_amount()
-        
+
 
     def on_cancel(self):
         self.cancel_declaration_history()
@@ -281,7 +281,7 @@ class CustomEmployeeTaxExemptionDeclaration(EmployeeTaxExemptionDeclaration):
                         "amount": component.amount,
                     }
                 )
-            
+
             hra_component = []
             for hra in self.custom_hra_breakup:
                 hra_component.append(

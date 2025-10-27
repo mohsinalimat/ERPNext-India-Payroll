@@ -1,14 +1,14 @@
 frappe.ui.form.on('Employee Tax Exemption Proof Submission', {
     onload(frm) {
-       
+
         if(frm.doc.custom_declaration_id) {
             console.log("Fetching declaration data for ID:", frm.doc.custom_declaration_id);
             frappe.db.get_value(
-                'Employee Tax Exemption Declaration', 
-                frm.doc.custom_declaration_id, 
-                '*', 
+                'Employee Tax Exemption Declaration',
+                frm.doc.custom_declaration_id,
+                '*',
                 (r) => {
-                    if(r ) { 
+                    if(r ) {
 
 
                         console.log("Declaration Data:", r);
@@ -23,5 +23,5 @@ frappe.ui.form.on('Employee Tax Exemption Proof Submission', {
             );
         }
     },
-   
+
 });

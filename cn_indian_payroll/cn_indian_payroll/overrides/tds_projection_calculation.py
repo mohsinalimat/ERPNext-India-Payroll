@@ -171,7 +171,7 @@ def calculate_tds_projection(doc):
             if salary_slip_preview:
                 for earning in salary_slip_preview.earnings:
                     if not earning.additional_salary:
-                    
+
                         earning_component_data = frappe.get_doc(
                             "Salary Component", earning.salary_component
                         )
@@ -228,7 +228,7 @@ def calculate_tds_projection(doc):
                             nps_amount+=earning.amount*(num_months)
 
                     else:
-                    
+
                         earning_component_data = frappe.get_doc(
                             "Salary Component", earning.salary_component
                         )
@@ -241,8 +241,8 @@ def calculate_tds_projection(doc):
 
                         ):
 
-                            future_taxable_earnings_old_regime += earning.amount 
-                            future_taxable_earnings_new_regime += earning.amount 
+                            future_taxable_earnings_old_regime += earning.amount
+                            future_taxable_earnings_new_regime += earning.amount
 
 
                         if (
@@ -252,8 +252,8 @@ def calculate_tds_projection(doc):
                                 and earning_component_data.custom_component_sub_type== "Fixed"
 
                             ):
-                                future_taxable_earnings_old_regime += earning.amount 
-                            
+                                future_taxable_earnings_old_regime += earning.amount
+
 
 
                         if (
@@ -264,7 +264,7 @@ def calculate_tds_projection(doc):
 
                             ):
 
-                                future_taxable_earnings_new_regime += earning.amount 
+                                future_taxable_earnings_new_regime += earning.amount
 
                         if (
                                 earning_component_data.is_tax_applicable == 1
@@ -318,7 +318,7 @@ def calculate_tds_projection(doc):
 
 
         else:
-            
+
             month_count=get_all_salary_slip[0].custom_month_count
             for slip in get_all_salary_slip:
                 get_each_sslip= frappe.get_doc("Salary Slip", slip.name)
@@ -403,7 +403,7 @@ def calculate_tds_projection(doc):
             if salary_slip_preview:
                 for earning in salary_slip_preview.earnings:
                     if not earning.additional_salary:
-                        
+
                         earning_component_data = frappe.get_doc(
                             "Salary Component", earning.salary_component
                         )
@@ -523,7 +523,7 @@ def calculate_tds_projection(doc):
             new_annual_slab=new_annual_slab
         )
 
-        
+
 
         return {
                 "num_months": num_months if num_months else 0,

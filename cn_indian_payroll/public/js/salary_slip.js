@@ -10,14 +10,14 @@ frappe.ui.form.on("Salary Slip", {
 
         if(frm.doc.docstatus==1 || frm.doc.docstatus==0)
             {
-    
-    
+
+
           frm.add_custom_button("TDS Sheet", function () {
             if (!frm.doc.employee || !frm.doc.custom_payroll_period) {
               frappe.msgprint(__('Please set Employee and Payroll Period first.'));
               return;
             }
-    
+
             frappe.call({
               method: "cn_indian_payroll.cn_indian_payroll.overrides.tds_printer.get_annual_statement_pdf",
               args: {
@@ -41,9 +41,9 @@ frappe.ui.form.on("Salary Slip", {
               }
             });
           },"View");
-    
-    
-          
+
+
+
             frm.add_custom_button(__('Salary Slip'), function() {
                 let print_format = "Salary Slip"; // <-- your format name
                 let url = frappe.urllib.get_full_url(
@@ -51,10 +51,10 @@ frappe.ui.form.on("Salary Slip", {
                 );
                 window.open(url);
             }, __("View"));
-        
+
     }
 
-   
+
     }
 
 });

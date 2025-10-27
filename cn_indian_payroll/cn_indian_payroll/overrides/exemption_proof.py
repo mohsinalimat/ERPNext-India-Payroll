@@ -35,4 +35,3 @@ def insert_form_16(doc):
             })
 
         form16.insert(ignore_permissions=True)
-

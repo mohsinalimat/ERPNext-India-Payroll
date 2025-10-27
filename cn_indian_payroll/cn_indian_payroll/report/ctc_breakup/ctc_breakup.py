@@ -34,7 +34,7 @@
 #     ctc_components_set = {component.name for component in ctc_components}
 
 #     for each_employee in get_all_ssa:
-        
+
 #         row = {
 #             'employee': each_employee.get("employee"),
 #             'employee_name': each_employee.get("employee_name"),
@@ -42,8 +42,8 @@
 #             'doj': each_employee.get("custom_date_of_joining"),
 #             'regime': each_employee.get("income_tax_slab"),
 #             'salary_structure': each_employee.get("salary_structure"),
-#             'gross': 0,  
-#             'deduction': 0  
+#             'gross': 0,
+#             'deduction': 0
 #         }
 
 #         salary_slip = make_salary_slip(
@@ -54,27 +54,27 @@
 #             for_preview=1,
 #         )
 
-        
+
 #         for earning in salary_slip.earnings:
 #             component_name = earning.salary_component
 #             if component_name in ctc_components_set:
 #                 amount = earning.amount
 #                 earning_salary_components.add(component_name)
 #                 row[component_name] = round(row.get(component_name, 0) + amount)
-#                 row['gross'] += amount  
+#                 row['gross'] += amount
 
-        
+
 #         for deduction in salary_slip.deductions:
 #             component_name = deduction.salary_component
 #             if component_name in ctc_components_set:
 #                 amount = deduction.amount
 #                 deduction_salary_components.add(component_name)
 #                 row[component_name] = round(row.get(component_name, 0) + amount)
-#                 row['deduction'] += amount  
+#                 row['deduction'] += amount
 
 #         data.append(row)
 
-    
+
 #     columns = [
 #         {"label": "Employee", "fieldname": "employee", "fieldtype": "Data", "width": 150},
 #         {"label": "Employee Name", "fieldname": "employee_name", "fieldtype": "Data", "width": 200},
@@ -84,7 +84,7 @@
 #         {"label": "Salary Structure", "fieldname": "salary_structure", "fieldtype": "Data", "width": 200}
 #     ]
 
-    
+
 #     for component in earning_salary_components:
 #         columns.append({
 #             "label": component,
@@ -199,7 +199,7 @@ def get_all_employee(filters=None):
         for comp in all_matched_components:
             row.setdefault(comp, 0)
 
-        
+
 
         # Reimbursements
         reimbursements = frappe.get_all(
@@ -283,7 +283,7 @@ def get_all_employee(filters=None):
             }
         )
 
-    
+
 
     for comp in sorted(reimbursement_components):
         columns.append(

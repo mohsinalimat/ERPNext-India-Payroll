@@ -298,7 +298,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
 
                                 let currentTax_old_regime_tax = (old_tax_balance / monthBase) || 0;
                                 let currentTax_new_regime_tax = (new_tax_balance / monthBase) || 0;
-                                    
+
 
 
                         const html = `
@@ -498,7 +498,7 @@ frappe.ui.form.on('Employee Tax Exemption Declaration', {
                                                 <td><div style="text-align: right"> ₹ ${data.new_regime_education_cess+data.new_regime_surcharge+(data.new_regime_total_tax-data.new_regime_rebate_amount)}</div></td>
                                             </tr>
 
-                                            
+
 
                                             <tr style="font-weight: bold; background-color: #e9ecef;">
                                                 <td style="padding: 10px; border: 1px solid #ddd;">Tax Paid</td>

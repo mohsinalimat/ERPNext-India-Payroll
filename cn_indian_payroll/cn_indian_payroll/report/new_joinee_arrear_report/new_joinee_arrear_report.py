@@ -119,5 +119,3 @@ def get_columns(components):
     ]
 
     return base_columns + component_columns
-
-

@@ -62,14 +62,14 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
             "name",
             "custom_component_sequence",
             "custom_component_sub_type",
-            "component_type",  
+            "component_type",
             "variable_based_on_taxable_salary",
             "type",
             "is_tax_applicable",
             "custom_tax_exemption_applicable_based_on_regime",
-            "is_flexible_benefit",  
-            
-            
+            "is_flexible_benefit",
+
+
 
         ],
         filters={"name": ["in", component_names]},
@@ -144,7 +144,7 @@ def get_annual_statement_pdf(employee, payroll_period, end_date, month, tax_regi
 
 
 
-        
+
 
         if comp.type == "Earning" and comp.is_tax_applicable and comp.custom_tax_exemption_applicable_based_on_regime and comp.is_flexible_benefit:
             reimbursements.append({

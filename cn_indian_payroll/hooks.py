@@ -300,7 +300,7 @@ doc_events = {
     },
     "Employee Tax Exemption Proof Submission": {
         "on_submit": "cn_indian_payroll.cn_indian_payroll.overrides.exemption_proof.on_submit",
-    },  
+    },
 
 
 
