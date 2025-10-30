@@ -21,6 +21,8 @@
   "monthly_house_rent",
   "rented_in_metro_city",
   "hra_as_per_salary_structure",
+  "basic_as_per_salary_structure_annual",
+  "basic_as_per_salary_structure_10",
   "column_break_pysc",
   "annual_hra_exemption",
   "monthly_hra_exemption",
@@ -43,7 +45,6 @@
    "options": "Declaration Child"
   },
   {
-   "depends_on": "eval:doc.income_tax==\"Old Regime\"",
    "fieldname": "section_break_uyjp",
    "fieldtype": "Section Break"
   },
@@ -146,7 +147,6 @@
    "label": "Tax Exemption"
   },
   {
-   "depends_on": "eval:doc.income_tax==\"Old Regime\"",
    "fieldname": "section_break_hfwe",
    "fieldtype": "Section Break"
   },
@@ -173,6 +173,7 @@
    "label": "Tax Regime"
   },
   {
+<<<<<<< HEAD
    "fieldname": "additional_tds_section",
    "fieldtype": "Section Break",
    "label": "Additional TDS"
@@ -181,11 +182,25 @@
    "fieldname": "employee_request_additional_tds",
    "fieldtype": "Float",
    "label": "Employee Request Additional TDS"
+=======
+   "fieldname": "basic_as_per_salary_structure_annual",
+   "fieldtype": "Float",
+   "label": "Basic as per Salary Structure (Annual)"
+  },
+  {
+   "fieldname": "basic_as_per_salary_structure_10",
+   "fieldtype": "Float",
+   "label": "Basic as per Salary Structure 10%"
+>>>>>>> v2/dev/india_payroll
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2025-03-17 11:24:46.772678",
+=======
+ "modified": "2025-10-23 20:06:26.261553",
+>>>>>>> v2/dev/india_payroll
  "modified_by": "Administrator",
  "module": "cn-indian-payroll",
  "name": "Tax Declaration History",
@@ -205,6 +220,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

@@ -10,8 +10,11 @@
   "abbr",
   "type",
   "component_type",
+<<<<<<< HEAD
   "lta_taxable_component",
   "lta_non_taxable_component",
+=======
+>>>>>>> v2/dev/india_payroll
   "sequence",
   "component_added",
   "multi_select",
@@ -25,6 +28,7 @@
   "round_to_the_nearest_integer",
   "do_not_include_in_total",
   "remove_if_zero_valued",
+<<<<<<< HEAD
   "is_part_of_gross_pay",
   "disabled",
   "is_part_of_ctc",
@@ -36,6 +40,12 @@
   "is_arrear",
   "component",
   "is_part_of_appraisal",
+=======
+  "disabled",
+  "accrual_component",
+  "arrear_component",
+  "is_part_of_ctc",
+>>>>>>> v2/dev/india_payroll
   "tax_applicable_based_on_regime",
   "regime",
   "condition__formula_tab",
@@ -46,12 +56,21 @@
   "flexible_benefits_tab",
   "is_flexible_benefit",
   "max_benefit_amount_yearly",
+<<<<<<< HEAD
   "column_break_damb",
   "pay_against_benefit_claim",
   "only_tax_impact_cannot_claim_but_part_of_taxable_income",
   "create_separate_payment_entry_against_benefit_claim",
   "custom_field_configuration_tab",
   "custom_field_child"
+=======
+  "payout_method",
+  "payout_unclaimed_amount_in_final_payroll_cycle",
+  "column_break_damb",
+  "pay_against_benefit_claim",
+  "only_tax_impact_cannot_claim_but_part_of_taxable_income",
+  "create_separate_payment_entry_against_benefit_claim"
+>>>>>>> v2/dev/india_payroll
  ],
  "fields": [
   {
@@ -75,6 +94,7 @@
    "fieldname": "component_type",
    "fieldtype": "Select",
    "label": "Component Type",
+<<<<<<< HEAD
    "options": "\nProvident Fund\nAdditional Provident Fund\nProvident Fund Loan\nProfessional Tax\nLoan Perquisite\nLTA Taxable\nLTA Non Taxable\nVehicle Maintenance Reimbursement\nLTA Reimbursement\nNPS\nEPF\nEPF Employer\nESIC\nUniform"
   },
   {
@@ -88,6 +108,35 @@
    "fieldname": "lta_non_taxable_component",
    "fieldtype": "Data",
    "label": "LTA Non Taxable Component"
+=======
+   "options": "\nProvident Fund\nProfessional Tax\nNPS\nEPF\nESIC"
+  },
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Int",
+   "label": "Sequence"
+  },
+  {
+   "default": "0",
+   "description": "It will be true when the component is inserted from the Component Library master.",
+   "fieldname": "component_added",
+   "fieldtype": "Check",
+   "label": "Component Added"
+  },
+  {
+   "default": "0",
+   "description": "When 'Multi Select' is checked, you can add multiple instances of the component with different abbreviations. When it is not checked, you can add only a single instance of the component.",
+   "fieldname": "multi_select",
+   "fieldtype": "Check",
+   "label": "Multi Select"
+  },
+  {
+   "description": "If the Visibility Type is 'Fixed', you cannot edit or add the condition and formula. If it is 'Not Fixed', you can edit the formula.",
+   "fieldname": "visibility_type",
+   "fieldtype": "Select",
+   "label": "Visibility Type",
+   "options": "Fixed\nNot Fixed"
+>>>>>>> v2/dev/india_payroll
   },
   {
    "fieldname": "column_break_e8oy",
@@ -144,6 +193,7 @@
   },
   {
    "default": "0",
+<<<<<<< HEAD
    "depends_on": "eval:doc.type==\"Earning\"",
    "fieldname": "is_part_of_gross_pay",
    "fieldtype": "Check",
@@ -151,6 +201,8 @@
   },
   {
    "default": "0",
+=======
+>>>>>>> v2/dev/india_payroll
    "fieldname": "disabled",
    "fieldtype": "Check",
    "label": "Disabled"
@@ -165,6 +217,7 @@
   {
    "default": "0",
    "depends_on": "eval:doc.type==\"Earning\"",
+<<<<<<< HEAD
    "fieldname": "perquisite",
    "fieldtype": "Check",
    "label": "Perquisite"
@@ -217,6 +270,8 @@
   {
    "default": "0",
    "depends_on": "eval:doc.type==\"Earning\"",
+=======
+>>>>>>> v2/dev/india_payroll
    "fieldname": "tax_applicable_based_on_regime",
    "fieldtype": "Check",
    "label": "Tax Applicable Based on Regime"
@@ -294,6 +349,7 @@
   },
   {
    "default": "0",
+<<<<<<< HEAD
    "fieldname": "component_added",
    "fieldtype": "Check",
    "label": "Component Added"
@@ -325,11 +381,38 @@
    "fieldtype": "Table",
    "label": "Custom Field Child",
    "options": "Component Child"
+=======
+   "fieldname": "accrual_component",
+   "fieldtype": "Check",
+   "label": "Accrual Component"
+  },
+  {
+   "default": "0",
+   "fieldname": "arrear_component",
+   "fieldtype": "Check",
+   "label": "Arrear Component"
+  },
+  {
+   "fieldname": "payout_method",
+   "fieldtype": "Select",
+   "label": "Payout Method",
+   "options": "\nAccrue and payout at end of payroll period\nAccrue per cycle, pay only on claim\nAllow claim for full benefit amount"
+  },
+  {
+   "default": "0",
+   "fieldname": "payout_unclaimed_amount_in_final_payroll_cycle",
+   "fieldtype": "Check",
+   "label": "Payout Unclaimed Amount in Final Payroll Cycle"
+>>>>>>> v2/dev/india_payroll
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2025-02-11 17:17:27.830244",
+=======
+ "modified": "2025-10-27 22:44:12.834737",
+>>>>>>> v2/dev/india_payroll
  "modified_by": "Administrator",
  "module": "cn-indian-payroll",
  "name": "Salary Component Library Item",
@@ -349,7 +432,15 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> v2/dev/india_payroll

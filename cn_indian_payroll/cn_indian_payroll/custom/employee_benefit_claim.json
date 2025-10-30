@@ -11,6 +11,7 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+<<<<<<< HEAD
    "creation": "2025-02-11 16:28:41.032244",
    "default": null,
    "depends_on": null,
@@ -76,6 +77,9 @@
    "collapsible_depends_on": null,
    "columns": 0,
    "creation": "2025-02-11 16:28:37.560917",
+=======
+   "creation": "2025-02-20 11:26:47.450334",
+>>>>>>> v2/dev/india_payroll
    "default": null,
    "depends_on": null,
    "description": null,
@@ -89,7 +93,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 3,
+=======
+   "idx": 4,
+>>>>>>> v2/dev/india_payroll
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -131,14 +139,66 @@
  ],
  "custom_perms": [],
  "doctype": "Employee Benefit Claim",
+<<<<<<< HEAD
  "links": [],
+=======
+ "links": [
+  {
+   "creation": "2018-04-13 16:43:10.386409",
+   "custom": 0,
+   "docstatus": 0,
+   "group": null,
+   "hidden": 0,
+   "idx": 1,
+   "is_child_table": 0,
+   "link_doctype": "Additional Salary",
+   "link_fieldname": "ref_docname",
+   "modified": "2025-10-23 15:14:45.451606",
+   "modified_by": "Administrator",
+   "name": "ek6hcifrtb",
+   "owner": "Administrator",
+   "parent": "Employee Benefit Claim",
+   "parent_doctype": null,
+   "parentfield": "links",
+   "parenttype": "DocType",
+   "table_fieldname": null
+  }
+ ],
+>>>>>>> v2/dev/india_payroll
  "property_setters": [
   {
    "_assign": null,
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
+<<<<<<< HEAD
    "creation": "2025-02-11 16:28:58.174560",
+=======
+   "creation": "2025-05-19 23:50:38.629313",
+   "default_value": null,
+   "doc_type": "Employee Benefit Claim",
+   "docstatus": 0,
+   "doctype_or_field": "DocField",
+   "field_name": "is_paid",
+   "idx": 0,
+   "is_system_generated": 0,
+   "modified": "2025-10-23 15:14:51.940857",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Employee Benefit Claim-is_paid-hidden",
+   "owner": "Administrator",
+   "property": "hidden",
+   "property_type": "Check",
+   "row_name": null,
+   "value": "1"
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "creation": "2025-10-23 16:40:34.435171",
+>>>>>>> v2/dev/india_payroll
    "default_value": null,
    "doc_type": "Employee Benefit Claim",
    "docstatus": 0,
@@ -146,14 +206,21 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2024-08-20 14:44:30.804182",
    "modified_by": "Administrator",
    "module": "cn-indian-payroll",
+=======
+   "modified": "2025-10-23 16:40:34.435171",
+   "modified_by": "Administrator",
+   "module": null,
+>>>>>>> v2/dev/india_payroll
    "name": "Employee Benefit Claim-main-field_order",
    "owner": "Administrator",
    "property": "field_order",
    "property_type": "Data",
    "row_name": null,
+<<<<<<< HEAD
    "value": "[\"employee\", \"employee_name\", \"department\", \"payroll_period\", \"column_break_3\", \"claim_date\", \"currency\", \"company\", \"amended_from\", \"benefit_type_and_amount\", \"earning_component\", \"max_amount_eligible\", \"custom_max_amount\", \"column_break_12\", \"pay_against_benefit_claim\", \"claimed_amount\", \"salary_slip\", \"section_break_9\", \"attachments\"]"
   },
   {
@@ -182,3 +249,10 @@
  ],
  "sync_on_migrate": 1
 }
+=======
+   "value": "[\"employee\", \"employee_name\", \"department\", \"custom_payroll_period\", \"column_break_3\", \"payroll_date\", \"currency\", \"company\", \"amended_from\", \"benefit_type_and_amount\", \"earning_component\", \"yearly_benefit\", \"max_amount_eligible\", \"column_break_12\", \"claimed_amount\", \"section_break_9\", \"attachments\"]"
+  }
+ ],
+ "sync_on_migrate": 1
+}
+>>>>>>> v2/dev/india_payroll

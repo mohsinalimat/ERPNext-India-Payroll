@@ -1,4 +1,5 @@
 frappe.ui.form.on('Payroll Entry', {
+<<<<<<< HEAD
 
     refresh(frm) 
     {
@@ -201,3 +202,14 @@ function create_bonus_accrual_entry(frm)
 
 }
 
+=======
+    refresh(frm) {
+        if (frm.doc.docstatus == 1 && frm.doc.status == "Submitted") {
+            frm.add_custom_button(__("View Salary Register"), function () {
+                frappe.set_route("query-report", "Salary Book Register");
+            });
+        }
+
+    }
+});
+>>>>>>> v2/dev/india_payroll

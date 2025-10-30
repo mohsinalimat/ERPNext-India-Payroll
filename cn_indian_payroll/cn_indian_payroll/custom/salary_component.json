@@ -75,41 +75,51 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+<<<<<<< HEAD
    "creation": "2025-02-09 23:31:41.376872",
    "default": "Payroll",
    "depends_on": "custom_is_accrual",
    "description": "Select when the accrual component will be paid out - either during regular payroll or during full and final settlement",
+=======
+   "creation": "2025-10-15 10:18:22.180248",
+   "default": null,
+   "depends_on": null,
+   "description": "It is mainly used to arrange components in a specific sequence in print formats, reports, etc.",
+>>>>>>> v2/dev/india_payroll
    "docstatus": 0,
    "dt": "Salary Component",
    "fetch_from": null,
    "fetch_if_empty": 0,
+<<<<<<< HEAD
    "fieldname": "custom_accrual_paid_on",
-   "fieldtype": "Select",
+=======
+   "fieldname": "custom_component_sequence",
+   "fieldtype": "Int",
    "hidden": 0,
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
-   "idx": 27,
+   "idx": 8,
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
    "in_list_view": 0,
    "in_preview": 0,
    "in_standard_filter": 0,
-   "insert_after": "custom_is_accrual",
+   "insert_after": "component_type",
    "is_system_generated": 0,
    "is_virtual": 0,
-   "label": "Accrual Paid on",
+   "label": "Component Sequence",
    "length": 0,
    "link_filters": null,
    "mandatory_depends_on": null,
-   "modified": "2025-02-10 01:16:18.428215",
+   "modified": "2025-10-15 10:18:22.180248",
    "modified_by": "Administrator",
    "module": null,
-   "name": "Salary Component-custom_accrual_paid_on",
+   "name": "Salary Component-custom_component_sequence",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "Payroll\nFull and Final Settlement",
+   "options": null,
    "owner": "Administrator",
    "permlevel": 0,
    "placeholder": null,
@@ -139,6 +149,97 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+   "creation": "2025-07-10 17:12:44.953201",
+   "default": "Fixed",
+   "depends_on": "",
+   "description": "These options are used for tax projection in the declaration. Only fixed components are paid every month, while all other components are variable.",
+   "docstatus": 0,
+   "dt": "Salary Component",
+   "fetch_from": null,
+   "fetch_if_empty": 0,
+   "fieldname": "custom_component_sub_type",
+>>>>>>> v2/dev/india_payroll
+   "fieldtype": "Select",
+   "hidden": 0,
+   "hide_border": 0,
+   "hide_days": 0,
+   "hide_seconds": 0,
+<<<<<<< HEAD
+   "idx": 27,
+=======
+   "idx": 5,
+>>>>>>> v2/dev/india_payroll
+   "ignore_user_permissions": 0,
+   "ignore_xss_filter": 0,
+   "in_global_search": 0,
+   "in_list_view": 0,
+   "in_preview": 0,
+   "in_standard_filter": 0,
+<<<<<<< HEAD
+   "insert_after": "custom_is_accrual",
+   "is_system_generated": 0,
+   "is_virtual": 0,
+   "label": "Accrual Paid on",
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": null,
+   "modified": "2025-02-10 01:16:18.428215",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Salary Component-custom_accrual_paid_on",
+   "no_copy": 0,
+   "non_negative": 0,
+   "options": "Payroll\nFull and Final Settlement",
+=======
+   "insert_after": "type",
+   "is_system_generated": 0,
+   "is_virtual": 0,
+   "label": "Component Sub Type",
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": "",
+   "modified": "2025-07-10 17:12:44.953201",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Salary Component-custom_component_sub_type",
+   "no_copy": 0,
+   "non_negative": 0,
+   "options": "Fixed\nVariable",
+>>>>>>> v2/dev/india_payroll
+   "owner": "Administrator",
+   "permlevel": 0,
+   "placeholder": null,
+   "precision": "",
+   "print_hide": 0,
+   "print_hide_if_no_value": 0,
+   "print_width": null,
+   "read_only": 0,
+   "read_only_depends_on": null,
+   "report_hide": 0,
+<<<<<<< HEAD
+   "reqd": 0,
+=======
+   "reqd": 1,
+>>>>>>> v2/dev/india_payroll
+   "search_index": 0,
+   "show_dashboard": 0,
+   "sort_options": 0,
+   "translatable": 0,
+   "unique": 0,
+   "width": null
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "allow_in_quick_entry": 0,
+   "allow_on_submit": 0,
+   "bold": 0,
+   "collapsible": 0,
+   "collapsible_depends_on": null,
+   "columns": 0,
+<<<<<<< HEAD
    "creation": "2025-02-09 23:31:45.444275",
    "default": null,
    "depends_on": "custom_is_arrear",
@@ -399,6 +500,12 @@
    "default": "0",
    "depends_on": null,
    "description": null,
+=======
+   "creation": "2025-02-20 11:26:55.931381",
+   "default": "0",
+   "depends_on": null,
+   "description": "If the 'Is Part of CTC' checkbox is set to true, the component will be considered part of the CTC during Salary Structure Assignment processing, and components marked as part of CTC will be visible in the CTC breakup preview",
+>>>>>>> v2/dev/india_payroll
    "docstatus": 0,
    "dt": "Salary Component",
    "fetch_from": null,
@@ -423,9 +530,15 @@
    "length": 0,
    "link_filters": null,
    "mandatory_depends_on": null,
+<<<<<<< HEAD
    "modified": "2025-02-10 01:16:19.703930",
    "modified_by": "Administrator",
    "module": null,
+=======
+   "modified": "2024-05-17 09:33:29.915204",
+   "modified_by": "Administrator",
+   "module": "cn-indian-payroll",
+>>>>>>> v2/dev/india_payroll
    "name": "Salary Component-custom_is_part_of_ctc",
    "no_copy": 0,
    "non_negative": 0,
@@ -459,6 +572,7 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+<<<<<<< HEAD
    "creation": "2025-02-09 23:31:39.287670",
    "default": "0",
    "depends_on": null,
@@ -847,6 +961,12 @@
    "default": null,
    "depends_on": "custom_tax_exemption_applicable_based_on_regime",
    "description": "Select the income tax regime to determine applicable tax exemptions. This affects how the salary component is taxed based on the chosen regime.",
+=======
+   "creation": "2025-02-20 11:27:03.104092",
+   "default": null,
+   "depends_on": "custom_tax_exemption_applicable_based_on_regime",
+   "description": null,
+>>>>>>> v2/dev/india_payroll
    "docstatus": 0,
    "dt": "Salary Component",
    "fetch_from": null,
@@ -857,7 +977,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 34,
+=======
+   "idx": 26,
+>>>>>>> v2/dev/india_payroll
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -871,9 +995,15 @@
    "length": 0,
    "link_filters": null,
    "mandatory_depends_on": "custom_tax_exemption_applicable_based_on_regime",
+<<<<<<< HEAD
    "modified": "2025-02-10 01:16:18.065681",
    "modified_by": "Administrator",
    "module": null,
+=======
+   "modified": "2024-11-15 14:24:30.497521",
+   "modified_by": "Administrator",
+   "module": "cn-indian-payroll",
+>>>>>>> v2/dev/india_payroll
    "name": "Salary Component-custom_regime",
    "no_copy": 0,
    "non_negative": 0,
@@ -907,6 +1037,7 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+<<<<<<< HEAD
    "creation": "2025-02-09 23:31:35.485925",
    "default": null,
    "depends_on": null,
@@ -1038,6 +1169,11 @@
    "creation": "2025-02-09 23:31:46.918540",
    "default": "0",
    "depends_on": null,
+=======
+   "creation": "2025-02-20 11:27:02.719340",
+   "default": "1",
+   "depends_on": "eval:doc.type==\"Earning\"",
+>>>>>>> v2/dev/india_payroll
    "description": null,
    "docstatus": 0,
    "dt": "Salary Component",
@@ -1049,23 +1185,37 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 33,
+=======
+   "idx": 25,
+>>>>>>> v2/dev/india_payroll
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
    "in_list_view": 0,
    "in_preview": 0,
    "in_standard_filter": 0,
+<<<<<<< HEAD
    "insert_after": "custom_is_part_of_appraisal",
+=======
+   "insert_after": "custom_is_part_of_ctc",
+>>>>>>> v2/dev/india_payroll
    "is_system_generated": 0,
    "is_virtual": 0,
    "label": "Tax Applicable Based on Regime",
    "length": 0,
    "link_filters": null,
    "mandatory_depends_on": null,
+<<<<<<< HEAD
    "modified": "2025-02-10 01:16:18.192622",
    "modified_by": "Administrator",
    "module": null,
+=======
+   "modified": "2024-11-15 11:37:16.949768",
+   "modified_by": "Administrator",
+   "module": "cn-indian-payroll",
+>>>>>>> v2/dev/india_payroll
    "name": "Salary Component-custom_tax_exemption_applicable_based_on_regime",
    "no_copy": 0,
    "non_negative": 0,
@@ -1098,7 +1248,11 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
+<<<<<<< HEAD
    "creation": "2025-02-13 13:51:50.843825",
+=======
+   "creation": "2025-02-20 11:28:56.605608",
+>>>>>>> v2/dev/india_payroll
    "default_value": null,
    "doc_type": "Salary Component",
    "docstatus": 0,
@@ -1106,7 +1260,11 @@
    "field_name": "amount_based_on_formula",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-03-13 17:12:06.368778",
+=======
+   "modified": "2025-10-15 10:00:41.300238",
+>>>>>>> v2/dev/india_payroll
    "modified_by": "Administrator",
    "module": "cn-indian-payroll",
    "name": "Salary Component-amount_based_on_formula-default",
@@ -1129,7 +1287,11 @@
    "field_name": "component_type",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-03-13 17:12:06.383849",
+=======
+   "modified": "2025-10-15 10:00:41.308292",
+>>>>>>> v2/dev/india_payroll
    "modified_by": "Administrator",
    "module": null,
    "name": "Salary Component-component_type-depends_on",
@@ -1144,7 +1306,11 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
+<<<<<<< HEAD
    "creation": "2025-02-11 12:15:13.673941",
+=======
+   "creation": "2025-02-20 11:28:54.932444",
+>>>>>>> v2/dev/india_payroll
    "default_value": null,
    "doc_type": "Salary Component",
    "docstatus": 0,
@@ -1152,6 +1318,7 @@
    "field_name": "component_type",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-03-17 15:40:56.134792",
    "modified_by": "Administrator",
    "module": "",
@@ -1161,13 +1328,28 @@
    "property_type": "Text",
    "row_name": null,
    "value": "\nProvident Fund\nProfessional Tax\nLTA Taxable\nLTA Non Taxable\nVehicle Maintenance Reimbursement\nLTA Reimbursement\nNPS\nEPF\nEPF Employer\nESIC\nTax Exemption"
+=======
+   "modified": "2025-10-15 10:16:29.460820",
+   "modified_by": "Administrator",
+   "module": "cn-indian-payroll",
+   "name": "Salary Component-component_type-options",
+   "owner": "Administrator",
+   "property": "options",
+   "property_type": "",
+   "row_name": null,
+   "value": "\nProvident Fund\nProfessional Tax\nNPS\nESIC"
+>>>>>>> v2/dev/india_payroll
   },
   {
    "_assign": null,
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
+<<<<<<< HEAD
    "creation": "2025-03-17 15:47:40.431665",
+=======
+   "creation": "2025-10-15 10:19:18.101240",
+>>>>>>> v2/dev/india_payroll
    "default_value": null,
    "doc_type": "Salary Component",
    "docstatus": 0,
@@ -1175,7 +1357,11 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-03-17 15:47:40.431665",
+=======
+   "modified": "2025-10-15 10:19:18.101240",
+>>>>>>> v2/dev/india_payroll
    "modified_by": "Administrator",
    "module": null,
    "name": "Salary Component-main-field_order",
@@ -1183,8 +1369,16 @@
    "property": "field_order",
    "property_type": "Data",
    "row_name": null,
+<<<<<<< HEAD
    "value": "[\"overview_tab\", \"salary_component\", \"salary_component_abbr\", \"type\", \"description\", \"component_type\", \"custom_sub_category\", \"custom_sequence\", \"custom_lta_taxable_component\", \"custom_lta_non_taxable_component\", \"column_break_4\", \"depends_on_payment_days\", \"is_tax_applicable\", \"deduct_full_tax_on_selected_payroll_date\", \"variable_based_on_taxable_salary\", \"is_income_tax_component\", \"exempted_from_income_tax\", \"round_to_the_nearest_integer\", \"statistical_component\", \"do_not_include_in_total\", \"remove_if_zero_valued\", \"custom_is_part_of_gross_pay\", \"disabled\", \"custom_is_part_of_ctc\", \"custom_perquisite\", \"custom_is_accrual\", \"custom_accrual_paid_on\", \"custom_paidout_component\", \"custom_is_reimbursement\", \"custom_is_arrear\", \"custom_component\", \"custom_is_part_of_appraisal\", \"custom_tax_exemption_applicable_based_on_regime\", \"custom_regime\", \"section_break_5\", \"accounts\", \"configure_component_tab\", \"condition_and_formula\", \"condition\", \"amount\", \"amount_based_on_formula\", \"formula\", \"column_break_28\", \"help\", \"flexible_benefits_tab\", \"is_flexible_benefit\", \"max_benefit_amount\", \"column_break_9\", \"pay_against_benefit_claim\", \"only_tax_impact\", \"create_separate_payment_entry_against_benefit_claim\"]"
   }
  ],
  "sync_on_migrate": 1
 }
+=======
+   "value": "[\"overview_tab\", \"salary_component\", \"salary_component_abbr\", \"type\", \"custom_component_sub_type\", \"description\", \"component_type\", \"custom_component_sequence\", \"column_break_4\", \"depends_on_payment_days\", \"is_tax_applicable\", \"deduct_full_tax_on_selected_payroll_date\", \"variable_based_on_taxable_salary\", \"is_income_tax_component\", \"exempted_from_income_tax\", \"round_to_the_nearest_integer\", \"statistical_component\", \"accrual_component\", \"do_not_include_in_total\", \"do_not_include_in_accounts\", \"remove_if_zero_valued\", \"arrear_component\", \"disabled\", \"custom_is_part_of_ctc\", \"custom_tax_exemption_applicable_based_on_regime\", \"custom_regime\", \"section_break_5\", \"accounts\", \"configure_component_tab\", \"condition_and_formula\", \"condition\", \"amount\", \"amount_based_on_formula\", \"formula\", \"column_break_28\", \"help\", \"flexible_benefits_tab\", \"is_flexible_benefit\", \"payout_method\", \"final_cycle_accrual_payout\", \"max_benefit_amount\", \"column_break_9\"]"
+  }
+ ],
+ "sync_on_migrate": 1
+}
+>>>>>>> v2/dev/india_payroll

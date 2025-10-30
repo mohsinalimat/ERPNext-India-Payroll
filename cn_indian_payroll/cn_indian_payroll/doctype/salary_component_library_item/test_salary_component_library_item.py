@@ -5,5 +5,13 @@
 from frappe.tests.utils import FrappeTestCase
 
 
+<<<<<<< HEAD
+<<<<<<<< HEAD:cn_indian_payroll/cn_indian_payroll/doctype/salary_component_library_item/test_salary_component_library_item.py
 class TestSalaryComponentLibraryItem(FrappeTestCase):
+========
+class TestZone(FrappeTestCase):
+>>>>>>>> v2/dev/india_payroll:cn_indian_payroll/cn_indian_payroll/doctype/zone/test_zone.py
+=======
+class TestSalaryComponentLibraryItem(FrappeTestCase):
+>>>>>>> v2/dev/india_payroll
 	pass

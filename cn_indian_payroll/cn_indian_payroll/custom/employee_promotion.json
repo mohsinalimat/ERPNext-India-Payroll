@@ -75,7 +75,75 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+<<<<<<< HEAD
    "creation": "2025-03-17 11:02:04.441325",
+=======
+   "creation": "2025-04-29 15:15:07.320442",
+   "default": null,
+   "depends_on": null,
+   "description": null,
+   "docstatus": 0,
+   "dt": "Employee Promotion",
+   "fetch_from": "custom_current_structure.currency",
+   "fetch_if_empty": 0,
+   "fieldname": "custom_currency",
+   "fieldtype": "Link",
+   "hidden": 0,
+   "hide_border": 0,
+   "hide_days": 0,
+   "hide_seconds": 0,
+   "idx": 17,
+   "ignore_user_permissions": 0,
+   "ignore_xss_filter": 0,
+   "in_global_search": 0,
+   "in_list_view": 0,
+   "in_preview": 0,
+   "in_standard_filter": 0,
+   "insert_after": "custom_current_structure",
+   "is_system_generated": 0,
+   "is_virtual": 0,
+   "label": "Currency",
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": null,
+   "modified": "2025-04-29 15:15:07.320442",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Employee Promotion-custom_currency",
+   "no_copy": 0,
+   "non_negative": 0,
+   "options": "Currency",
+   "owner": "Administrator",
+   "permlevel": 0,
+   "placeholder": null,
+   "precision": "",
+   "print_hide": 0,
+   "print_hide_if_no_value": 0,
+   "print_width": null,
+   "read_only": 0,
+   "read_only_depends_on": null,
+   "report_hide": 0,
+   "reqd": 0,
+   "search_index": 0,
+   "show_dashboard": 0,
+   "sort_options": 0,
+   "translatable": 0,
+   "unique": 0,
+   "width": null
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "allow_in_quick_entry": 0,
+   "allow_on_submit": 0,
+   "bold": 0,
+   "collapsible": 0,
+   "collapsible_depends_on": null,
+   "columns": 0,
+   "creation": "2025-04-29 14:58:35.756282",
+>>>>>>> v2/dev/india_payroll
    "default": null,
    "depends_on": null,
    "description": null,
@@ -83,7 +151,75 @@
    "dt": "Employee Promotion",
    "fetch_from": null,
    "fetch_if_empty": 0,
+<<<<<<< HEAD
    "fieldname": "custom_current_salary_structure_assignment_id",
+=======
+   "fieldname": "custom_current_effective_from_date",
+   "fieldtype": "Date",
+   "hidden": 0,
+   "hide_border": 0,
+   "hide_days": 0,
+   "hide_seconds": 0,
+   "idx": 15,
+   "ignore_user_permissions": 0,
+   "ignore_xss_filter": 0,
+   "in_global_search": 0,
+   "in_list_view": 0,
+   "in_preview": 0,
+   "in_standard_filter": 0,
+   "insert_after": "custom_current_salary_structure_reference",
+   "is_system_generated": 0,
+   "is_virtual": 0,
+   "label": "Current Effective From Date",
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": null,
+   "modified": "2025-04-29 14:58:35.756282",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Employee Promotion-custom_current_effective_from_date",
+   "no_copy": 0,
+   "non_negative": 0,
+   "options": null,
+   "owner": "Administrator",
+   "permlevel": 0,
+   "placeholder": null,
+   "precision": "",
+   "print_hide": 0,
+   "print_hide_if_no_value": 0,
+   "print_width": null,
+   "read_only": 1,
+   "read_only_depends_on": null,
+   "report_hide": 0,
+   "reqd": 0,
+   "search_index": 0,
+   "show_dashboard": 0,
+   "sort_options": 0,
+   "translatable": 0,
+   "unique": 0,
+   "width": null
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "allow_in_quick_entry": 0,
+   "allow_on_submit": 0,
+   "bold": 0,
+   "collapsible": 0,
+   "collapsible_depends_on": null,
+   "columns": 0,
+   "creation": "2025-04-29 14:58:35.695354",
+   "default": null,
+   "depends_on": null,
+   "description": null,
+   "docstatus": 0,
+   "dt": "Employee Promotion",
+   "fetch_from": null,
+   "fetch_if_empty": 0,
+   "fieldname": "custom_current_salary_structure_reference",
+>>>>>>> v2/dev/india_payroll
    "fieldtype": "Link",
    "hidden": 0,
    "hide_border": 0,
@@ -99,6 +235,7 @@
    "insert_after": "current_ctc",
    "is_system_generated": 0,
    "is_virtual": 0,
+<<<<<<< HEAD
    "label": "Current Salary Structure Assignment ID",
    "length": 0,
    "link_filters": null,
@@ -107,6 +244,16 @@
    "modified_by": "Administrator",
    "module": null,
    "name": "Employee Promotion-custom_current_salary_structure_assignment_id",
+=======
+   "label": "Current Salary Structure Reference",
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": null,
+   "modified": "2025-04-29 14:58:35.695354",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Employee Promotion-custom_current_salary_structure_reference",
+>>>>>>> v2/dev/india_payroll
    "no_copy": 0,
    "non_negative": 0,
    "options": "Salary Structure Assignment",
@@ -139,7 +286,11 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+<<<<<<< HEAD
    "creation": "2025-02-11 16:28:42.898291",
+=======
+   "creation": "2025-04-29 14:58:35.810161",
+>>>>>>> v2/dev/india_payroll
    "default": null,
    "depends_on": null,
    "description": null,
@@ -147,6 +298,7 @@
    "dt": "Employee Promotion",
    "fetch_from": null,
    "fetch_if_empty": 0,
+<<<<<<< HEAD
    "fieldname": "custom_new_effective_from",
    "fieldtype": "Date",
    "hidden": 0,
@@ -212,18 +364,26 @@
    "fetch_from": null,
    "fetch_if_empty": 0,
    "fieldname": "custom_new_salary_structure_assignment_id",
+=======
+   "fieldname": "custom_current_structure",
+>>>>>>> v2/dev/india_payroll
    "fieldtype": "Link",
    "hidden": 0,
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 18,
+=======
+   "idx": 16,
+>>>>>>> v2/dev/india_payroll
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
    "in_list_view": 0,
    "in_preview": 0,
    "in_standard_filter": 0,
+<<<<<<< HEAD
    "insert_after": "revised_ctc",
    "is_system_generated": 0,
    "is_virtual": 0,
@@ -302,6 +462,22 @@
    "no_copy": 0,
    "non_negative": 0,
    "options": null,
+=======
+   "insert_after": "custom_current_effective_from_date",
+   "is_system_generated": 0,
+   "is_virtual": 0,
+   "label": "Current Structure",
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": null,
+   "modified": "2025-04-29 14:58:35.810161",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Employee Promotion-custom_current_structure",
+   "no_copy": 0,
+   "non_negative": 0,
+   "options": "Salary Structure",
+>>>>>>> v2/dev/india_payroll
    "owner": "Administrator",
    "permlevel": 0,
    "placeholder": null,
@@ -365,7 +541,11 @@
    "name": "Employee Promotion-custom_status",
    "no_copy": 0,
    "non_negative": 0,
+<<<<<<< HEAD
    "options": "In Planning\nPayroll Configured\nArrears Calculated\nCompleted",
+=======
+   "options": "In Planning\nPayroll Configured\nArrears Calculated\nCompleted\nCancelled",
+>>>>>>> v2/dev/india_payroll
    "owner": "Administrator",
    "permlevel": 0,
    "placeholder": null,
@@ -373,7 +553,11 @@
    "print_hide": 0,
    "print_hide_if_no_value": 0,
    "print_width": null,
+<<<<<<< HEAD
    "read_only": 0,
+=======
+   "read_only": 1,
+>>>>>>> v2/dev/india_payroll
    "read_only_depends_on": null,
    "report_hide": 0,
    "reqd": 0,
@@ -387,7 +571,32 @@
  ],
  "custom_perms": [],
  "doctype": "Employee Promotion",
+<<<<<<< HEAD
  "links": [],
+=======
+ "links": [
+  {
+   "creation": "2025-05-13 10:14:28.229921",
+   "custom": 1,
+   "docstatus": 0,
+   "group": null,
+   "hidden": 0,
+   "idx": 0,
+   "is_child_table": 0,
+   "link_doctype": "Salary Appraisal Calculation",
+   "link_fieldname": "promotion_reference",
+   "modified": "2025-05-13 15:32:10.535833",
+   "modified_by": "Administrator",
+   "name": "3dqf7djk49",
+   "owner": "Administrator",
+   "parent": "Employee Promotion",
+   "parent_doctype": null,
+   "parentfield": "links",
+   "parenttype": "Customize Form",
+   "table_fieldname": null
+  }
+ ],
+>>>>>>> v2/dev/india_payroll
  "property_setters": [
   {
    "_assign": null,
@@ -402,7 +611,11 @@
    "field_name": "current_ctc",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-02-13 14:25:06.608774",
+=======
+   "modified": "2025-05-11 12:41:21.657366",
+>>>>>>> v2/dev/india_payroll
    "modified_by": "Administrator",
    "module": null,
    "name": "Employee Promotion-current_ctc-read_only",
@@ -417,7 +630,11 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
+<<<<<<< HEAD
    "creation": "2025-03-17 11:02:55.198686",
+=======
+   "creation": "2025-04-29 15:34:15.522253",
+>>>>>>> v2/dev/india_payroll
    "default_value": null,
    "doc_type": "Employee Promotion",
    "docstatus": 0,
@@ -425,7 +642,11 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-03-17 11:02:55.198686",
+=======
+   "modified": "2025-05-11 12:41:21.677654",
+>>>>>>> v2/dev/india_payroll
    "modified_by": "Administrator",
    "module": null,
    "name": "Employee Promotion-main-field_order",
@@ -433,14 +654,91 @@
    "property": "field_order",
    "property_type": "Data",
    "row_name": null,
+<<<<<<< HEAD
    "value": "[\"employee\", \"employee_name\", \"department\", \"salary_currency\", \"column_break_3\", \"promotion_date\", \"company\", \"custom_status\", \"custom_additional_salary_date\", \"details_section\", \"promotion_details\", \"salary_details_section\", \"current_ctc\", \"custom_current_salary_structure_assignment_id\", \"custom_old_effective_from\", \"column_break_12\", \"revised_ctc\", \"custom_new_salary_structure_assignment_id\", \"custom_new_effective_from\", \"amended_from\"]"
+=======
+   "value": "[\"employee\", \"employee_name\", \"department\", \"salary_currency\", \"column_break_3\", \"promotion_date\", \"company\", \"custom_status\", \"custom_additional_salary_date\", \"details_section\", \"promotion_details\", \"salary_details_section\", \"current_ctc\", \"custom_current_salary_structure_reference\", \"custom_current_effective_from_date\", \"custom_current_structure\", \"custom_currency\", \"column_break_12\", \"revised_ctc\", \"amended_from\"]"
+>>>>>>> v2/dev/india_payroll
   },
   {
    "_assign": null,
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
+<<<<<<< HEAD
    "creation": "2025-02-13 14:25:06.665994",
+=======
+   "creation": "2025-05-13 15:32:10.553233",
+   "default_value": null,
+   "doc_type": "Employee Promotion",
+   "docstatus": 0,
+   "doctype_or_field": "DocType",
+   "field_name": null,
+   "idx": 0,
+   "is_system_generated": 0,
+   "modified": "2025-05-13 15:32:10.553233",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Employee Promotion-main-links_order",
+   "owner": "Administrator",
+   "property": "links_order",
+   "property_type": "Small Text",
+   "row_name": null,
+   "value": "[\"3dqf7djk49\"]"
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "creation": "2025-05-13 15:29:30.503505",
+   "default_value": null,
+   "doc_type": "Employee Promotion",
+   "docstatus": 0,
+   "doctype_or_field": "DocType",
+   "field_name": null,
+   "idx": 0,
+   "is_system_generated": 0,
+   "modified": "2025-05-13 15:29:30.503505",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Employee Promotion-main-quick_entry",
+   "owner": "Administrator",
+   "property": "quick_entry",
+   "property_type": "Check",
+   "row_name": null,
+   "value": "0"
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "creation": "2025-05-13 11:00:52.978893",
+   "default_value": null,
+   "doc_type": "Employee Promotion",
+   "docstatus": 0,
+   "doctype_or_field": "DocField",
+   "field_name": "promotion_date",
+   "idx": 0,
+   "is_system_generated": 0,
+   "modified": "2025-05-13 11:00:52.978893",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Employee Promotion-promotion_date-label",
+   "owner": "Administrator",
+   "property": "label",
+   "property_type": "Data",
+   "row_name": null,
+   "value": "Promotion Date/ Effective From"
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "creation": "2025-05-13 10:14:44.441755",
+>>>>>>> v2/dev/india_payroll
    "default_value": null,
    "doc_type": "Employee Promotion",
    "docstatus": 0,
@@ -448,7 +746,34 @@
    "field_name": "revised_ctc",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-02-13 14:25:06.665994",
+=======
+   "modified": "2025-05-13 10:14:44.441755",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Employee Promotion-revised_ctc-hidden",
+   "owner": "Administrator",
+   "property": "hidden",
+   "property_type": "Check",
+   "row_name": null,
+   "value": "1"
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "creation": "2025-03-18 17:42:58.406115",
+   "default_value": null,
+   "doc_type": "Employee Promotion",
+   "docstatus": 0,
+   "doctype_or_field": "DocField",
+   "field_name": "revised_ctc",
+   "idx": 0,
+   "is_system_generated": 0,
+   "modified": "2025-05-11 12:41:21.694792",
+>>>>>>> v2/dev/india_payroll
    "modified_by": "Administrator",
    "module": null,
    "name": "Employee Promotion-revised_ctc-read_only",
@@ -471,7 +796,11 @@
    "field_name": "salary_details_section",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-02-13 14:23:33.609914",
+=======
+   "modified": "2025-05-11 12:41:21.711595",
+>>>>>>> v2/dev/india_payroll
    "modified_by": "Administrator",
    "module": null,
    "name": "Employee Promotion-salary_details_section-read_only",
@@ -483,4 +812,8 @@
   }
  ],
  "sync_on_migrate": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> v2/dev/india_payroll
